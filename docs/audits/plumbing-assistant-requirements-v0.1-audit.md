@@ -112,7 +112,8 @@ Priorities mean:
 | `AUD-P1-007` | Ready for implementation and privacy review | [PA-IMG-001](../security/plumbing-assistant-image-security.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P1-008` | Ready for implementation and adversarial evaluation | [PA-RET-001](../security/plumbing-assistant-retrieval-security.md), [evidence schema](../contracts/retrieval-evidence.schema.json), [response schema](../contracts/assistant-response.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P1-009` | Ready for implementation and interoperability testing | [ADR-0004](../decisions/0004-administrative-request-signing.md), [test vectors](../contracts/admin-signing-test-vectors.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
-| `AUD-P2-010` through `AUD-P2-011` | Open | Address sequentially by priority |
+| `AUD-P2-010` | Base controls implemented; application evidence pending | [PA-TRACE-001](../traceability/plumbing-assistant.md), [PA-REPO-001](../engineering/repository-conventions.md), [validator](../../scripts/validate-repository.mjs), [quality workflow](../../.github/workflows/quality.yml) |
+| `AUD-P2-011` | Open | Address next |
 
 ## 6. Detailed findings and remediation
 
@@ -416,6 +417,17 @@ runbook.
 
 ### AUD-P2-010 — Traceability and repository evolution
 
+**Current status:** `Base controls implemented; application evidence pending`.
+PA-TRACE-001 maps every current FR and AC to design, implementation ownership,
+automated evidence, evaluation/metric, and honest status. PA-REPO-001 defines
+the one-application layout, second-application migration trigger, evidence
+placement, and staged CI policy. A repository-owned validator and least-
+privilege GitHub workflow enforce syntax, links, schema references, complete
+traceability, protocol vectors, repository hygiene, and dependency review.
+The finding remains open until application test suites exist, `main` protection,
+secret scanning, and push protection are evidenced, and the required checks are
+protected and passing.
+
 **Evidence:** Functional requirements have stable IDs, but there is no mapping
 from requirement to component, test, metric, and release evidence. Application-
 specific documents currently live in top-level documentation directories.
@@ -531,6 +543,13 @@ references, checked on 2026-09-22:
 - [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986.html): percent encoding and URI normalization boundaries;
 - [RFC 9421](https://www.rfc-editor.org/rfc/rfc9421.html): HTTP signature coverage, timestamp, nonce, and replay considerations;
 - [Node.js Crypto](https://nodejs.org/api/crypto.html): Ed25519 `sign`/`verify` behavior with a `null` algorithm argument.
+
+Repository quality controls were checked against the current official GitHub
+sources on 2026-09-22:
+
+- [checkout releases](https://github.com/actions/checkout/releases) and [setup-node releases](https://github.com/actions/setup-node/releases): reviewed immutable commits used by CI;
+- [dependency review action](https://github.com/actions/dependency-review-action): pull-request dependency diff and vulnerability enforcement;
+- [push protection](https://docs.github.com/en/code-security/concepts/secret-security/push-protection): repository-hosted prevention of supported credential pushes.
 
 ## 11. Final recommendation
 

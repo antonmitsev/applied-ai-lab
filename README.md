@@ -20,6 +20,7 @@ apps/           Deployable applications
 docs/           Cross-project requirements, architecture, and decisions
 evals/          Versioned evaluation contracts, fixtures, and public cases
 packages/       Reusable packages introduced only when genuinely shared
+scripts/        Repository-owned deterministic validation and maintenance tools
 sources/        Reviewed source registries; document bytes only when redistributable
 ```
 
@@ -31,6 +32,11 @@ sources/        Reviewed source registries; document bytes only when redistribut
 - Measure quality, latency, and cost before choosing production limits.
 - Prefer the smallest architecture that satisfies the requirements.
 - Document important trade-offs and deferred work.
+
+Run `npm run validate` before committing. Repository layout, traceability, and
+CI expansion rules are defined in
+[PA-REPO-001](docs/engineering/repository-conventions.md). Script behavior and
+function references are documented in [scripts/README.md](scripts/README.md).
 
 ## Security
 

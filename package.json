@@ -4,6 +4,9 @@
   "private": true,
   "license": "0BSD",
   "description": "Production-oriented applied AI portfolio projects",
+  "scripts": {
+    "validate": "node scripts/validate-repository.mjs"
+  },
   "workspaces": [
     "apps/*",
     "packages/*"

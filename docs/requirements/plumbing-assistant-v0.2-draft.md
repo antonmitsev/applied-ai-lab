@@ -28,6 +28,7 @@ base document and this delta will be consolidated into a standalone v0.2.
 | `AUD-P1-007` | Added FR-19 and AC-60 through AC-70 | Approved design; implementation, privacy notice, and verification pending |
 | `AUD-P1-008` | Added FR-20 and AC-71 through AC-82; response schema v2 | Approved design; implementation and adversarial evaluation pending |
 | `AUD-P1-009` | Added FR-21 and AC-83 through AC-94 | Approved design; CLI/server implementation and interoperability tests pending |
+| `AUD-P2-010` | Added FR-22 and AC-95 through AC-101 | Traceability and base CI implemented; application suites and protected settings pending |
 
 ## Added functional requirements
 
@@ -330,6 +331,33 @@ fail closed when clock health, the replay store, key registry, raw-target
 preservation, or authentication cannot be verified. Authentication failures use
 one generic response; successful statistics responses are non-cacheable and
 contain only the approved FR-12 aggregates.
+
+### FR-22 — Requirements traceability and repository quality gates
+
+The project must implement
+[PA-REPO-001](../engineering/repository-conventions.md) and maintain
+[PA-TRACE-001](../traceability/plumbing-assistant.md) as the authoritative
+mapping from every active FR and AC to its design, implementation owner,
+automated evidence, AI evaluation or metric, and current status.
+
+CI must deterministically reject invalid JSON/JSONL, broken local documentation
+links, unresolved local schema references, missing or duplicate traceability
+coverage, invalid protocol vectors, and tracked secret/runtime artifacts. Pull
+requests must receive dependency review. Repository secret scanning, push
+protection, and protected required checks must be enabled and evidenced outside
+the committed files.
+
+The current typed top-level documentation layout is permitted while Plumbing
+Assistant is the only application. Before a second application is added,
+application-owned documents, evaluations, and sources must migrate together to
+an explicit `apps/<slug>/` namespace; only genuinely shared artifacts may remain
+at the root.
+
+The first application scaffold must add real format, lint, strict type, unit,
+integration, and browser-test jobs. Model smoke and release evaluations must run
+only from trusted commits with bounded credentials and sanitized reports. Empty
+or always-success placeholders do not count as evidence, and fork pull requests
+must never receive provider, deployment, signing, or holdout-data secrets.
 
 ## Added acceptance criteria
 
@@ -827,3 +855,46 @@ The release report binds protocol, CLI, server, key-registry, proxy, replay-
 store, and test-vector versions and includes passing interoperability, tamper,
 concurrency/restart, rotation/revocation, redaction, rate-limit, and aggregate-
 field allowlist suites.
+
+### AC-95 — Complete traceability coverage
+
+The repository validator proves every active `FR-01` through `FR-22` and
+`AC-01` through `AC-101` appears exactly once in PA-TRACE-001, including IDs
+expanded from ranges, with every required column populated.
+
+### AC-96 — Coupled change control
+
+Pull requests changing requirements, designs, contracts, component ownership,
+tests, metrics, or status update the affected traceability rows in the same
+change; CI rejects missing, duplicated, obsolete, or unknown IDs.
+
+### AC-97 — Repository ownership convention
+
+Review proves each artifact follows PA-REPO-001 ownership and naming rules. A
+second application cannot merge before the documented namespace migration is
+complete and all links and traceability checks pass.
+
+### AC-98 — Deterministic repository validation
+
+The read-only PR/push workflow passes JSON/JSONL, local-link, local-schema-ref,
+traceability, cryptographic-vector, and repository-hygiene checks using the
+repository-owned validator and no application/provider secrets.
+
+### AC-99 — Implementation test gates
+
+The first application scaffold introduces non-placeholder format, lint, strict
+type, unit, integration, browser, and coverage jobs; changed behavior cannot
+merge while an applicable required job is missing, skipped, or failing.
+
+### AC-100 — Supply-chain and secret controls
+
+Dependency review blocks newly introduced moderate-or-higher vulnerabilities;
+external actions are pinned and update-monitored; secret scanning and push
+protection are enabled; fork pull requests receive no protected secrets.
+
+### AC-101 — Protected release evidence
+
+Protected `main` requires repository quality, dependency, implementation, and
+applicable evaluation checks. Closure evidence records the repository settings,
+passing checks, application test paths, sanitized evaluation report, and a
+traceability review with no unexplained implementation-pending release item.
