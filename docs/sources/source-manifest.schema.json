@@ -1,0 +1,660 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/antonmitsev/applied-ai-lab/main/docs/sources/source-manifest.schema.json",
+  "title": "Plumbing Assistant source manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "registry_id",
+    "registry_version",
+    "updated_at",
+    "research_status",
+    "sources"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "registry_id": {
+      "const": "plumbing-assistant"
+    },
+    "registry_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "research_status": {
+      "enum": ["not_started", "in_progress", "reviewed"]
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    }
+  },
+  "$defs": {
+    "nullableDate": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nullableDateTime": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nullableString": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "status",
+        "publisher",
+        "manufacturer",
+        "source_type",
+        "authority_class",
+        "document_title",
+        "document_version",
+        "publication_date",
+        "language",
+        "canonical_url",
+        "accessed_at",
+        "product_scope",
+        "content",
+        "usage_rights",
+        "review",
+        "citation",
+        "ingestion",
+        "superseded_by",
+        "withdrawal_reason"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^src_[a-z0-9][a-z0-9_-]{2,63}$"
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "in_review",
+            "approved",
+            "superseded",
+            "withdrawn",
+            "rejected"
+          ]
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "manufacturer": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "source_type": {
+          "enum": [
+            "installation_manual",
+            "user_manual",
+            "service_manual",
+            "technical_datasheet",
+            "product_catalogue",
+            "safety_guidance",
+            "regulatory_guidance",
+            "standard",
+            "professional_guidance",
+            "secondary_reference"
+          ]
+        },
+        "authority_class": {
+          "enum": [
+            "manufacturer_model",
+            "manufacturer_family",
+            "public_authority",
+            "recognized_standard",
+            "professional_body",
+            "reputable_secondary",
+            "excluded"
+          ]
+        },
+        "document_title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "document_version": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "publication_date": {
+          "$ref": "#/$defs/nullableDate"
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "accessed_at": {
+          "$ref": "#/$defs/nullableDateTime"
+        },
+        "product_scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "jurisdictions",
+            "system_types",
+            "product_family",
+            "model_variants"
+          ],
+          "properties": {
+            "jurisdictions": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z]{2}$"
+              }
+            },
+            "system_types": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "potable_water",
+                  "wastewater",
+                  "radiator_heating",
+                  "hydronic_floor_heating",
+                  "metering",
+                  "general_water_side"
+                ]
+              }
+            },
+            "product_family": {
+              "$ref": "#/$defs/nullableString"
+            },
+            "model_variants": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          }
+        },
+        "content": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mime_type",
+            "byte_length",
+            "sha256",
+            "artifact_locator"
+          ],
+          "properties": {
+            "mime_type": {
+              "type": ["string", "null"]
+            },
+            "byte_length": {
+              "type": ["integer", "null"],
+              "minimum": 1
+            },
+            "sha256": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "artifact_locator": {
+              "$ref": "#/$defs/nullableString"
+            }
+          }
+        },
+        "usage_rights": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "access_basis",
+            "ingestion_decision",
+            "redistribution_decision",
+            "evidence",
+            "reviewed_by",
+            "reviewed_at"
+          ],
+          "properties": {
+            "access_basis": {
+              "enum": ["public", "authorized", "licensed", "unknown"]
+            },
+            "ingestion_decision": {
+              "enum": ["approved", "pending", "prohibited"]
+            },
+            "redistribution_decision": {
+              "enum": ["approved", "pending", "prohibited"]
+            },
+            "evidence": {
+              "$ref": "#/$defs/nullableString"
+            },
+            "reviewed_by": {
+              "$ref": "#/$defs/nullableString"
+            },
+            "reviewed_at": {
+              "$ref": "#/$defs/nullableDate"
+            }
+          }
+        },
+        "review": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["reviewed_by", "reviewed_at", "next_review_at", "notes"],
+          "properties": {
+            "reviewed_by": {
+              "$ref": "#/$defs/nullableString"
+            },
+            "reviewed_at": {
+              "$ref": "#/$defs/nullableDate"
+            },
+            "next_review_at": {
+              "$ref": "#/$defs/nullableDate"
+            },
+            "notes": {
+              "$ref": "#/$defs/nullableString"
+            }
+          }
+        },
+        "citation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source_tier", "title_bg", "title_en"],
+          "properties": {
+            "source_tier": {
+              "enum": ["manufacturer", "authority", "professional", "secondary"]
+            },
+            "title_bg": {
+              "$ref": "#/$defs/nullableString"
+            },
+            "title_en": {
+              "$ref": "#/$defs/nullableString"
+            }
+          }
+        },
+        "ingestion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["approved_for_index", "priority", "chunking_profile"],
+          "properties": {
+            "approved_for_index": {
+              "type": "boolean"
+            },
+            "priority": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "chunking_profile": {
+              "$ref": "#/$defs/nullableString"
+            }
+          }
+        },
+        "superseded_by": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "withdrawal_reason": {
+          "$ref": "#/$defs/nullableString"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "approved"
+              }
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {
+              "accessed_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "authority_class": {
+                "not": {
+                  "const": "excluded"
+                }
+              },
+              "content": {
+                "properties": {
+                  "mime_type": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "byte_length": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "artifact_locator": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "usage_rights": {
+                "properties": {
+                  "ingestion_decision": {
+                    "const": "approved"
+                  },
+                  "evidence": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reviewed_by": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reviewed_at": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              },
+              "review": {
+                "properties": {
+                  "reviewed_by": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reviewed_at": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "next_review_at": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              },
+              "citation": {
+                "properties": {
+                  "title_bg": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "title_en": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "ingestion": {
+                "properties": {
+                  "approved_for_index": {
+                    "const": true
+                  },
+                  "chunking_profile": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "superseded_by": {
+                "type": "null"
+              },
+              "withdrawal_reason": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "superseded"
+              }
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {
+              "superseded_by": {
+                "type": "string",
+                "minLength": 1
+              },
+              "withdrawal_reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ingestion": {
+                "properties": {
+                  "approved_for_index": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": ["withdrawn", "rejected"]
+              }
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {
+              "withdrawal_reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ingestion": {
+                "properties": {
+                  "approved_for_index": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": ["candidate", "in_review"]
+              }
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {
+              "ingestion": {
+                "properties": {
+                  "approved_for_index": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "authority_class": {
+                "const": "manufacturer_model"
+              }
+            },
+            "required": ["authority_class"]
+          },
+          "then": {
+            "properties": {
+              "manufacturer": {
+                "type": "string",
+                "minLength": 1
+              },
+              "product_scope": {
+                "properties": {
+                  "model_variants": {
+                    "minItems": 1
+                  }
+                }
+              },
+              "citation": {
+                "properties": {
+                  "source_tier": {
+                    "const": "manufacturer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "authority_class": {
+                "const": "manufacturer_family"
+              }
+            },
+            "required": ["authority_class"]
+          },
+          "then": {
+            "properties": {
+              "manufacturer": {
+                "type": "string",
+                "minLength": 1
+              },
+              "product_scope": {
+                "properties": {
+                  "product_family": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "citation": {
+                "properties": {
+                  "source_tier": {
+                    "const": "manufacturer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "authority_class": {
+                "enum": ["public_authority", "recognized_standard"]
+              }
+            },
+            "required": ["authority_class"]
+          },
+          "then": {
+            "properties": {
+              "citation": {
+                "properties": {
+                  "source_tier": {
+                    "const": "authority"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "authority_class": {
+                "const": "professional_body"
+              }
+            },
+            "required": ["authority_class"]
+          },
+          "then": {
+            "properties": {
+              "citation": {
+                "properties": {
+                  "source_tier": {
+                    "const": "professional"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "authority_class": {
+                "enum": ["reputable_secondary", "excluded"]
+              }
+            },
+            "required": ["authority_class"]
+          },
+          "then": {
+            "properties": {
+              "citation": {
+                "properties": {
+                  "source_tier": {
+                    "const": "secondary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

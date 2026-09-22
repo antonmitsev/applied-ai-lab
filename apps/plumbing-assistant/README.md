@@ -31,6 +31,8 @@ Requirements definition. No production implementation is present yet.
 - [Structured assistant response schema](../../docs/contracts/assistant-response.schema.json)
 - [Evaluation Plan](../../docs/evaluation/plumbing-assistant-evaluation-plan.md)
 - [Evaluation assets](../../evals/plumbing-assistant/)
+- [Source governance and ingestion specification](../../docs/sources/plumbing-assistant-source-governance.md)
+- [Deferred WP-01 source registry](../../sources/plumbing-assistant/manifest.json)
 
 ## Safety notice
 

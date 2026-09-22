@@ -24,6 +24,7 @@ base document and this delta will be consolidated into a standalone v0.2.
 | `AUD-P0-003` | Added FR-15 and AC-25 through AC-32 | Evaluation implementation required |
 | `AUD-P1-004` | Added FR-16 and AC-33 through AC-40 | Approved for implementation; WP-03 values pending |
 | `AUD-P1-005` | Added FR-17 and AC-41 through AC-49 | Approved for implementation; privacy review and WP-03 values pending |
+| `AUD-P1-006` | Added FR-18 and AC-50 through AC-59 | Approved design; WP-01 research and ingestion implementation pending |
 
 ## Added functional requirements
 
@@ -184,6 +185,43 @@ token, same-origin, proxy-trust, key, quota-store, or budget checks cannot be
 verified. Failure of an optional coarse client signal alone must not deny
 access. Bulgarian and English notices must accurately describe the signals,
 purposes, recipients, and retention.
+
+### FR-18 — Governed sources and reproducible ingestion
+
+Curated retrieval must implement
+[PA-SOURCE-001](../sources/plumbing-assistant-source-governance.md). The
+repository-owned, schema-validated source registry is authoritative; provider
+files and vector stores are derived deployment artifacts.
+
+WP-01 must produce a reviewed source record for every curated document,
+including publisher/manufacturer, product and exact variant scope, title,
+version, publication date, language, canonical URL, access date, SHA-256,
+rights decision and evidence, reviewer and dates, lifecycle state, citation
+tier, and supersession linkage. Publicly reachable content must not be assumed
+to permit ingestion or redistribution.
+
+Only current, review-valid, rights-approved records with `status: approved` may
+enter an index. Index builds must pin the registry commit, source checksums,
+ingestion program, extraction profile, chunking profile, and provider
+configuration, and must emit a conforming immutable index manifest. A partial or
+failed staging build must never become active.
+
+Runtime results must join to the active registry snapshot and pass lifecycle,
+scope, language, build, score, and claim-entailment checks. Citation titles,
+URLs, tiers, and IDs must come from the registry rather than retrieved content
+or generated labels.
+
+Exact compatibility claims require an approved current source that explicitly
+identifies the exact manufacturer and model/variant and entails the claimed
+match. Family guidance, visual similarity, retail data, or model memory is
+insufficient; absent exact evidence, compatibility must be reported as not
+established.
+
+Withdrawal or supersession must immediately suppress the source at runtime and
+trigger a verified replacement index. Cleanup must remove both the vector-store
+attachment and the underlying provider File when no approved build references
+it. Live web results must never enter the curated index without the complete
+WP-01 review lifecycle.
 
 ## Added acceptance criteria
 
@@ -402,3 +440,61 @@ admission budget, although it may exhaust remaining daily availability.
 WP-03 records measured thresholds and shared-network false-positive results.
 Public release requires reviewed Bulgarian and English notices plus a recorded
 privacy/legal review of the deployed behavior.
+
+### AC-50 — Source-registry contract
+
+The WP-01 registry validates against the pinned schema and automated semantic
+checks enforce unique IDs, valid lifecycle transitions, review dates, rights
+decisions, scope rules, and valid supersession references.
+
+### AC-51 — Approved-only ingestion
+
+Tests prove candidate, in-review, rejected, withdrawn, superseded, expired,
+checksum-mismatched, or rights-unapproved records cannot be uploaded or activated.
+
+### AC-52 — Exact compatibility refusal
+
+Bulgarian and English evaluation cases prove exact compatibility is asserted
+only for a matching approved model/variant passage and is otherwise explicitly
+reported as not established.
+
+### AC-53 — Reproducible index receipt
+
+Every build emits a schema-valid index manifest binding the registry commit,
+source and extracted checksums, program and profile versions, provider file IDs,
+processing states, and verification results.
+
+### AC-54 — Staging activation
+
+Integration tests prove only a complete, checksum-valid, smoke-tested staging
+build can atomically become active and that the previous build remains available
+for the bounded rollback window.
+
+### AC-55 — Withdrawal and deletion
+
+Tests prove a withdrawal is denied at runtime before rebuild, absent from the
+replacement index, detached from the vector store, deleted as an underlying
+provider File when unreferenced, and absent from known-document search.
+
+### AC-56 — Citation integrity
+
+Every rendered citation maps to the active registry's immutable source ID,
+canonical HTTPS URL, reviewed title, and tier; every procedural step maps to an
+entailing retrieved passage.
+
+### AC-57 — Rights and repository boundary
+
+Automated checks reject provider ingestion without an approved ingestion
+decision and reject committing source bytes without approved redistribution.
+
+### AC-58 — Freshness and reconciliation
+
+Expired reviews fail closed. Scheduled checks detect changed or unavailable
+sources without auto-approving new bytes, and provider reconciliation reports no
+orphaned files, unknown indexed sources, or missing approved sources.
+
+### AC-59 — WP-01 and retrieval release evidence
+
+Grounded public release requires a reviewed non-empty WP-01 registry, documented
+coverage gaps, bilingual retrieval evaluation, and an active registry commit and
+index build ID in the release report.

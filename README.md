@@ -20,6 +20,7 @@ apps/           Deployable applications
 docs/           Cross-project requirements, architecture, and decisions
 evals/          Versioned evaluation contracts, fixtures, and public cases
 packages/       Reusable packages introduced only when genuinely shared
+sources/        Reviewed source registries; document bytes only when redistributable
 ```
 
 ## Engineering principles

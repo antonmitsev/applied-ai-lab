@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/antonmitsev/applied-ai-lab/main/docs/sources/index-manifest.schema.json",
+  "title": "Plumbing Assistant index build manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "build_id",
+    "environment",
+    "created_at",
+    "registry_version",
+    "registry_git_commit",
+    "ingestion_program_version",
+    "extraction_profile_version",
+    "chunking_profile_version",
+    "provider",
+    "vector_store_id",
+    "status",
+    "sources",
+    "verification"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "build_id": {
+      "type": "string",
+      "pattern": "^idx_[a-zA-Z0-9_-]{8,100}$"
+    },
+    "environment": {
+      "enum": ["development", "staging", "production"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "registry_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "registry_git_commit": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "ingestion_program_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extraction_profile_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "chunking_profile_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider": {
+      "const": "openai"
+    },
+    "vector_store_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "status": {
+      "enum": ["building", "failed", "verified", "active", "retired", "deleted"]
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "source_sha256",
+          "extracted_sha256",
+          "provider_file_id",
+          "vector_store_file_id",
+          "processing_status",
+          "chunk_count"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "pattern": "^src_[a-z0-9][a-z0-9_-]{2,63}$"
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "extracted_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "provider_file_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "vector_store_file_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "processing_status": {
+            "enum": ["completed", "failed", "cancelled"]
+          },
+          "chunk_count": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_valid",
+        "checksums_valid",
+        "all_files_completed",
+        "smoke_queries_passed",
+        "orphan_check_passed",
+        "verified_at"
+      ],
+      "properties": {
+        "schema_valid": {
+          "type": "boolean"
+        },
+        "checksums_valid": {
+          "type": "boolean"
+        },
+        "all_files_completed": {
+          "type": "boolean"
+        },
+        "smoke_queries_passed": {
+          "type": "boolean"
+        },
+        "orphan_check_passed": {
+          "type": "boolean"
+        },
+        "verified_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": ["verified", "active"]
+          }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "sources": {
+            "minItems": 1,
+            "items": {
+              "properties": {
+                "processing_status": {
+                  "const": "completed"
+                }
+              }
+            }
+          },
+          "verification": {
+            "properties": {
+              "schema_valid": {
+                "const": true
+              },
+              "checksums_valid": {
+                "const": true
+              },
+              "all_files_completed": {
+                "const": true
+              },
+              "smoke_queries_passed": {
+                "const": true
+              },
+              "orphan_check_passed": {
+                "const": true
+              },
+              "verified_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

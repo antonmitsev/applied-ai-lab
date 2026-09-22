@@ -1,0 +1,9 @@
+{
+  "$schema": "../../docs/sources/source-manifest.schema.json",
+  "schema_version": "1.0.0",
+  "registry_id": "plumbing-assistant",
+  "registry_version": "0.1.0",
+  "updated_at": "2026-09-22T00:00:00Z",
+  "research_status": "not_started",
+  "sources": []
+}

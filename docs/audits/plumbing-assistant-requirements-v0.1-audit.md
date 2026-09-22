@@ -108,7 +108,8 @@ Priorities mean:
 | `AUD-P0-003` | Ready for implementation and review | [Evaluation Plan](../evaluation/plumbing-assistant-evaluation-plan.md), [case schema](../../evals/plumbing-assistant/case.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P1-004` | Ready for implementation and benchmark | [ADR-0002](../decisions/0002-atomic-cost-and-quota-accounting.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P1-005` | Ready for implementation and privacy review | [ADR-0003](../decisions/0003-anonymous-access-and-abuse-controls.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
-| `AUD-P1-006` through `AUD-P2-011` | Open | Address sequentially by priority |
+| `AUD-P1-006` | Ready for WP-01 execution and implementation | [PA-SOURCE-001](../sources/plumbing-assistant-source-governance.md), [source schema](../sources/source-manifest.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
+| `AUD-P1-007` through `AUD-P2-011` | Open | Address sequentially by priority |
 
 ## 6. Detailed findings and remediation
 
@@ -294,6 +295,14 @@ tests, reset/parallel-client tests, and published user notice.
 
 ### AUD-P1-006 — Source governance and ingestion
 
+**Current status:** `Ready for WP-01 execution and implementation`. The
+governance rules, machine-readable source and index contracts, and requirements
+changes are approved in
+[PA-SOURCE-001](../sources/plumbing-assistant-source-governance.md). The finding
+remains open until WP-01 supplies the reviewed registry and the ingestion,
+withdrawal, reconciliation, rights, citation, and retrieval tests pass. No
+manufacturer research or document download was performed during this step.
+
 **Evidence:** FR-05 defines source preference, but WP-01 postpones manufacturer
 and documentation research. No source registry schema, review state, update
 process, or withdrawal process exists.
@@ -477,6 +486,7 @@ change:
 - [Responses API — create a model response](https://developers.openai.com/api/reference/cli/resources/responses/methods/create): explicit `store`, output-token and tool-call limits, moderation, structured output, and `safety_identifier`;
 - [Data controls in the OpenAI platform](https://developers.openai.com/api/docs/guides/your-data): endpoint-specific application-state and abuse-monitoring retention, files, and vector stores;
 - [Safety best practices](https://developers.openai.com/api/docs/guides/safety-best-practices): moderation, adversarial testing, human review, and safety identifiers;
+- [Vector Store search](https://developers.openai.com/api/reference/typescript/resources/vector_stores/methods/search) and [file upload](https://developers.openai.com/api/reference/typescript/resources/files/methods/create): filtered retrieval attributes, ingestion flow, and explicit lifecycle management for persistent files;
 - [Model selection](https://developers.openai.com/api/docs/guides/model-selection): define accuracy targets and an evaluation dataset before optimizing cost and latency.
 
 ## 11. Final recommendation

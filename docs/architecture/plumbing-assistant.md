@@ -31,8 +31,14 @@ OpenAI Responses API
   ├─ stateless request with store:false
   ├─ pseudonymous safety_identifier
   ├─ bounded visible history and structured output
-  ├─ file_search ────────► Curated vector store
+  ├─ file_search ────────► Versioned curated vector store
   └─ web_search ─────────► Current public sources
+
+Source build pipeline
+  ├─ reviewed repository source registry
+  ├─ checksum, rights, lifecycle and scope gates
+  ├─ deterministic extraction and chunking
+  └─ verified staging index ──► atomic active-build switch
 
 Local admin CLI
   └─ Ed25519-signed request ──► Read-only statistics endpoint
@@ -67,6 +73,13 @@ Local admin CLI
 4. Expose citations and distinguish sourced facts from inference.
 5. State that evidence is insufficient instead of inventing compatibility or
    procedural details.
+
+The repository source registry is authoritative; a provider file or retrieval
+score is not approval. Runtime retrieval joins results to the active registry
+snapshot and rejects expired, withdrawn, superseded, out-of-scope, or
+wrong-build sources. Exact compatibility requires an approved passage for the
+exact model/variant. See
+[PA-SOURCE-001](../sources/plumbing-assistant-source-governance.md).
 
 ## Fail-closed conditions
 
