@@ -113,8 +113,9 @@ The server should use inline image input when the selected API and size limits
 permit it. If a provider-side File object is unavoidable, the implementation
 must set the shortest supported expiry and issue an explicit deletion after the
 request. Local temporary files must be deleted after processing, with a janitor
-removing abandoned files within 15 minutes. The full validation pipeline remains
-owned by `AUD-P1-007`.
+removing abandoned files within 15 minutes. The complete validation, transfer,
+cleanup, and recovery pipeline is defined by
+[PA-IMG-001](../security/plumbing-assistant-image-security.md).
 
 ### Operational data
 

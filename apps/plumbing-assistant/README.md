@@ -33,6 +33,7 @@ Requirements definition. No production implementation is present yet.
 - [Evaluation assets](../../evals/plumbing-assistant/)
 - [Source governance and ingestion specification](../../docs/sources/plumbing-assistant-source-governance.md)
 - [Deferred WP-01 source registry](../../sources/plumbing-assistant/manifest.json)
+- [Image input security and lifecycle](../../docs/security/plumbing-assistant-image-security.md)
 
 ## Safety notice
 

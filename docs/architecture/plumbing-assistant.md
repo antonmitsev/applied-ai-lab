@@ -9,13 +9,14 @@ Browser
   ├─ signed anonymous visitor token in a hardened cookie
   ├─ in-memory CSRF value for same-origin API binding
   ├─ authenticated conversation envelope in sessionStorage
-  └─ text and image input
+  └─ text + one memory-only image selection
           │
           ▼
 Node.js application
   ├─ input validation and deterministic safety pre-triage
   ├─ visitor-token, origin, CSRF and proxy-boundary validation
   ├─ short-lived keyed network abuse bucket
+  ├─ isolated image scan, decode and metadata-free normalization
   ├─ conversation-envelope verification and reconstruction
   ├─ per-visitor and global budget enforcement
   ├─ atomic worst-case reservation and usage reconciliation
@@ -30,6 +31,7 @@ Node.js application
 OpenAI Responses API
   ├─ stateless request with store:false
   ├─ pseudonymous safety_identifier
+  ├─ normalized inline input_image; no File on normal path
   ├─ bounded visible history and structured output
   ├─ file_search ────────► Versioned curated vector store
   └─ web_search ─────────► Current public sources
@@ -135,6 +137,16 @@ OpenAI request carries a purpose-separated pseudonymous `safety_identifier`.
 The global atomic monetary limit remains authoritative if every anonymous signal
 is reset. See
 [ADR-0003](../decisions/0003-anonymous-access-and-abuse-controls.md).
+
+## Image input boundary
+
+The server never forwards a browser upload directly. It authenticates and
+streams one bounded image, verifies the actual format, scans and decodes it in a
+resource-limited worker, applies orientation, strips metadata, and creates a new
+bounded sRGB JPEG. Only that derivative may be sent inline in the current
+`store:false` request. Original and normalized buffers are current-request data;
+all completion and failure paths clean them, with a 15-minute recovery janitor.
+See [PA-IMG-001](../security/plumbing-assistant-image-security.md).
 
 ## Conversation state and retention
 

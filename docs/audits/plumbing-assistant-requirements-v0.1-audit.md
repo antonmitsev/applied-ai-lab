@@ -109,7 +109,8 @@ Priorities mean:
 | `AUD-P1-004` | Ready for implementation and benchmark | [ADR-0002](../decisions/0002-atomic-cost-and-quota-accounting.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P1-005` | Ready for implementation and privacy review | [ADR-0003](../decisions/0003-anonymous-access-and-abuse-controls.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P1-006` | Ready for WP-01 execution and implementation | [PA-SOURCE-001](../sources/plumbing-assistant-source-governance.md), [source schema](../sources/source-manifest.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
-| `AUD-P1-007` through `AUD-P2-011` | Open | Address sequentially by priority |
+| `AUD-P1-007` | Ready for implementation and privacy review | [PA-IMG-001](../security/plumbing-assistant-image-security.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
+| `AUD-P1-008` through `AUD-P2-011` | Open | Address sequentially by priority |
 
 ## 6. Detailed findings and remediation
 
@@ -328,6 +329,13 @@ evaluation against known documents.
 
 ### AUD-P1-007 — Image input lifecycle
 
+**Current status:** `Ready for implementation and privacy review`. The complete
+browser, upload, validation, normalization, provider-transfer, cleanup,
+recovery, retention, and verification design is approved in
+[PA-IMG-001](../security/plumbing-assistant-image-security.md). The finding
+remains open until the implementation, bilingual notices, adversarial fixtures,
+cleanup/recovery tests, and provider-boundary evidence pass.
+
 **Evidence:** FR-02 permits images and section 9 says not to retain them after
 processing. Validation, metadata handling, transient storage, provider transfer,
 and failure cleanup are unspecified.
@@ -487,6 +495,7 @@ change:
 - [Data controls in the OpenAI platform](https://developers.openai.com/api/docs/guides/your-data): endpoint-specific application-state and abuse-monitoring retention, files, and vector stores;
 - [Safety best practices](https://developers.openai.com/api/docs/guides/safety-best-practices): moderation, adversarial testing, human review, and safety identifiers;
 - [Vector Store search](https://developers.openai.com/api/reference/typescript/resources/vector_stores/methods/search) and [file upload](https://developers.openai.com/api/reference/typescript/resources/files/methods/create): filtered retrieval attributes, ingestion flow, and explicit lifecycle management for persistent files;
+- [Images and vision](https://developers.openai.com/api/docs/guides/images-vision) and [Files API](https://developers.openai.com/api/reference/cli/resources/files): supported image-input paths and explicit provider File deletion;
 - [Model selection](https://developers.openai.com/api/docs/guides/model-selection): define accuracy targets and an evaluation dataset before optimizing cost and latency.
 
 ## 11. Final recommendation

@@ -25,6 +25,7 @@ base document and this delta will be consolidated into a standalone v0.2.
 | `AUD-P1-004` | Added FR-16 and AC-33 through AC-40 | Approved for implementation; WP-03 values pending |
 | `AUD-P1-005` | Added FR-17 and AC-41 through AC-49 | Approved for implementation; privacy review and WP-03 values pending |
 | `AUD-P1-006` | Added FR-18 and AC-50 through AC-59 | Approved design; WP-01 research and ingestion implementation pending |
+| `AUD-P1-007` | Added FR-19 and AC-60 through AC-70 | Approved design; implementation, privacy notice, and verification pending |
 
 ## Added functional requirements
 
@@ -222,6 +223,41 @@ trigger a verified replacement index. Cleanup must remove both the vector-store
 attachment and the underlying provider File when no approved build references
 it. Live web results must never enter the curated index without the complete
 WP-01 review lifecycle.
+
+### FR-19 — Secure image input lifecycle
+
+Image input must implement
+[PA-IMG-001](../security/plumbing-assistant-image-security.md). An image is
+untrusted, potentially sensitive, current-request data and must not be accepted
+on the basis of its filename, extension, or browser MIME type.
+
+The MVP accepts at most one JPEG, PNG, or non-animated WebP image per request,
+with a maximum encoded size of 8 MiB, maximum decoded size of 25 megapixels and
+8,192 px per dimension, and maximum 20:1 aspect ratio. Complete signature,
+container, malware, resource-bounded decode, and animation checks are mandatory.
+
+Every accepted input must be orientation-corrected, converted to sRGB, stripped
+of metadata and alpha, resized without upscaling to at most 2,048 px on the long
+edge, and re-encoded as a new JPEG no larger than 4 MiB. The original must never
+be sent directly to the provider.
+
+The normal path sends the normalized JPEG as an inline Base64 `input_image` with
+`detail: high` in the current foreground Responses API request. It must set
+`store: false`, must not request echo of the image URL, and must not create a
+provider File. If an exceptional File path is later enabled, it requires the
+shortest supported expiry, immediate confirmed deletion, orphan reconciliation,
+and an image-route circuit breaker for cleanup backlog.
+
+Image bytes, Base64, thumbnails, hashes, metadata, filenames, local paths, and
+provider file IDs must not enter conversation state, general logs, traces,
+metrics, analytics, the usage ledger, or backups. Browser and local temporary
+artifacts must be removed on every completion and failure path; a janitor must
+remove abandoned local artifacts within 15 minutes.
+
+Image evidence must not lower safety urgency or establish exact compatibility
+by visual similarity alone. Failure of image readiness or processing disables
+the image route explicitly and may leave text-only chat available; the system
+must never silently answer as if a rejected image had been inspected.
 
 ## Added acceptance criteria
 
@@ -498,3 +534,68 @@ orphaned files, unknown indexed sources, or missing approved sources.
 Grounded public release requires a reviewed non-empty WP-01 registry, documented
 coverage gaps, bilingual retrieval evaluation, and an active registry commit and
 index build ID in the release report.
+
+### AC-60 — Upload framing and bounds
+
+Tests prove exact one-image, byte, multipart, field-count, dimension, pixel,
+aspect-ratio, normalized-size, and streaming limits for declared and chunked
+requests.
+
+### AC-61 — Actual-format validation
+
+Fixtures prove fake MIME/extension, truncation, corruption, unsupported formats,
+animated input, polyglots, trailing payloads, and decompression bombs fail before
+the main provider call.
+
+### AC-62 — Scanner and decoder isolation
+
+Scanner and isolated decoder tests cover unavailable, timeout, crash, memory,
+CPU, malformed-output, and concurrency failures with no fallback to original
+bytes.
+
+### AC-63 — Metadata-free normalization
+
+Tests with EXIF GPS and orientation, XMP, IPTC, ICC, comments, thumbnails,
+filenames, and alpha prove correct oriented pixels and absence of forbidden data
+in the normalized JPEG.
+
+### AC-64 — Inline provider boundary
+
+SDK-boundary tests prove the normal path sends only the normalized inline JPEG
+with `detail: high`, `store: false`, no image echo include, no provider File, and
+no original bytes or metadata.
+
+### AC-65 — Local cleanup and recovery
+
+Success, rejection, disconnect, cancellation, timeout, decoder crash, provider
+failure, invalid output, process restart, and janitor tests leave no local image
+artifact beyond the 15-minute recovery ceiling.
+
+### AC-66 — Exceptional provider File cleanup
+
+If the File path is enabled, tests prove configured expiry, immediate confirmed
+deletion, lost-response orphan reconciliation, cleanup-ledger expiry, and a
+circuit breaker for any unconfirmed object older than 15 minutes.
+
+### AC-67 — Image-data exclusion
+
+Capture tests find no image bytes, Base64, thumbnails, hashes, metadata,
+filenames, local paths, or provider file IDs in browser stores, conversation
+envelopes, general logs, traces, metrics, analytics, usage storage, or backups.
+
+### AC-68 — Safety and evidence composition
+
+Tests prove images cannot lower urgency, conflicts trigger `HZ-013`, unreadable
+images do not cause invented identification, and visual similarity alone cannot
+establish exact compatibility.
+
+### AC-69 — Resource and cost containment
+
+Concurrent-upload tests stay within decoder worker, memory, temporary-storage,
+timeout, concurrency, token, and atomic monetary limits.
+
+### AC-70 — Bilingual image release evidence
+
+Reviewed Bulgarian and English notices, errors, and evaluation cases cover
+clear, unreadable, misleading, conflicting, safety-critical, label-detail, and
+exact-compatibility images and match deployed retention behavior.

@@ -208,6 +208,10 @@ Moderation results may block abusive or generally unsafe content, but moderation
 categories must not be translated into plumbing urgency. Conversely, an
 unflagged moderation result must not be interpreted as a safe plumbing case.
 
+Images must first pass the independent security and normalization pipeline in
+[PA-IMG-001](../security/plumbing-assistant-image-security.md). Image-derived or
+OCR text is untrusted evidence and cannot lower deterministic urgency.
+
 The application records only categorical moderation outcomes needed for abuse
 metrics, not moderated content or raw scores, unless a later privacy assessment
 explicitly approves them.
