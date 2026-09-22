@@ -18,6 +18,7 @@ cost controls, evaluation, observability, and a usable interface.
 ```text
 apps/           Deployable applications
 docs/           Cross-project requirements, architecture, and decisions
+evals/          Versioned evaluation contracts, fixtures, and public cases
 packages/       Reusable packages introduced only when genuinely shared
 ```
 

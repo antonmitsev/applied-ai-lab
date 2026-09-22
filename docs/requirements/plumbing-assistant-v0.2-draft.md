@@ -21,6 +21,7 @@ base document and this delta will be consolidated into a standalone v0.2.
 | --- | --- | --- |
 | `AUD-P0-001` | Added FR-13 and AC-11 through AC-17 | Approved for implementation |
 | `AUD-P0-002` | Added FR-14 and AC-18 through AC-24 | Domain-expert review required |
+| `AUD-P0-003` | Added FR-15 and AC-25 through AC-32 | Evaluation implementation required |
 
 ## Added functional requirements
 
@@ -96,6 +97,28 @@ case with adequate cited evidence.
 Moderation must be treated as an independent abuse/content-safety layer. An
 unflagged moderation result must not classify a plumbing case as safe, and a
 moderation category must not replace domain urgency.
+
+### FR-15 — Evaluation and release evidence
+
+The project must implement the repository-owned
+[Evaluation Plan](../evaluation/plumbing-assistant-evaluation-plan.md). Evaluation
+must cover the complete application behavior, not only isolated model output.
+
+The dataset must use the versioned case contract under
+`evals/plumbing-assistant/`, include paired Bulgarian and English cases, and meet
+the minimum reviewed coverage defined by PA-EVAL-001. Safety ground truth must be
+approved by qualified domain reviewers. Model-based graders may assist soft
+quality scoring but must not be the sole authority for safety gates.
+
+The repository-native runner, deterministic graders, thresholds, and report
+format are the source of release truth. A hosted evaluation service may be used
+as an optional backend but must not be required to interpret or reproduce the
+release decision.
+
+Every release report must bind results to immutable application, model, prompt,
+schema, safety-policy, source-manifest, and dataset versions. Any
+release-blocking safety failure makes the run fail regardless of aggregate
+quality scores.
 
 ## Added acceptance criteria
 
@@ -175,3 +198,48 @@ receive a second or recorded challenge review.
 
 The reviewed release set achieves 100% recall for critical hazards and renders
 zero procedural instructions for critical or out-of-scope cases.
+
+### AC-25 — Reviewed dataset size and coverage
+
+The release dataset contains at least 120 reviewed Bulgarian/English scenario
+pairs and satisfies every stratum and cross-cutting coverage constraint in
+PA-EVAL-001.
+
+### AC-26 — Deterministic grader pass
+
+All deterministic component, schema, post-validation, renderer, fail-closed, and
+action-precondition tests pass with zero failures.
+
+### AC-27 — Safety gates
+
+Every release-blocking safety gate in PA-EVAL-001 passes on every required
+repetition, including 100% critical recall and zero unsafe procedural guidance
+in critical or out-of-scope cases.
+
+### AC-28 — Quality and bilingual gates
+
+Every quality and bilingual metric meets its stated numerator, denominator, and
+threshold. Critical Bulgarian/English pairs agree on urgency, hazards, and
+action codes in 100% of executions.
+
+### AC-29 — Human and automated grader agreement
+
+The review record demonstrates at least 0.80 Cohen's kappa for independent human
+urgency and allowed-action labels before the release dataset is frozen. Any
+model-based grader is separately calibrated against human decisions.
+
+### AC-30 — Reproducible run manifest
+
+Every release evaluation records the application commit and immutable model,
+prompt, schema, policy, source, dataset, reasoning, and tool configuration.
+
+### AC-31 — Operational thresholds
+
+WP-03 replaces all `TBD` cost and latency gates with measured, owner-approved
+values. No public release gate may pass while those values remain undefined.
+
+### AC-32 — Continuous regression
+
+Relevant pull requests run targeted evaluation strata, and a release candidate
+runs the complete reviewed suite with a content-free `PASS` report committed or
+linked as release evidence.

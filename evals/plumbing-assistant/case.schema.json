@@ -1,0 +1,266 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/plumbing-assistant/eval-case.schema.json",
+  "title": "Plumbing Assistant Evaluation Case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "pair_id",
+    "language",
+    "title",
+    "provenance",
+    "review_status",
+    "category",
+    "tags",
+    "execution_layers",
+    "input",
+    "retrieval_fixture_ids",
+    "expected",
+    "review"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^PA-[A-Z]{2,5}-[0-9]{4}-(BG|EN)$"
+    },
+    "pair_id": {
+      "type": "string",
+      "pattern": "^PA-[A-Z]{2,5}-[0-9]{4}$"
+    },
+    "language": {
+      "enum": ["bg", "en"]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "reference", "redistributable"],
+      "properties": {
+        "kind": {
+          "enum": ["synthetic", "expert_authored", "licensed", "sanitized_opt_in"]
+        },
+        "reference": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "redistributable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "review_status": {
+      "enum": ["unreviewed", "development", "release", "retired"]
+    },
+    "category": {
+      "enum": ["critical", "caution", "routine", "mixed_scope", "out_of_scope", "adversarial"]
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 80
+      }
+    },
+    "execution_layers": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "enum": ["component", "model_fixture", "end_to_end", "live_canary", "human_review"]
+      }
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["messages", "safety_intake", "image_fixture_ids"],
+      "properties": {
+        "messages": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["role", "text"],
+            "properties": {
+              "role": {
+                "enum": ["user", "assistant"]
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              }
+            }
+          }
+        },
+        "safety_intake": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "active_uncontrolled_leak",
+            "water_near_electricity",
+            "scalding_or_steam",
+            "abnormal_pressure_signs",
+            "wastewater_exposure",
+            "gas_combustion_signal",
+            "building_common_system",
+            "sealed_or_metered_component",
+            "component_identified",
+            "isolation_known_and_accessible"
+          ],
+          "properties": {
+            "active_uncontrolled_leak": { "enum": ["yes", "no", "unknown"] },
+            "water_near_electricity": { "enum": ["yes", "no", "unknown"] },
+            "scalding_or_steam": { "enum": ["yes", "no", "unknown"] },
+            "abnormal_pressure_signs": { "enum": ["yes", "no", "unknown"] },
+            "wastewater_exposure": { "enum": ["yes", "no", "unknown"] },
+            "gas_combustion_signal": { "enum": ["yes", "no", "unknown"] },
+            "building_common_system": { "enum": ["yes", "no", "unknown"] },
+            "sealed_or_metered_component": { "enum": ["yes", "no", "unknown"] },
+            "component_identified": { "enum": ["yes", "no", "unknown"] },
+            "isolation_known_and_accessible": { "enum": ["yes", "no", "unknown"] }
+          }
+        },
+        "image_fixture_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "retrieval_fixture_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimum_urgency",
+        "scope",
+        "required_hazard_codes",
+        "forbidden_hazard_codes",
+        "required_action_codes",
+        "allowed_action_codes",
+        "forbidden_action_codes",
+        "generated_steps_allowed",
+        "professional_required",
+        "allowed_handoffs",
+        "required_source_tiers",
+        "forbidden_outcomes"
+      ],
+      "properties": {
+        "minimum_urgency": {
+          "enum": ["critical", "caution", "routine"]
+        },
+        "scope": {
+          "enum": ["in_scope", "mixed", "out_of_scope", "insufficient_evidence"]
+        },
+        "required_hazard_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^HZ-[0-9]{3}$"
+          }
+        },
+        "forbidden_hazard_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^HZ-[0-9]{3}$"
+          }
+        },
+        "required_action_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowed_action_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbidden_action_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "generated_steps_allowed": {
+          "type": "boolean"
+        },
+        "professional_required": {
+          "type": "boolean"
+        },
+        "allowed_handoffs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": ["none", "emergency_services", "building_manager", "plumber", "heating_specialist", "utility_operator"]
+          }
+        },
+        "required_source_tiers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": ["manufacturer", "authority", "professional", "secondary"]
+          }
+        },
+        "forbidden_outcomes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domain_reviewers", "language_reviewers", "reviewed_at", "notes"],
+      "properties": {
+        "domain_reviewers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "language_reviewers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "reviewed_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 1000
+        }
+      }
+    }
+  }
+}

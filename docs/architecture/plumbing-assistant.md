@@ -87,6 +87,14 @@ See the [Safety Policy and Hazard Matrix](../safety/plumbing-assistant-safety-po
 and the machine-readable
 [assistant response schema](../contracts/assistant-response.schema.json).
 
+## Evaluation boundary
+
+Evaluation covers deterministic components, model behavior with frozen retrieval
+fixtures, the deployed-equivalent end-to-end path, live-source canaries, and
+human review. Release reports bind results to immutable application, model,
+prompt, schema, safety-policy, source, and dataset versions. See
+[PA-EVAL-001](../evaluation/plumbing-assistant-evaluation-plan.md).
+
 ## Conversation state and retention
 
 The browser carries a bounded, HMAC-authenticated state envelope in

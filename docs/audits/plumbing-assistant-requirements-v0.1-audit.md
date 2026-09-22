@@ -105,7 +105,8 @@ Priorities mean:
 | --- | --- | --- |
 | `AUD-P0-001` | Ready for implementation | [ADR-0001](../decisions/0001-conversation-state-and-retention.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md), architecture update |
 | `AUD-P0-002` | Ready for expert review | [Safety Policy and Hazard Matrix](../safety/plumbing-assistant-safety-policy.md), [response schema](../contracts/assistant-response.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
-| `AUD-P0-003` through `AUD-P2-011` | Open | Address sequentially by priority |
+| `AUD-P0-003` | Ready for implementation and review | [Evaluation Plan](../evaluation/plumbing-assistant-evaluation-plan.md), [case schema](../../evals/plumbing-assistant/case.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
+| `AUD-P1-004` through `AUD-P2-011` | Open | Address sequentially by priority |
 
 ## 6. Detailed findings and remediation
 
@@ -189,6 +190,13 @@ schema; deterministic post-validator; expert sign-off; unit, integration, and
 adversarial tests proving that blocked instructions cannot be rendered.
 
 ### AUD-P0-003 — AI acceptance criteria are not measurable
+
+**Current status:** `Ready for implementation and review`. Metrics, formulas,
+dataset composition, grading ownership, repetition rules, release thresholds,
+and report evidence are specified in
+[PA-EVAL-001](../evaluation/plumbing-assistant-evaluation-plan.md). The finding
+remains open until the reviewed datasets, runner, CI, WP-03 operational limits,
+and a passing release report exist.
 
 **Evidence:** Section 10 lists dimensions to evaluate and acceptance criterion 10
 says that the evaluation set must pass. Terms such as “reliably” and
