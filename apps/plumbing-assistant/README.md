@@ -21,8 +21,10 @@ Requirements definition. No production implementation is present yet.
 ## Documentation
 
 - [Requirements v0.1](../../docs/requirements/plumbing-assistant-v0.1.md)
+- [Requirements v0.2 working draft](../../docs/requirements/plumbing-assistant-v0.2-draft.md)
 - [Architecture context](../../docs/architecture/plumbing-assistant.md)
 - [Requirements and repository audit](../../docs/audits/plumbing-assistant-requirements-v0.1-audit.md)
+- [ADR-0001: Conversation state and retention](../../docs/decisions/0001-conversation-state-and-retention.md)
 
 ## Safety notice
 

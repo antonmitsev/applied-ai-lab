@@ -99,9 +99,21 @@ Priorities mean:
 | `AUD-P2-010` | P2 | Requirements, components, tests, and metrics are not traceable | Does not block prototype |
 | `AUD-P2-011` | P2 | Repository license and operated-service terms are not distinguished | Blocks public service wording |
 
+### Remediation status
+
+| Finding | Status | Evidence |
+| --- | --- | --- |
+| `AUD-P0-001` | Ready for implementation | [ADR-0001](../decisions/0001-conversation-state-and-retention.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md), architecture update |
+| `AUD-P0-002` through `AUD-P2-011` | Open | Address sequentially by priority |
+
 ## 6. Detailed findings and remediation
 
 ### AUD-P0-001 — Conversation state and retention
+
+**Current status:** `Ready for implementation`. The design and requirements
+changes are approved. The finding remains open until the implementation,
+configuration review, privacy notices, and automated closure evidence required
+by [ADR-0001](../decisions/0001-conversation-state-and-retention.md) exist.
 
 **Evidence:** FR-09 says that conversation content is not stored by default, and
 section 9 distinguishes application retention from OpenAI retention. It does not

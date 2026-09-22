@@ -7,11 +7,13 @@ detailed design follow after the v0.1 requirements are accepted.
 Browser
   ├─ SSR landing page and bilingual chat UI
   ├─ signed anonymous visitor token
+  ├─ authenticated conversation envelope in sessionStorage
   └─ text and image input
           │
           ▼
 Node.js application
   ├─ input validation and safety pre-checks
+  ├─ conversation-envelope verification and reconstruction
   ├─ per-visitor and global budget enforcement
   ├─ conversation orchestration
   ├─ response/citation rendering contract
@@ -21,7 +23,8 @@ Node.js application
           │
           ▼
 OpenAI Responses API
-  ├─ model reasoning and structured output
+  ├─ stateless request with store:false
+  ├─ bounded visible history and structured output
   ├─ file_search ────────► Curated vector store
   └─ web_search ─────────► Current public sources
 
@@ -32,12 +35,17 @@ Local admin CLI
 ## Trust boundaries
 
 - The browser is untrusted. It never receives provider or administrative secrets.
+- Conversation state is client-carried but server-authenticated. Invalid,
+  expired, oversized, or wrongly bound state fails before retrieval or model use.
 - Visitor identity is pseudonymous and rate-limit oriented, not an assertion of
   real-world identity.
 - The Node.js application owns authorization, quotas, tool budgets, and output
   policy enforcement.
 - OpenAI is an external processor. Requests must follow the configured data and
   retention policy.
+- MVP model requests set `store: false` and use neither provider Conversation
+  objects nor `previous_response_id`. Provider abuse-monitoring and prompt-cache
+  retention remain separate platform concerns disclosed to users.
 - Web content is untrusted input. Retrieved pages cannot override application or
   safety instructions.
 - The usage store contains operational aggregates, not conversation content.
@@ -60,6 +68,17 @@ The application must not call the model when:
 - the visitor or global quota cannot be verified;
 - the global circuit breaker is open;
 - required input validation fails.
+- the supplied conversation envelope is invalid, expired, oversized, uses an
+  unsupported version, or is bound to another visitor.
 
 Normal procedural guidance must stop when risk or scope classification requires
 professional escalation.
+
+## Conversation state and retention
+
+The browser carries a bounded, HMAC-authenticated state envelope in
+`sessionStorage`. The Node.js application validates it and reconstructs the
+visible history for each stateless provider request. No conversation content is
+written to the usage store or logs. See
+[ADR-0001](../decisions/0001-conversation-state-and-retention.md) for the data
+flow, exact limits, retention matrix, and required verification.
