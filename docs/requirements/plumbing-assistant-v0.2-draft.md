@@ -22,6 +22,7 @@ base document and this delta will be consolidated into a standalone v0.2.
 | `AUD-P0-001` | Added FR-13 and AC-11 through AC-17 | Approved for implementation |
 | `AUD-P0-002` | Added FR-14 and AC-18 through AC-24 | Domain-expert review required |
 | `AUD-P0-003` | Added FR-15 and AC-25 through AC-32 | Evaluation implementation required |
+| `AUD-P1-004` | Added FR-16 and AC-33 through AC-40 | Approved for implementation; WP-03 values pending |
 
 ## Added functional requirements
 
@@ -119,6 +120,34 @@ Every release report must bind results to immutable application, model, prompt,
 schema, safety-policy, source-manifest, and dataset versions. Any
 release-blocking safety failure makes the run fail regardless of aggregate
 quality scores.
+
+### FR-16 — Atomic monetary quota accounting
+
+The application must enforce the
+[Atomic Cost and Quota Accounting ADR](../decisions/0002-atomic-cost-and-quota-accounting.md).
+The canonical authorization unit is integer `micro_usd`, calculated from a
+versioned, reviewed price catalogue. Request count, token count, and tool count
+must not substitute for the monetary visitor and global budget.
+
+Before any paid provider or tool call, the authoritative usage store must
+atomically reserve the request's bounded worst-case cost against both visitor
+and global UTC daily budgets and increment visitor concurrency. Charged plus
+reserved amounts are consumed for admission purposes.
+
+The backend must set hard input, image, output-token, per-tool, total-tool,
+timeout, and concurrency limits. Production startup must fail closed if limits,
+price data, recovery configuration, or provider-cap confirmation are absent or
+invalid.
+
+The configured visitor daily limit must be no greater than one twentieth of the
+global daily limit. This invariant is measured in `micro_usd` and validated at
+startup, so ten fully utilized visitors can consume at most half of the global
+daily budget.
+
+Successful requests reconcile to authoritative usage. Requests that may have
+reached the provider but have unknown usage settle at the full reservation.
+Actual cost above reservation opens the global circuit breaker and blocks new
+provider calls pending review.
 
 ## Added acceptance criteria
 
@@ -243,3 +272,47 @@ values. No public release gate may pass while those values remain undefined.
 Relevant pull requests run targeted evaluation strata, and a release candidate
 runs the complete reviewed suite with a content-free `PASS` report committed or
 linked as release evidence.
+
+### AC-33 — Integer monetary accounting
+
+Unit tests prove upward rounding and exact integer cost calculation for every
+enabled model, token class, image class, and retrieval tool.
+
+### AC-34 — Atomic admission
+
+Concurrent transaction tests prove that no two requests can reserve the same
+remaining visitor or global budget and that admission cannot exceed either
+limit.
+
+### AC-35 — Ten-visitor invariant
+
+Configuration and load tests prove that ten visitors exhausting their individual
+daily limits reserve or charge no more than 50% of the global daily limit.
+
+### AC-36 — Conservative uncertain outcome
+
+Timeout, disconnect, crash, and ambiguous provider-acceptance tests retain or
+settle the full reservation and never release unverified cost.
+
+### AC-37 — Reservation recovery
+
+Idempotent recovery tests settle stale reservations exactly once, repair
+concurrency, and preserve a ledger audit trail after process termination at each
+reservation lifecycle boundary.
+
+### AC-38 — Circuit breaker
+
+The shared circuit breaker blocks retrieval and provider calls when the global
+limit, storage-health, price-catalogue, or invariant conditions require it, and
+closing it does not erase accounting history.
+
+### AC-39 — Price and deployment verification
+
+Release evidence records the active price-catalogue version, source and review
+date, request caps, datastore conformance result, and verified provider-project
+monthly spend cap.
+
+### AC-40 — WP-03 calibration
+
+WP-03 replaces development placeholders with measured request and monetary
+limits. No placeholder is accepted in public production configuration.

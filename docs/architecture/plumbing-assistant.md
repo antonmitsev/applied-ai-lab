@@ -15,6 +15,7 @@ Node.js application
   ├─ input validation and deterministic safety pre-triage
   ├─ conversation-envelope verification and reconstruction
   ├─ per-visitor and global budget enforcement
+  ├─ atomic worst-case reservation and usage reconciliation
   ├─ conversation orchestration
   ├─ strict response-schema and policy validation
   ├─ server-owned safety-template rendering
@@ -94,6 +95,15 @@ fixtures, the deployed-equivalent end-to-end path, live-source canaries, and
 human review. Release reports bind results to immutable application, model,
 prompt, schema, safety-policy, source, and dataset versions. See
 [PA-EVAL-001](../evaluation/plumbing-assistant-evaluation-plan.md).
+
+## Cost admission boundary
+
+No paid provider or tool call begins before the authoritative usage store
+atomically reserves its bounded worst-case `micro_usd` cost against visitor and
+global UTC budgets. Reserved plus charged cost participates in all subsequent
+admission decisions. Actual usage reconciles the ledger, while ambiguous
+provider outcomes settle conservatively at the reserved maximum. See
+[ADR-0002](../decisions/0002-atomic-cost-and-quota-accounting.md).
 
 ## Conversation state and retention
 

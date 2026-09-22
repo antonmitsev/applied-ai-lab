@@ -25,6 +25,7 @@ Requirements definition. No production implementation is present yet.
 - [Architecture context](../../docs/architecture/plumbing-assistant.md)
 - [Requirements and repository audit](../../docs/audits/plumbing-assistant-requirements-v0.1-audit.md)
 - [ADR-0001: Conversation state and retention](../../docs/decisions/0001-conversation-state-and-retention.md)
+- [ADR-0002: Atomic cost and quota accounting](../../docs/decisions/0002-atomic-cost-and-quota-accounting.md)
 - [Safety Policy and Hazard Matrix](../../docs/safety/plumbing-assistant-safety-policy.md)
 - [Structured assistant response schema](../../docs/contracts/assistant-response.schema.json)
 - [Evaluation Plan](../../docs/evaluation/plumbing-assistant-evaluation-plan.md)

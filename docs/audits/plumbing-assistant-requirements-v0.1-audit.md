@@ -106,7 +106,8 @@ Priorities mean:
 | `AUD-P0-001` | Ready for implementation | [ADR-0001](../decisions/0001-conversation-state-and-retention.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md), architecture update |
 | `AUD-P0-002` | Ready for expert review | [Safety Policy and Hazard Matrix](../safety/plumbing-assistant-safety-policy.md), [response schema](../contracts/assistant-response.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P0-003` | Ready for implementation and review | [Evaluation Plan](../evaluation/plumbing-assistant-evaluation-plan.md), [case schema](../../evals/plumbing-assistant/case.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
-| `AUD-P1-004` through `AUD-P2-011` | Open | Address sequentially by priority |
+| `AUD-P1-004` | Ready for implementation and benchmark | [ADR-0002](../decisions/0002-atomic-cost-and-quota-accounting.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
+| `AUD-P1-005` through `AUD-P2-011` | Open | Address sequentially by priority |
 
 ## 6. Detailed findings and remediation
 
@@ -230,6 +231,13 @@ run the regression set before deployment.
 CI report, thresholds in release configuration, and a recorded passing baseline.
 
 ### AUD-P1-004 — Budget accounting and concurrency
+
+**Current status:** `Ready for implementation and benchmark`. Integer monetary
+units, versioned pricing, worst-case reservation, transactional admission,
+conservative reconciliation, recovery, and breaker behavior are specified in
+[ADR-0002](../decisions/0002-atomic-cost-and-quota-accounting.md). The finding
+remains open until the ledger, concurrency/crash tests, WP-03 limits, datastore
+conformance, and provider spend cap exist.
 
 **Evidence:** FR-08 defines layered limits and the ratio
 `per-visitor <= global / 20`, but “allowance” has no common unit. The requirements
