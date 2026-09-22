@@ -1,0 +1,224 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "language",
+    "scope",
+    "urgency",
+    "hazards",
+    "missing_safety_answers",
+    "known_facts",
+    "missing_information",
+    "plausible_causes",
+    "action_codes",
+    "generated_steps",
+    "professional_required",
+    "professional_handoff",
+    "source_refs",
+    "uncertainty"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "language": {
+      "enum": ["bg", "en"]
+    },
+    "scope": {
+      "enum": ["in_scope", "mixed", "out_of_scope", "insufficient_evidence"]
+    },
+    "urgency": {
+      "enum": ["critical", "caution", "routine"]
+    },
+    "hazards": {
+      "type": "array",
+      "maxItems": 13,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "evidence"],
+        "properties": {
+          "code": {
+            "enum": [
+              "HZ-001",
+              "HZ-002",
+              "HZ-003",
+              "HZ-004",
+              "HZ-005",
+              "HZ-006",
+              "HZ-007",
+              "HZ-008",
+              "HZ-009",
+              "HZ-010",
+              "HZ-011",
+              "HZ-012",
+              "HZ-013"
+            ]
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          }
+        }
+      }
+    },
+    "missing_safety_answers": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "active_uncontrolled_leak",
+          "water_near_electricity",
+          "scalding_or_steam",
+          "abnormal_pressure_signs",
+          "wastewater_exposure",
+          "gas_combustion_signal",
+          "building_common_system",
+          "sealed_or_metered_component",
+          "component_identified",
+          "isolation_known_and_accessible"
+        ]
+      }
+    },
+    "known_facts": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 400
+      }
+    },
+    "missing_information": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 300
+      }
+    },
+    "plausible_causes": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "confidence", "source_ids"],
+        "properties": {
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "confidence": {
+            "enum": ["low", "medium", "high"]
+          },
+          "source_ids": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        }
+      }
+    },
+    "action_codes": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "enum": [
+          "KEEP_DISTANCE",
+          "KEEP_OTHERS_AWAY",
+          "CALL_112_IMMEDIATE_DANGER",
+          "CONTACT_BUILDING_MANAGER",
+          "CONTACT_EMERGENCY_PLUMBER",
+          "CONTACT_HEATING_SPECIALIST",
+          "DO_NOT_TOUCH_ELECTRICAL",
+          "DO_NOT_MIX_CHEMICALS",
+          "CLOSE_KNOWN_ACCESSIBLE_WATER_VALVE",
+          "PLACE_CONTAINER_IF_SAFE",
+          "OBSERVE_WITHOUT_TOUCHING",
+          "READ_GAUGE_WITHOUT_ADJUSTING",
+          "PHOTOGRAPH_LABEL_FROM_SAFE_DISTANCE",
+          "CHECK_OTHER_FIXTURE_FLOW"
+        ]
+      }
+    },
+    "generated_steps": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["instruction", "source_ids"],
+        "properties": {
+          "instruction": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "source_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        }
+      }
+    },
+    "professional_required": {
+      "type": "boolean"
+    },
+    "professional_handoff": {
+      "enum": [
+        "none",
+        "emergency_services",
+        "building_manager",
+        "plumber",
+        "heating_specialist",
+        "utility_operator"
+      ]
+    },
+    "source_refs": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "url", "source_tier"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "source_tier": {
+            "enum": ["manufacturer", "authority", "professional", "secondary"]
+          }
+        }
+      }
+    },
+    "uncertainty": {
+      "type": "string",
+      "maxLength": 500
+    }
+  }
+}

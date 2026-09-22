@@ -104,7 +104,8 @@ Priorities mean:
 | Finding | Status | Evidence |
 | --- | --- | --- |
 | `AUD-P0-001` | Ready for implementation | [ADR-0001](../decisions/0001-conversation-state-and-retention.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md), architecture update |
-| `AUD-P0-002` through `AUD-P2-011` | Open | Address sequentially by priority |
+| `AUD-P0-002` | Ready for expert review | [Safety Policy and Hazard Matrix](../safety/plumbing-assistant-safety-policy.md), [response schema](../contracts/assistant-response.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
+| `AUD-P0-003` through `AUD-P2-011` | Open | Address sequentially by priority |
 
 ## 6. Detailed findings and remediation
 
@@ -146,6 +147,12 @@ configuration test proving the selected `store` behavior, and integration tests
 for expiration/deletion.
 
 ### AUD-P0-002 — Safety enforcement is not independent of generation
+
+**Current status:** `Ready for expert review`. The server-owned enforcement
+pipeline, preliminary hazard matrix, action registry, strict output contract,
+and acceptance criteria are specified in
+[PA-SAFE-001](../safety/plumbing-assistant-safety-policy.md). The finding remains
+open until domain review, implementation, and the required safety tests exist.
 
 **Evidence:** FR-03 and FR-04 define urgency and stop behavior, while the
 architecture mentions input pre-checks and output policy enforcement. No

@@ -12,11 +12,12 @@ Browser
           │
           ▼
 Node.js application
-  ├─ input validation and safety pre-checks
+  ├─ input validation and deterministic safety pre-triage
   ├─ conversation-envelope verification and reconstruction
   ├─ per-visitor and global budget enforcement
   ├─ conversation orchestration
-  ├─ response/citation rendering contract
+  ├─ strict response-schema and policy validation
+  ├─ server-owned safety-template rendering
   └─ aggregated usage accounting
           │
           ├──────────────► Persistent usage store
@@ -73,6 +74,18 @@ The application must not call the model when:
 
 Normal procedural guidance must stop when risk or scope classification requires
 professional escalation.
+
+## Safety enforcement
+
+Safety severity is monotonic: any stage may raise urgency, and no stage may
+lower an established floor. Explicit critical structured signals bypass model
+generation and render a reviewed fixed response. Other model outputs must match
+a strict schema and pass server-side hazard, action, source, and response-mode
+validation. Critical and caution paths cannot render generated procedural steps.
+
+See the [Safety Policy and Hazard Matrix](../safety/plumbing-assistant-safety-policy.md)
+and the machine-readable
+[assistant response schema](../contracts/assistant-response.schema.json).
 
 ## Conversation state and retention
 
