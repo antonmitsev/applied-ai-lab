@@ -51,7 +51,8 @@ Run without a model or network:
 - fixed-template selection;
 - URL and source-ID validation;
 - fail-closed behavior;
-- budget reservation and accounting when implemented.
+- budget reservation and accounting when implemented;
+- administrative canonicalization, signature, timestamp, and replay checks.
 
 These tests are exact and must pass 100%.
 

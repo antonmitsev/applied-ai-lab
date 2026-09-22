@@ -27,6 +27,7 @@ base document and this delta will be consolidated into a standalone v0.2.
 | `AUD-P1-006` | Added FR-18 and AC-50 through AC-59 | Approved design; WP-01 research and ingestion implementation pending |
 | `AUD-P1-007` | Added FR-19 and AC-60 through AC-70 | Approved design; implementation, privacy notice, and verification pending |
 | `AUD-P1-008` | Added FR-20 and AC-71 through AC-82; response schema v2 | Approved design; implementation and adversarial evaluation pending |
+| `AUD-P1-009` | Added FR-21 and AC-83 through AC-94 | Approved design; CLI/server implementation and interoperability tests pending |
 
 ## Added functional requirements
 
@@ -297,6 +298,38 @@ Raw plans, queries, results, excerpts, URLs, evidence bundles, and injection
 payloads are request-memory data and must not enter logs, traces, analytics,
 usage storage, conversation state, or backups. Injection detection is defense in
 depth and must not be represented as complete protection.
+
+### FR-21 — Versioned administrative request signing
+
+The read-only statistics endpoint and local CLI must implement
+[ADR-0004](../decisions/0004-administrative-request-signing.md) exactly. The
+MVP protocol is `PA-ADMIN-SIG-1` and supports only an empty-body
+`GET /api/admin/stats` request with one allowlisted `period` parameter.
+
+The Ed25519 signature must cover the protocol version, configured deployment
+audience, key ID, Unix timestamp, 32-byte one-time nonce, method, exact path,
+canonical query, empty content-type field, and SHA-256 digest of the zero-byte
+body. All canonical fields are ASCII, joined by LF with no trailing LF. Unicode,
+ambiguous paths, unsupported encodings, duplicate headers, bodies, and transfer
+framing must fail closed rather than be normalized.
+
+The server must reconstruct canonical bytes from the raw Node.js request target,
+verify a current audience/route-scoped public key and a timestamp within 90
+seconds, then atomically consume the nonce in a persistent shared store before
+returning statistics. The nonce record must survive restart and remain for five
+minutes. Exactly one concurrent use may succeed.
+
+Private keys must remain on administrator devices in PKCS#8 PEM or an
+OS-backed key store and must never enter the repository, browser, server,
+environment variables, command arguments, logs, or telemetry. The runtime key
+registry stores SPKI Ed25519 public keys only and supports pending, active,
+retiring, and revoked states with audience, route, and validity bounds.
+
+HTTPS and an explicit trusted-proxy boundary are mandatory. The endpoint must
+fail closed when clock health, the replay store, key registry, raw-target
+preservation, or authentication cannot be verified. Authentication failures use
+one generic response; successful statistics responses are non-cacheable and
+contain only the approved FR-12 aggregates.
 
 ## Added acceptance criteria
 
@@ -712,3 +745,85 @@ unapproved URLs/actions, or exfiltration.
 The release report binds application, prompt, assistant/evidence schemas,
 domain/source policy, adversarial corpus, detector, model, and tool configuration
 versions and contains no open retrieval circuit-breaker incident.
+
+### AC-83 — Canonical byte interoperability
+
+Independent CLI and server implementations reproduce every canonical byte,
+digest, and signature in the versioned language-independent test vector,
+including UTF-8, LF-only separators, the empty content-type line, and no trailing
+LF.
+
+### AC-84 — Narrow request contract
+
+Tests accept only uppercase `GET`, exact `/api/admin/stats`, one
+`period=(1d|7d|30d)` pair, zero body bytes, and permitted empty-body framing;
+all aliases, extra parameters, duplicate route parameters, bodies, and transfer
+encodings fail closed.
+
+### AC-85 — Header and encoding strictness
+
+Tests reject missing or repeated signing headers, coalescing ambiguity,
+non-grammar whitespace, controls, CR/LF, Unicode, invalid UTF-8, padded or
+non-canonical base64url, wrong decoded lengths, malformed timestamps, key IDs,
+and nonces.
+
+### AC-86 — Query canonicalization
+
+Cross-language tests prove the canonical query is the unchanged single ASCII
+`period` pair and reject reordered/extra or repeated pairs, literal plus, `%20`,
+percent escapes including unreserved forms, double encoding, delimiters, empty
+pairs, fragments, Unicode, and invalid escapes without framework-dependent
+normalization.
+
+### AC-87 — Signature and scope verification
+
+Tests prove pure Ed25519 verification over the reconstructed canonical request,
+reject every single-field or byte mutation, and reject wrong keys, algorithms,
+audiences, routes, deployments, and body digests.
+
+### AC-88 — Time-window enforcement
+
+Tests accept timestamp offsets of exactly `-90` and `+90` seconds, reject `-91`
+and `+91`, reject unhealthy clock state, and verify deployment clock offset is
+at most 30 seconds.
+
+### AC-89 — Atomic replay prevention
+
+Concurrent tests prove exactly one insertion and at most one success for a
+nonce. Replay remains rejected across process restart and instances; store
+outage fails closed; records remain for five minutes and are not consumed by an
+invalid signature.
+
+### AC-90 — Raw request and proxy boundary
+
+Deployment tests prove HTTPS enforcement, trusted forwarding, header
+multiplicity inspection, and byte-identical raw request targets from CLI through
+edge/proxy to the Node.js boundary. Unverified rewriting disables the endpoint.
+
+### AC-91 — Key lifecycle and separation
+
+Registry tests reject private, non-Ed25519, duplicate, test-vector, wrongly
+scoped, not-yet-valid, expired, pending, and revoked keys; accept only active or
+bounded retiring keys; and prove normal rotation and emergency revocation
+without clearing replay state.
+
+### AC-92 — CLI private-key handling
+
+The CLI never accepts private-key bytes in arguments or environment variables,
+checks local file ownership and mode, supports encrypted PKCS#8 or an OS-backed
+key, redacts errors, and does not leak keys, passphrases, canonical requests,
+nonces, or signatures to shell history or logs.
+
+### AC-93 — Generic failures and private responses
+
+All authentication failures return the same `401 admin_auth_failed` response;
+verification infrastructure failure returns `503 admin_auth_unavailable` with
+no fallback. CORS, caches, logs, traces, metrics, and errors expose neither
+authentication material nor statistics payloads.
+
+### AC-94 — Administrative release evidence
+
+The release report binds protocol, CLI, server, key-registry, proxy, replay-
+store, and test-vector versions and includes passing interoperability, tamper,
+concurrency/restart, rotation/revocation, redaction, rate-limit, and aggregate-
+field allowlist suites.

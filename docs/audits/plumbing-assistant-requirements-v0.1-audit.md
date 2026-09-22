@@ -111,7 +111,8 @@ Priorities mean:
 | `AUD-P1-006` | Ready for WP-01 execution and implementation | [PA-SOURCE-001](../sources/plumbing-assistant-source-governance.md), [source schema](../sources/source-manifest.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P1-007` | Ready for implementation and privacy review | [PA-IMG-001](../security/plumbing-assistant-image-security.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P1-008` | Ready for implementation and adversarial evaluation | [PA-RET-001](../security/plumbing-assistant-retrieval-security.md), [evidence schema](../contracts/retrieval-evidence.schema.json), [response schema](../contracts/assistant-response.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
-| `AUD-P1-009` through `AUD-P2-011` | Open | Address sequentially by priority |
+| `AUD-P1-009` | Ready for implementation and interoperability testing | [ADR-0004](../decisions/0004-administrative-request-signing.md), [test vectors](../contracts/admin-signing-test-vectors.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
+| `AUD-P2-010` through `AUD-P2-011` | Open | Address sequentially by priority |
 
 ## 6. Detailed findings and remediation
 
@@ -385,6 +386,17 @@ adversarial evaluation.
 
 ### AUD-P1-009 — Administrative request signing
 
+**Current status:** `Ready for implementation and interoperability testing`.
+The canonical bytes, narrow request contract, Ed25519/base64url encodings,
+audience and key scopes, clock window, persistent atomic replay protection,
+errors, rotation/revocation runbook, and verification matrix are specified in
+[ADR-0004](../decisions/0004-administrative-request-signing.md). A fixed
+language-independent vector is published in
+[admin-signing-test-vectors.json](../contracts/admin-signing-test-vectors.json).
+The finding remains open until independent CLI and server implementations pass
+the interoperability, tampering, concurrency, restart, proxy, and key-lifecycle
+tests.
+
 **Evidence:** FR-11 names Ed25519 and payload fields but does not define the exact
 bytes signed.
 
@@ -510,6 +522,15 @@ change:
 - [Safety in building agents](https://developers.openai.com/api/docs/guides/agent-builder-safety): untrusted-input isolation, structured outputs, tool approvals, and the limits of prompt-injection detection;
 - [Deep research safety risks](https://developers.openai.com/api/docs/guides/deep-research#safety-risks-and-mitigations): link validation, restricted tool access, and controls for web-connected workflows;
 - [Model selection](https://developers.openai.com/api/docs/guides/model-selection): define accuracy targets and an evaluation dataset before optimizing cost and latency.
+
+The administrative signing design also uses these primary standards and runtime
+references, checked on 2026-09-22:
+
+- [RFC 8032](https://www.rfc-editor.org/rfc/rfc8032.html): pure Ed25519 and test-vector conventions;
+- [RFC 4648](https://www.rfc-editor.org/rfc/rfc4648.html): canonical URL-safe base64 encoding;
+- [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986.html): percent encoding and URI normalization boundaries;
+- [RFC 9421](https://www.rfc-editor.org/rfc/rfc9421.html): HTTP signature coverage, timestamp, nonce, and replay considerations;
+- [Node.js Crypto](https://nodejs.org/api/crypto.html): Ed25519 `sign`/`verify` behavior with a `null` algorithm argument.
 
 ## 11. Final recommendation
 

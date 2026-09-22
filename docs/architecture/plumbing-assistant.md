@@ -50,7 +50,11 @@ Source build pipeline
   └─ verified staging index ──► atomic active-build switch
 
 Local admin CLI
-  └─ Ed25519-signed request ──► Read-only statistics endpoint
+  ├─ local PKCS#8 private key or OS-backed key
+  └─ PA-ADMIN-SIG-1 request ──► Read-only statistics endpoint
+                                      │
+                                      ├─► Public-key registry
+                                      └─► Atomic persistent nonce store
 ```
 
 ## Trust boundaries
@@ -175,3 +179,14 @@ visible history for each stateless provider request. No conversation content is
 written to the usage store or logs. See
 [ADR-0001](../decisions/0001-conversation-state-and-retention.md) for the data
 flow, exact limits, retention matrix, and required verification.
+
+## Administrative authentication boundary
+
+The administrative API accepts only the narrow, read-only, empty-body request
+defined by `PA-ADMIN-SIG-1`. The CLI signs canonical bytes with a local Ed25519
+private key; the server reconstructs the bytes from the raw request, verifies an
+audience- and route-scoped public key, enforces a 90-second clock window, and
+atomically consumes the nonce in persistent shared storage. Failure of HTTPS,
+trusted proxy/raw-target preservation, clock health, key registry, replay store,
+or verification returns no statistics. See
+[ADR-0004](../decisions/0004-administrative-request-signing.md).

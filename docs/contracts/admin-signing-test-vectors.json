@@ -1,0 +1,74 @@
+{
+  "schema_version": "1",
+  "protocol": "PA-ADMIN-SIG-1",
+  "test_only": true,
+  "warning": "Public RFC 8032 fixture material. Never register this key in any deployment.",
+  "positive_vectors": [
+    {
+      "id": "pa-admin-sig-1-rfc8032-key-01",
+      "algorithm": "Ed25519",
+      "private_seed_hex": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+      "private_key_pkcs8_der_base64": "MC4CAQAwBQYDK2VwBCIEIJ1hsZ3v/VpguoRK9JLsLMREScVpezJpGXA7rAMcrn9g",
+      "public_key_raw_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "public_key_spki_der_base64": "MCowBQYDK2VwAyEA11qYAYKxCrfVS/7TyWQHOg7hcvPapiMlrwIaaPcHURo=",
+      "request": {
+        "audience": "plumbing-assistant:production",
+        "key_id": "ak_test_rfc8032_01",
+        "timestamp": "1790078400",
+        "timestamp_utc": "2026-09-22T12:00:00.000Z",
+        "nonce_raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+        "nonce_base64url": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8",
+        "method": "GET",
+        "raw_path": "/api/admin/stats",
+        "raw_query": "period=7d",
+        "canonical_query": "period=7d",
+        "content_type": "",
+        "body_hex": "",
+        "body_sha256_hex": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "canonical_request_utf8": "PA-ADMIN-SIG-1\nplumbing-assistant:production\nak_test_rfc8032_01\n1790078400\nAAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8\nGET\n/api/admin/stats\nperiod=7d\n\ne3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "canonical_request_hex": "50412d41444d494e2d5349472d310a706c756d62696e672d617373697374616e743a70726f64756374696f6e0a616b5f746573745f726663383033325f30310a313739303037383430300a41414543417751464267634943516f4c4441304f4478415245684d554652595847426b61477877644868380a4745540a2f6170692f61646d696e2f73746174730a706572696f643d37640a0a65336230633434323938666331633134396166626634633839393666623932343237616534316534363439623933346361343935393931623738353262383535",
+      "canonical_request_sha256_hex": "b79edf010244259b443c894ba1ffe46d2b6f5c89fa24d2e9c3a5539e3cf9fcb1",
+      "signature_hex": "0a8f2f70fb20e9b843b027f2d48ad84b564f980b2d85b9347902ef7a642d57b5d7fd485d6e7a183a3f297000decf0a02d59657567e21439cc39b0d3c5a4a7d0a",
+      "signature_base64url": "Co8vcPsg6bhDsCfy1IrYS1ZPmAsthbk0eQLvemQtV7XX_UhdbnoYOj8pcADezwoC1ZZXVn4hQ5zDmw08Wkp9Cg"
+    }
+  ],
+  "negative_cases": [
+    {
+      "id": "changed-audience",
+      "mutation": "Replace production with staging without resigning",
+      "expected": "admin_auth_failed"
+    },
+    {
+      "id": "changed-period",
+      "mutation": "Replace period=7d with period=30d without resigning",
+      "expected": "admin_auth_failed"
+    },
+    {
+      "id": "trailing-lf",
+      "mutation": "Append one LF octet to the canonical request",
+      "expected": "admin_auth_failed"
+    },
+    {
+      "id": "crlf-lines",
+      "mutation": "Replace every LF separator with CRLF",
+      "expected": "admin_auth_failed"
+    },
+    {
+      "id": "padded-signature",
+      "mutation": "Append base64url padding to X-Admin-Signature",
+      "expected": "admin_auth_failed"
+    },
+    {
+      "id": "replayed-nonce",
+      "mutation": "Submit the same otherwise-valid request twice within the acceptance window",
+      "expected_first": "success",
+      "expected_second": "admin_auth_failed"
+    },
+    {
+      "id": "test-key-in-deployment",
+      "mutation": "Attempt to import this vector's public key into a runtime registry",
+      "expected": "registry_import_rejected"
+    }
+  ]
+}

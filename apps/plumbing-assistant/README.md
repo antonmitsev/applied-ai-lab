@@ -27,6 +27,8 @@ Requirements definition. No production implementation is present yet.
 - [ADR-0001: Conversation state and retention](../../docs/decisions/0001-conversation-state-and-retention.md)
 - [ADR-0002: Atomic cost and quota accounting](../../docs/decisions/0002-atomic-cost-and-quota-accounting.md)
 - [ADR-0003: Anonymous access and abuse controls](../../docs/decisions/0003-anonymous-access-and-abuse-controls.md)
+- [ADR-0004: Administrative request signing](../../docs/decisions/0004-administrative-request-signing.md)
+- [Administrative signing test vectors](../../docs/contracts/admin-signing-test-vectors.json)
 - [Safety Policy and Hazard Matrix](../../docs/safety/plumbing-assistant-safety-policy.md)
 - [Structured assistant response schema](../../docs/contracts/assistant-response.schema.json)
 - [Evaluation Plan](../../docs/evaluation/plumbing-assistant-evaluation-plan.md)

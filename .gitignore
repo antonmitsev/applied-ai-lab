@@ -19,6 +19,7 @@ coverage/
 logs/
 uploads/
 runtime-data/
+runtime-secrets/
 *.sqlite
 *.sqlite3
 *.db
