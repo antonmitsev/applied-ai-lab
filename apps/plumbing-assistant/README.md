@@ -22,6 +22,7 @@ Requirements definition. No production implementation is present yet.
 
 - [Requirements v0.1](../../docs/requirements/plumbing-assistant-v0.1.md)
 - [Architecture context](../../docs/architecture/plumbing-assistant.md)
+- [Requirements and repository audit](../../docs/audits/plumbing-assistant-requirements-v0.1-audit.md)
 
 ## Safety notice
 
