@@ -6,13 +6,16 @@ detailed design follow after the v0.1 requirements are accepted.
 ```text
 Browser
   ├─ SSR landing page and bilingual chat UI
-  ├─ signed anonymous visitor token
+  ├─ signed anonymous visitor token in a hardened cookie
+  ├─ in-memory CSRF value for same-origin API binding
   ├─ authenticated conversation envelope in sessionStorage
   └─ text and image input
           │
           ▼
 Node.js application
   ├─ input validation and deterministic safety pre-triage
+  ├─ visitor-token, origin, CSRF and proxy-boundary validation
+  ├─ short-lived keyed network abuse bucket
   ├─ conversation-envelope verification and reconstruction
   ├─ per-visitor and global budget enforcement
   ├─ atomic worst-case reservation and usage reconciliation
@@ -26,6 +29,7 @@ Node.js application
           ▼
 OpenAI Responses API
   ├─ stateless request with store:false
+  ├─ pseudonymous safety_identifier
   ├─ bounded visible history and structured output
   ├─ file_search ────────► Curated vector store
   └─ web_search ─────────► Current public sources
@@ -41,6 +45,8 @@ Local admin CLI
   expired, oversized, or wrongly bound state fails before retrieval or model use.
 - Visitor identity is pseudonymous and rate-limit oriented, not an assertion of
   real-world identity.
+- The required visitor token and same-origin proof are deterministic controls;
+  browser fingerprinting is neither required nor accepted as identity proof.
 - The Node.js application owns authorization, quotas, tool budgets, and output
   policy enforcement.
 - OpenAI is an external processor. Requests must follow the configured data and
@@ -67,9 +73,10 @@ Local admin CLI
 The application must not call the model when:
 
 - the visitor token is absent or invalid;
+- Origin, Fetch Metadata, CSRF, or trusted-proxy validation fails;
 - the visitor or global quota cannot be verified;
 - the global circuit breaker is open;
-- required input validation fails.
+- required input validation fails;
 - the supplied conversation envelope is invalid, expired, oversized, uses an
   unsupported version, or is bound to another visitor.
 
@@ -104,6 +111,17 @@ global UTC budgets. Reserved plus charged cost participates in all subsequent
 admission decisions. Actual usage reconciles the ledger, while ambiguous
 provider outcomes settle conservatively at the reserved maximum. See
 [ADR-0002](../decisions/0002-atomic-cost-and-quota-accounting.md).
+
+## Anonymous access boundary
+
+The server-issued visitor cookie is the primary quota key and is bound to
+same-origin API calls with Origin, Fetch Metadata, and an in-memory CSRF value.
+Short-lived keyed network buckets make trivial cookie reset less useful without
+persisting raw addresses or collecting high-entropy device fingerprints. Each
+OpenAI request carries a purpose-separated pseudonymous `safety_identifier`.
+The global atomic monetary limit remains authoritative if every anonymous signal
+is reset. See
+[ADR-0003](../decisions/0003-anonymous-access-and-abuse-controls.md).
 
 ## Conversation state and retention
 

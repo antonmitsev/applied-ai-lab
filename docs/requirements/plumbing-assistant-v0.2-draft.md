@@ -23,6 +23,7 @@ base document and this delta will be consolidated into a standalone v0.2.
 | `AUD-P0-002` | Added FR-14 and AC-18 through AC-24 | Domain-expert review required |
 | `AUD-P0-003` | Added FR-15 and AC-25 through AC-32 | Evaluation implementation required |
 | `AUD-P1-004` | Added FR-16 and AC-33 through AC-40 | Approved for implementation; WP-03 values pending |
+| `AUD-P1-005` | Added FR-17 and AC-41 through AC-49 | Approved for implementation; privacy review and WP-03 values pending |
 
 ## Added functional requirements
 
@@ -148,6 +149,41 @@ Successful requests reconcile to authoritative usage. Requests that may have
 reached the provider but have unknown usage settle at the full reservation.
 Actual cost above reservation opens the global circuit breaker and blocks new
 provider calls pending review.
+
+### FR-17 — Anonymous access and abuse controls
+
+The application must implement
+[ADR-0003](../decisions/0003-anonymous-access-and-abuse-controls.md).
+Anonymous access must use layered, privacy-minimized controls and must not claim
+to identify a unique person.
+
+The server must issue a signed, expiring visitor token with at least 128 bits of
+random entropy in an `HttpOnly`, `Secure`, `SameSite=Strict`, narrowly scoped
+cookie. Every chat request must also pass exact same-origin, Fetch Metadata,
+CSRF-header, content-type, size, and schema validation before retrieval or a
+paid provider call. Token issuance must be rate limited.
+
+The visitor token is the primary quota key. A short-lived daily keyed network
+bucket may supplement it, using an IPv4 `/24` or IPv6 `/56` prefix and no raw
+address persistence. Supplemental signals are pseudonymous, not anonymous, and
+must expire within 48 hours. High-entropy browser or device fingerprinting is
+prohibited in the MVP.
+
+Every OpenAI model request must include a stable, non-PII `safety_identifier`
+derived from the visitor ID using a purpose-specific keyed hash. It must be
+distinct from prompt-cache identifiers and conform to the provider length
+limit.
+
+Per-visitor, network, concurrency, global monetary, request-shape, and provider
+project controls must compose. The network daily monetary limit must not exceed
+one quarter of the global daily budget. The global atomic budget remains the
+absolute application cost boundary when anonymous signals are reset or absent.
+
+Production must fail closed before retrieval or provider use when mandatory
+token, same-origin, proxy-trust, key, quota-store, or budget checks cannot be
+verified. Failure of an optional coarse client signal alone must not deny
+access. Bulgarian and English notices must accurately describe the signals,
+purposes, recipients, and retention.
 
 ## Added acceptance criteria
 
@@ -316,3 +352,53 @@ monthly spend cap.
 
 WP-03 replaces development placeholders with measured request and monetary
 limits. No placeholder is accepted in public production configuration.
+
+### AC-41 — Visitor-token security
+
+Automated tests prove token entropy, signing, tamper rejection, expiry, cookie
+attributes, key rotation, and absence of IP or browser attributes in the token.
+
+### AC-42 — Same-origin paid path
+
+Integration tests prove invalid token, Origin, Fetch Metadata, CSRF header,
+content type, body size, or input schema is rejected before retrieval or any
+OpenAI call.
+
+### AC-43 — Reset-resistant layering
+
+Reset and parallel-client tests prove deleting a visitor token does not bypass
+network, concurrency, global atomic budget, or circuit-breaker controls.
+
+### AC-44 — Signal minimization and retention
+
+Log, trace, metric, ledger, backup, and expiry tests prove raw connection
+addresses, raw tokens, visitor IDs, and high-entropy fingerprints are not
+retained and daily buckets are unlinkable after at most 48 hours.
+
+### AC-45 — OpenAI safety identifier
+
+SDK-boundary tests prove every model request carries a stable, purpose-separated,
+non-PII `safety_identifier` within the provider length limit.
+
+### AC-46 — Trusted proxy boundary
+
+Deployment and integration tests prove only explicitly trusted proxies can
+supply client-address headers and ambiguous proxy configuration fails closed.
+
+### AC-47 — No mandatory fingerprint
+
+The chat works with permitted browser privacy protections when the visitor token
+and same-origin proofs are valid. No canvas, WebGL, audio, font, plugin, device,
+sensor, or cross-site identifier is collected.
+
+### AC-48 — Bounded distributed-abuse outcome
+
+Load tests prove one network cannot be configured to consume more than 25% of
+the global daily budget and distributed traffic cannot exceed the global atomic
+admission budget, although it may exhaust remaining daily availability.
+
+### AC-49 — Privacy and threshold release evidence
+
+WP-03 records measured thresholds and shared-network false-positive results.
+Public release requires reviewed Bulgarian and English notices plus a recorded
+privacy/legal review of the deployed behavior.

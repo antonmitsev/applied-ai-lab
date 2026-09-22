@@ -107,7 +107,8 @@ Priorities mean:
 | `AUD-P0-002` | Ready for expert review | [Safety Policy and Hazard Matrix](../safety/plumbing-assistant-safety-policy.md), [response schema](../contracts/assistant-response.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P0-003` | Ready for implementation and review | [Evaluation Plan](../evaluation/plumbing-assistant-evaluation-plan.md), [case schema](../../evals/plumbing-assistant/case.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P1-004` | Ready for implementation and benchmark | [ADR-0002](../decisions/0002-atomic-cost-and-quota-accounting.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
-| `AUD-P1-005` through `AUD-P2-011` | Open | Address sequentially by priority |
+| `AUD-P1-005` | Ready for implementation and privacy review | [ADR-0003](../decisions/0003-anonymous-access-and-abuse-controls.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
+| `AUD-P1-006` through `AUD-P2-011` | Open | Address sequentially by priority |
 
 ## 6. Detailed findings and remediation
 
@@ -264,6 +265,12 @@ reservation tests under concurrency, failure-recovery tests, and a load-test
 report proving the ten-user invariant.
 
 ### AUD-P1-005 — Anonymous identity and abuse threat model
+
+**Current status:** `Ready for implementation and privacy review`. The design
+and requirements changes are approved. The finding remains open until the
+implementation, WP-03 threshold calibration, bilingual notices, privacy/legal
+review, and automated closure evidence required by
+[ADR-0003](../decisions/0003-anonymous-access-and-abuse-controls.md) exist.
 
 **Evidence:** FR-07 correctly treats the signed visitor token as a quota key, but
 an anonymous visitor can clear cookies or use another client. Supplemental
