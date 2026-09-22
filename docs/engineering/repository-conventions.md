@@ -29,6 +29,8 @@ top-level collections:
 | `docs/safety/`, `docs/security/` | Enforceable safety and security specifications |
 | `docs/contracts/` | Machine-readable schemas and interoperability vectors |
 | `docs/evaluation/` | Evaluation policy, metrics, thresholds, and release rules |
+| `docs/planning/` | Measured scope inventory and reusable estimation model |
+| `docs/service/` | Versioned bilingual operated-service copy and public route contract |
 | `docs/sources/` | Source governance, ingestion, and index contracts |
 | `docs/traceability/` | Requirement-to-design/test/evidence mappings |
 | `evals/plumbing-assistant/` | Portable evaluation schemas, fixtures, and public cases |

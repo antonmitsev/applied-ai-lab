@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "inventory_id": "PA-SCOPE-001",
+  "as_of": "2026-09-22",
+  "requirement_totals": {
+    "FR": 23,
+    "AC": 112
+  },
+  "categories": [
+    {
+      "id": "product_ux",
+      "label": "Product and UX",
+      "fr": ["FR-01–FR-03", "FR-06"],
+      "ac": ["AC-01"]
+    },
+    {
+      "id": "ai_retrieval_sources",
+      "label": "AI, retrieval, and sources",
+      "fr": ["FR-05", "FR-18", "FR-20"],
+      "ac": ["AC-02", "AC-50–AC-59", "AC-71–AC-82"]
+    },
+    {
+      "id": "safety",
+      "label": "Domain safety",
+      "fr": ["FR-04", "FR-14"],
+      "ac": ["AC-03", "AC-18–AC-24"]
+    },
+    {
+      "id": "security_privacy_data",
+      "label": "Security, privacy, and data lifecycle",
+      "fr": ["FR-07", "FR-09", "FR-13", "FR-17", "FR-19"],
+      "ac": ["AC-04", "AC-11–AC-17", "AC-41–AC-49", "AC-60–AC-70"]
+    },
+    {
+      "id": "cost_abuse_infra",
+      "label": "Cost controls, abuse, and infrastructure",
+      "fr": ["FR-08", "FR-16"],
+      "ac": ["AC-05–AC-06", "AC-33–AC-40"]
+    },
+    {
+      "id": "administration",
+      "label": "Administration and signed statistics",
+      "fr": ["FR-10–FR-12", "FR-21"],
+      "ac": ["AC-07–AC-08", "AC-83–AC-94"]
+    },
+    {
+      "id": "evaluation_quality",
+      "label": "Evaluation and engineering quality",
+      "fr": ["FR-15", "FR-22"],
+      "ac": ["AC-09–AC-10", "AC-25–AC-32", "AC-95–AC-101"]
+    },
+    {
+      "id": "service_legal",
+      "label": "Operated-service terms and public disclosures",
+      "fr": ["FR-23"],
+      "ac": ["AC-102–AC-112"]
+    }
+  ]
+}

@@ -38,6 +38,13 @@ CI expansion rules are defined in
 [PA-REPO-001](docs/engineering/repository-conventions.md). Script behavior and
 function references are documented in [scripts/README.md](scripts/README.md).
 
+For an executive count of functional requirements, acceptance criteria,
+security/privacy/legal artifacts, and a reusable pricing method, see the
+[Scope Inventory and Estimation Ledger](docs/planning/plumbing-assistant-scope-inventory.md).
+The required bilingual Terms, Privacy, Cookies, Safety, and Sources routes,
+landing-page links, AI notice, and copyright footer are defined by
+[PA-SERVICE-001](docs/service/README.md).
+
 ## Security
 
 Never commit API keys, signing keys, user uploads, usage data, or runtime logs.

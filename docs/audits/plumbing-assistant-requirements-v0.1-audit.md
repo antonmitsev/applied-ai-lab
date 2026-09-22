@@ -113,7 +113,7 @@ Priorities mean:
 | `AUD-P1-008` | Ready for implementation and adversarial evaluation | [PA-RET-001](../security/plumbing-assistant-retrieval-security.md), [evidence schema](../contracts/retrieval-evidence.schema.json), [response schema](../contracts/assistant-response.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P1-009` | Ready for implementation and interoperability testing | [ADR-0004](../decisions/0004-administrative-request-signing.md), [test vectors](../contracts/admin-signing-test-vectors.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P2-010` | Base controls implemented; application evidence pending | [PA-TRACE-001](../traceability/plumbing-assistant.md), [PA-REPO-001](../engineering/repository-conventions.md), [validator](../../scripts/validate-repository.mjs), [quality workflow](../../.github/workflows/quality.yml) |
-| `AUD-P2-011` | Open | Address next |
+| `AUD-P2-011` | Source package ready; UI and qualified reviews pending | [PA-SERVICE-001](../service/README.md), [route manifest](../service/public-pages.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 
 ## 6. Detailed findings and remediation
 
@@ -448,6 +448,17 @@ convention, and protected required CI checks.
 
 ### AUD-P2-011 — License versus operated-service terms
 
+**Current status:** `Source package ready; UI and qualified reviews pending`.
+PA-SERVICE-001 now separates the 0BSD code license from versioned Bulgarian and
+English Terms, Privacy, Cookies, Safety, and Source pages. Its route manifest
+defines the SSR routes, first-interaction AI notice, persistent footer links,
+copyright/author link, source-code/license links, and necessary-only storage
+profile. FR-23 and AC-102 through AC-112 make the rendered UI, deployment
+parity, accessibility tests, and review evidence explicit. The finding remains
+open until the application renders the routes and footer, actual processors and
+transfers replace the documented pre-publication placeholders, qualified
+legal/privacy and domain reviews are recorded, and browser tests pass.
+
 **Evidence:** The repository uses the permissive 0BSD license and correctly
 disclaims software warranty and liability. The product will also operate a
 public information service.
@@ -550,6 +561,14 @@ sources on 2026-09-22:
 - [checkout releases](https://github.com/actions/checkout/releases) and [setup-node releases](https://github.com/actions/setup-node/releases): reviewed immutable commits used by CI;
 - [dependency review action](https://github.com/actions/dependency-review-action): pull-request dependency diff and vulnerability enforcement;
 - [push protection](https://docs.github.com/en/code-security/concepts/secret-security/push-protection): repository-hosted prevention of supported credential pushes.
+
+Service transparency and privacy source copy was checked on 2026-09-22 against:
+
+- [GDPR principles and notice content](https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en): transparency, purpose limitation, minimisation, retention, recipients, transfers, and data-subject rights;
+- [GDPR Articles 12–14](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32016R0679): concise notice and information requirements;
+- [EU AI Act Article 50 transparency guidance](https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act): clear disclosure from the start of a direct AI interaction;
+- [OpenAI API data controls](https://developers.openai.com/api/docs/guides/your-data): training opt-in, endpoint application state, abuse-monitoring retention, prompt caching, and image/file limits;
+- [Bulgarian Commission for Personal Data Protection](https://cpdp.bg/): supervisory-authority contact and complaint path.
 
 ## 11. Final recommendation
 

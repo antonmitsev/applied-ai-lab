@@ -178,6 +178,120 @@ async function validateTraceability() {
   return { expected: expected.size, mapped: mapped.size };
 }
 
+/** Validates the bilingual service-page manifest, source copy, and footer contract. */
+async function validatePublicDisclosures() {
+  const directory = path.join(root, "docs/service");
+  const manifestFile = path.join(directory, "public-pages.json");
+  const manifest = JSON.parse(await readFile(manifestFile, "utf8"));
+  const requiredIds = ["terms", "privacy", "cookies", "safety", "sources"];
+  const documents = manifest.documents ?? [];
+  const ids = documents.map((document) => document.id);
+  const routes = new Set();
+  const sources = new Set();
+
+  if (manifest.specification_id !== "PA-SERVICE-001") fail("Public disclosure specification ID is invalid");
+  if (manifest.status !== "pre-publication") fail("Public disclosure manifest must remain pre-publication until release review");
+  if (!/^\d+\.\d+\.\d+(?:-[a-z0-9.-]+)?$/i.test(manifest.content_version ?? "")) fail("Public disclosure content version is invalid");
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(manifest.last_updated ?? "")) fail("Public disclosure update date is invalid");
+  if (JSON.stringify(ids) !== JSON.stringify(requiredIds)) fail("Public disclosure document set or order is incomplete");
+  if (new Set(ids).size !== ids.length) fail("Public disclosure document IDs must be unique");
+
+  const [year, month, day] = (manifest.last_updated ?? "").split("-");
+  const englishMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const expectedDate = {
+    bg: `${day}.${month}.${year} г.`,
+    en: `${Number(day)} ${englishMonths[Number(month) - 1]} ${year}`,
+  };
+
+  for (const document of documents) {
+    for (const locale of ["bg", "en"]) {
+      const entry = document[locale];
+      if (!entry || typeof entry.route !== "string" || typeof entry.source !== "string" || typeof entry.title !== "string") {
+        fail(`Public disclosure ${document.id}:${locale} is incomplete`);
+        continue;
+      }
+      if (routes.has(entry.route)) fail(`Duplicate public disclosure route ${entry.route}`);
+      routes.add(entry.route);
+      if (locale === "bg" && entry.route.startsWith("/en/")) fail(`Bulgarian route uses English prefix: ${entry.route}`);
+      if (locale === "en" && !entry.route.startsWith("/en/")) fail(`English route lacks /en prefix: ${entry.route}`);
+
+      const source = path.resolve(directory, entry.source);
+      if (!source.startsWith(`${directory}${path.sep}`)) {
+        fail(`Public disclosure source escapes its directory: ${entry.source}`);
+        continue;
+      }
+      if (sources.has(source)) fail(`Public disclosure source is reused: ${entry.source}`);
+      sources.add(source);
+      try {
+        const content = await readFile(source, "utf8");
+        if (!content.startsWith(`# ${entry.title}\n`)) fail(`${relative(source)} title does not match its manifest entry`);
+        if (!content.includes(`\`${manifest.content_version}\``)) fail(`${relative(source)} does not display the manifest content version`);
+        if (!content.includes(expectedDate[locale])) fail(`${relative(source)} does not display the manifest update date`);
+        if (!content.includes("mailto:me@tonymitsev.com")) fail(`${relative(source)} lacks the correction/contact path`);
+      } catch (error) {
+        fail(`Public disclosure source ${entry.source} cannot be read: ${error.message}`);
+      }
+    }
+  }
+
+  if (JSON.stringify(manifest.footer?.required_document_ids) !== JSON.stringify(requiredIds)) fail("Footer disclosure links are incomplete");
+  if (manifest.footer?.copyright?.text !== "© 2026 Anton Mitsev" || manifest.footer?.copyright?.href !== "https://tonymitsev.com") fail("Footer copyright text or link is invalid");
+  if (manifest.footer?.contact?.href !== "mailto:me@tonymitsev.com") fail("Footer contact link is invalid");
+  if (manifest.footer?.source_code?.href !== "https://github.com/antonmitsev/applied-ai-lab") fail("Footer source-code link is invalid");
+  if (manifest.footer?.license?.label !== "0BSD" || !manifest.footer?.license?.href?.endsWith("/blob/main/LICENSE")) fail("Footer 0BSD link is invalid");
+  if (manifest.storage_profile?.mode !== "necessary-only" || manifest.storage_profile?.nonessential_enabled !== false || manifest.storage_profile?.consent_required_before_nonessential !== true) fail("Public storage/consent profile is invalid");
+  for (const locale of ["bg", "en"]) {
+    if ((manifest.pre_chat_notice?.[locale]?.length ?? 0) < 100) fail(`Pre-chat AI/safety notice is incomplete for ${locale}`);
+  }
+
+  return documents.length * 2;
+}
+
+/** Verifies unique primary-category allocation for every active FR and AC. */
+async function validateScopeInventory() {
+  const file = path.join(root, "docs/planning/plumbing-assistant-scope-inventory.json");
+  const inventory = JSON.parse(await readFile(file, "utf8"));
+  const baseline = await readFile(path.join(root, "docs/requirements/plumbing-assistant-v0.1.md"), "utf8");
+  const delta = await readFile(path.join(root, "docs/requirements/plumbing-assistant-v0.2-draft.md"), "utf8");
+  const expected = { FR: new Set(), AC: new Set() };
+  const allocated = { FR: new Set(), AC: new Set() };
+
+  for (const document of [baseline, delta]) {
+    for (const match of document.matchAll(/^### (FR-\d{2})\b/gm)) expected.FR.add(match[1]);
+  }
+  for (let number = 1; number <= 10; number += 1) expected.AC.add(`AC-${String(number).padStart(2, "0")}`);
+  for (const match of delta.matchAll(/^### (AC-\d{2,3})\b/gm)) expected.AC.add(match[1]);
+
+  if (inventory.inventory_id !== "PA-SCOPE-001") fail("Scope inventory ID is invalid");
+  const categoryIds = new Set();
+  for (const category of inventory.categories ?? []) {
+    if (!category.id || categoryIds.has(category.id)) fail(`Scope inventory category ID is missing or duplicated: ${category.id ?? "unknown"}`);
+    categoryIds.add(category.id);
+    for (const prefix of ["FR", "AC"]) {
+      const field = prefix.toLowerCase();
+      for (const range of category[field] ?? []) {
+        const ids = expandTraceRange(range);
+        if (ids.length === 0 || ids.some((id) => !id.startsWith(`${prefix}-`))) {
+          fail(`Scope inventory range is invalid for ${category.id}:${field}: ${range}`);
+          continue;
+        }
+        for (const id of ids) {
+          if (allocated[prefix].has(id)) fail(`Scope inventory allocates ${id} more than once`);
+          allocated[prefix].add(id);
+        }
+      }
+    }
+  }
+
+  for (const prefix of ["FR", "AC"]) {
+    if (inventory.requirement_totals?.[prefix] !== expected[prefix].size) fail(`Scope inventory ${prefix} total is stale`);
+    for (const id of expected[prefix]) if (!allocated[prefix].has(id)) fail(`Scope inventory does not allocate ${id}`);
+    for (const id of allocated[prefix]) if (!expected[prefix].has(id)) fail(`Scope inventory allocates inactive ${id}`);
+  }
+
+  return { categories: categoryIds.size, fr: allocated.FR.size, ac: allocated.AC.size };
+}
+
 /** Reproduces and verifies every published PA-ADMIN-SIG-1 positive vector. */
 async function validateAdminSigningVector() {
   const file = path.join(root, "docs/contracts/admin-signing-test-vectors.json");
@@ -301,6 +415,8 @@ const files = await walk(root);
 const json = await validateJson(files);
 const markdownCount = await validateMarkdownLinks(files);
 const traceability = await validateTraceability();
+const disclosurePages = await validatePublicDisclosures();
+const scopeInventory = await validateScopeInventory();
 const signingVectors = await validateAdminSigningVector();
 const documentedScripts = await validateScriptDocumentation(files);
 await validateRepositoryHygiene(files);
@@ -313,6 +429,8 @@ if (failures.length > 0) {
   console.log(`JSON: ${json.jsonCount} files; JSONL: ${json.jsonlCount} records`);
   console.log(`Markdown links: ${markdownCount} files`);
   console.log(`Traceability: ${traceability.mapped}/${traceability.expected} requirement IDs`);
+  console.log(`Public disclosure source pages: ${disclosurePages}`);
+  console.log(`Scope inventory: ${scopeInventory.fr} FR; ${scopeInventory.ac} AC; ${scopeInventory.categories} categories`);
   console.log(`Administrative signing vectors: ${signingVectors}`);
   console.log(`Documented maintenance scripts: ${documentedScripts}`);
   console.log("Repository hygiene: PASS");

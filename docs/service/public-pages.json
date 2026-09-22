@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "specification_id": "PA-SERVICE-001",
+  "content_version": "0.1.0-draft",
+  "last_updated": "2026-09-22",
+  "status": "pre-publication",
+  "default_locale": "bg",
+  "landing_routes": {
+    "bg": "/",
+    "en": "/en"
+  },
+  "documents": [
+    {
+      "id": "terms",
+      "bg": { "route": "/terms", "source": "terms.bg.md", "title": "Условия за ползване" },
+      "en": { "route": "/en/terms", "source": "terms.en.md", "title": "Terms of Use" }
+    },
+    {
+      "id": "privacy",
+      "bg": { "route": "/privacy", "source": "privacy.bg.md", "title": "Политика за поверителност" },
+      "en": { "route": "/en/privacy", "source": "privacy.en.md", "title": "Privacy Notice" }
+    },
+    {
+      "id": "cookies",
+      "bg": { "route": "/cookies", "source": "cookies.bg.md", "title": "Политика за бисквитките" },
+      "en": { "route": "/en/cookies", "source": "cookies.en.md", "title": "Cookie Policy" }
+    },
+    {
+      "id": "safety",
+      "bg": { "route": "/safety", "source": "safety.bg.md", "title": "Безопасност и ограничения" },
+      "en": { "route": "/en/safety", "source": "safety.en.md", "title": "Safety and Limitations" }
+    },
+    {
+      "id": "sources",
+      "bg": { "route": "/sources", "source": "sources.bg.md", "title": "Политика за източниците" },
+      "en": { "route": "/en/sources", "source": "sources.en.md", "title": "Source Policy" }
+    }
+  ],
+  "pre_chat_notice": {
+    "bg": "Разговаряте с AI помощник, не с човек. Той може да греши и не заменя квалифициран специалист. При непосредствен риск прекратете действията и потърсете подходяща спешна помощ.",
+    "en": "You are interacting with an AI assistant, not a person. It can be wrong and does not replace a qualified professional. If there is immediate danger, stop and seek appropriate emergency help."
+  },
+  "footer": {
+    "required_document_ids": ["terms", "privacy", "cookies", "safety", "sources"],
+    "copyright": {
+      "text": "© 2026 Anton Mitsev",
+      "href": "https://tonymitsev.com"
+    },
+    "contact": {
+      "href": "mailto:me@tonymitsev.com"
+    },
+    "source_code": {
+      "href": "https://github.com/antonmitsev/applied-ai-lab"
+    },
+    "license": {
+      "label": "0BSD",
+      "href": "https://github.com/antonmitsev/applied-ai-lab/blob/main/LICENSE"
+    }
+  },
+  "storage_profile": {
+    "mode": "necessary-only",
+    "nonessential_enabled": false,
+    "consent_required_before_nonessential": true
+  }
+}

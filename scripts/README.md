@@ -32,6 +32,9 @@ OpenAI key, deployment secret, or private test data.
 - document-local JSON `$ref` pointers resolve;
 - relative Markdown links point to existing files/directories;
 - every active FR/AC is mapped exactly once in PA-TRACE-001;
+- every active FR/AC has exactly one primary category in PA-SCOPE-001;
+- the bilingual public-service source pages, routes, footer, copyright, AI
+  notice, and cookie profile match PA-SERVICE-001;
 - the published `PA-ADMIN-SIG-1` vector reproduces and verifies byte for byte;
 - every maintenance script and top-level function has README and inline JSDoc
   documentation;
@@ -54,6 +57,8 @@ replace GitHub secret scanning, push protection, or human review.
 | `validateMarkdownLinks(files)` | Extracts Markdown inline-link destinations, skips external/anchor links, and verifies relative targets with filesystem metadata reads. |
 | `expandTraceRange(label)` | Converts one ID or a same-prefix inclusive range such as `AC-11–AC-17` into individual normalized IDs; returns an empty array for malformed ranges. |
 | `validateTraceability()` | Builds the active ID set from requirements, expands matrix rows, and records missing, duplicate, unknown, malformed, or incomplete mappings. |
+| `validatePublicDisclosures()` | Validates the five Bulgarian/English service-document pairs, unique routes, version/date metadata, contact path, footer/copyright/repository links, pre-chat notices, and necessary-only storage profile; read-only. |
+| `validateScopeInventory()` | Expands the planning ledger's FR/AC ranges and proves every active requirement has one and only one primary estimation category; read-only. |
 | `validateAdminSigningVector()` | Reconstructs canonical bytes, hashes, keys, nonce, and deterministic Ed25519 signature from the public test fixture; never accesses a runtime key. |
 | `validateScriptDocumentation(files)` | Discovers JavaScript maintenance scripts and records missing per-script README sections, missing function-reference rows, or missing adjacent JSDoc comments. |
 | `validateRepositoryHygiene(files)` | Checks paths and text content for prohibited runtime artifacts and selected high-confidence credential forms; reads files but never deletes or rewrites them. |

@@ -29,6 +29,7 @@ base document and this delta will be consolidated into a standalone v0.2.
 | `AUD-P1-008` | Added FR-20 and AC-71 through AC-82; response schema v2 | Approved design; implementation and adversarial evaluation pending |
 | `AUD-P1-009` | Added FR-21 and AC-83 through AC-94 | Approved design; CLI/server implementation and interoperability tests pending |
 | `AUD-P2-010` | Added FR-22 and AC-95 through AC-101 | Traceability and base CI implemented; application suites and protected settings pending |
+| `AUD-P2-011` | Added FR-23 and AC-102 through AC-112 | Bilingual source copy and route contract complete; UI, deployment verification, and qualified reviews pending |
 
 ## Added functional requirements
 
@@ -358,6 +359,45 @@ integration, and browser-test jobs. Model smoke and release evaluations must run
 only from trusted commits with bounded credentials and sanitized reports. Empty
 or always-success placeholders do not count as evidence, and fork pull requests
 must never receive provider, deployment, signing, or holdout-data secrets.
+
+### FR-23 — Public service pages and landing-page disclosures
+
+The application must implement
+[PA-SERVICE-001](../service/README.md) and its versioned bilingual source copy.
+The 0BSD license governs repository source code; it must not be presented as a
+replacement for the Terms, Privacy Notice, Cookie Policy, Safety Notice, or
+Source Policy governing the operated service.
+
+The Bulgarian landing page `/`, English landing page `/en`, and every public
+application page must have persistent footer links to separate Bulgarian and
+English SSR routes for Terms, Privacy, Cookies, Safety, and Sources. Every
+service page must expose its version and update date, work without client-side
+JavaScript, provide language and landing-page navigation, and meet the same
+keyboard and screen-reader requirements as the main interface.
+
+Before the first chat submission, the interface must clearly state that the
+visitor is interacting with AI rather than a person, that output may be wrong,
+and that the service does not replace a qualified professional. The concise
+notice must link to the full Safety and Privacy pages and must not be hidden only
+inside Terms or behind an acknowledgement control.
+
+The persistent footer must include `© 2026 Anton Mitsev` linked to
+`https://tonymitsev.com`, a correction/contact link, the public source-code
+repository, and the 0BSD license. Copyright attribution must not imply that
+third-party cited material is owned or relicensed by the project.
+
+The MVP storage profile is necessary-only: one secured visitor cookie and
+current-tab `sessionStorage`, with no advertising, cross-site tracking,
+analytics cookie, or high-entropy fingerprinting. The Cookie Policy remains
+linked without showing a fictitious consent banner. Any future non-essential
+technology must be disabled until a valid opt-in, provide equally easy reject
+and withdrawal controls, and trigger prior bilingual policy and test updates.
+
+The source copy must disclose service limitations, emergency and professional
+handoff, source selection, correction/contact process, recipients, purposes,
+retention, data-subject rights, and unresolved deployment facts. It must not be
+marked final before the real hosting/provider configuration is verified and
+the required qualified legal/privacy and domain reviews are recorded.
 
 ## Added acceptance criteria
 
@@ -858,8 +898,8 @@ field allowlist suites.
 
 ### AC-95 — Complete traceability coverage
 
-The repository validator proves every active `FR-01` through `FR-22` and
-`AC-01` through `AC-101` appears exactly once in PA-TRACE-001, including IDs
+The repository validator proves every active `FR-01` through `FR-23` and
+`AC-01` through `AC-112` appears exactly once in PA-TRACE-001, including IDs
 expanded from ranges, with every required column populated.
 
 ### AC-96 — Coupled change control
@@ -898,3 +938,86 @@ Protected `main` requires repository quality, dependency, implementation, and
 applicable evaluation checks. Closure evidence records the repository settings,
 passing checks, application test paths, sanitized evaluation report, and a
 traceability review with no unexplained implementation-pending release item.
+
+### AC-102 — Complete bilingual route set
+
+SSR integration tests return `200` for `/terms`, `/privacy`, `/cookies`,
+`/safety`, `/sources` and their `/en/...` counterparts. Each route has the
+correct document title, `lang`, canonical URL, reciprocal language link,
+content version, update date, and landing-page navigation without requiring
+client-side JavaScript.
+
+### AC-103 — Persistent landing and footer links
+
+Browser tests prove the five service-page links are keyboard-accessible and
+visible in the footer of both landing pages, every service page, and every chat
+state. Links resolve within the selected language and no production route uses
+a placeholder or dead target.
+
+### AC-104 — First-interaction AI disclosure
+
+Before the first message can be submitted, Bulgarian and English views visibly
+state that the visitor is interacting with AI, output may be wrong, and the
+service does not replace a qualified professional. The notice links to Safety
+and Privacy, is announced accessibly, and remains available after chat starts.
+
+### AC-105 — Terms and license separation
+
+Content tests prove the Terms cover operated-service scope, permitted use,
+availability, limitations, mandatory-rights preservation, changes, and contact;
+identify 0BSD as applying to source code only; and make no claim that a blanket
+disclaimer removes non-excludable legal obligations.
+
+### AC-106 — Privacy notice deployment parity
+
+Before release, reviewed Bulgarian and English Privacy pages name the actual
+controller, purposes, proposed and approved legal bases, data categories,
+recipients/processors, international-transfer safeguards, retention, rights,
+complaint authority, contact, OpenAI behavior, and every deployed browser or
+server-side storage mechanism. No unresolved placeholder may reach production.
+
+### AC-107 — Cookie behavior parity
+
+In the necessary-only profile, tests find no non-essential cookie/storage,
+analytics, advertising, cross-site identifier, high-entropy fingerprinting, or
+misleading consent banner. If configuration enables a non-essential technology,
+tests prove it remains blocked before opt-in and that reject and withdrawal are
+as easy as acceptance.
+
+### AC-108 — Safety and emergency copy
+
+The concise and full bilingual Safety notices preserve the approved domain
+scope, AI limitation, critical stop conditions, 112 wording for immediate
+danger, out-of-scope boundaries, professional handoff, and the rule that images
+or model output cannot lower a deterministic safety floor. A qualified domain
+review is recorded before release.
+
+### AC-109 — Public source policy
+
+The bilingual Source Policy explains source tiers, live-search use, citation
+limits, rights, freshness, withdrawal, non-endorsement, unfinished WP-01/WP-02,
+and the correction channel. Tests prove cited titles and URLs originate from
+validated server evidence rather than free model output.
+
+### AC-110 — Correction and contact path
+
+Every service page exposes the configured contact path. A documented process
+can receive, triage, correct, withdraw, and record unsafe, inaccurate, stale,
+privacy, and rights reports without asking the reporter to resend unnecessary
+personal or protected content.
+
+### AC-111 — Copyright and repository links
+
+The persistent footer renders exactly `© 2026 Anton Mitsev` linked to
+`https://tonymitsev.com`, plus valid links to the public source repository and
+its 0BSD license. Accessibility and link tests cover both languages and all
+public layouts.
+
+### AC-112 — Versioned review and release evidence
+
+Repository validation proves that every required document has one Bulgarian
+and one English source, unique routes, matching version/date metadata, required
+footer entries, and a necessary-only storage profile. Public release additionally
+requires recorded legal/privacy review, domain review, deployment verification,
+passing SSR/browser/accessibility tests, and rendered-content digests bound to
+the released version.
