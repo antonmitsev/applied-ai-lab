@@ -37,6 +37,6 @@ See [SECURITY.md](SECURITY.md) for the repository policy.
 
 ## License
 
-No open-source license has been selected yet. Unless a license is added, the
-repository is publicly viewable but no permission to copy, modify, or
-redistribute its contents is granted.
+Licensed under the [BSD Zero Clause License](LICENSE) (`0BSD`). The software may
+be used, copied, modified, and distributed for any purpose, with or without fee,
+and is provided without warranty or liability.

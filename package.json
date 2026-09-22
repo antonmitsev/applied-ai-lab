@@ -2,6 +2,7 @@
   "name": "applied-ai-lab",
   "version": "0.0.0",
   "private": true,
+  "license": "0BSD",
   "description": "Production-oriented applied AI portfolio projects",
   "workspaces": [
     "apps/*",

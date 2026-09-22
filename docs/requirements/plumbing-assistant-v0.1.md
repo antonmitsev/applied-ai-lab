@@ -339,7 +339,6 @@ treated as final in v0.1.
 - SQLite versus managed key-value storage after deployment selection;
 - exact retention periods;
 - initial evaluation dataset and expert review process;
-- repository software license;
 - production limits after WP-03.
 
 ## 14. MVP acceptance criteria
