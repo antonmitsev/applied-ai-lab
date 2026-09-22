@@ -179,8 +179,10 @@ sizes and timeouts and cannot access loopback, link-local, private-network, or
 cloud-metadata addresses. Documents are parsed in an isolated process with no
 script, macro, network, or active-content execution.
 
-Prompt-injection handling for retrieved text is completed under `AUD-P1-008`.
-Until then, live retrieval and production ingestion remain release-blocked.
+Prompt-injection handling for retrieved text follows
+[PA-RET-001](../security/plumbing-assistant-retrieval-security.md). Live
+retrieval and production ingestion remain release-blocked until its staged
+controls and adversarial evaluations are implemented and pass.
 
 ## Reproducible index build
 
@@ -238,10 +240,12 @@ Provider metadata is defense in depth. The application rechecks registry state
 after retrieval so that an emergency denylist can suppress a source before a
 rebuild completes.
 
-Rendered citation title, canonical URL, tier, and source ID come from the
-registry—not from untrusted document text or model-generated labels. All cited
-IDs must exist in the structured `source_refs`, and procedural steps must cite
-the passage that supports them.
+For curated evidence, rendered citation title, canonical URL, tier, and source
+ID come from the source registry—not from untrusted document text or
+model-generated labels. Live-web citation metadata comes from the validated
+server-owned request-local evidence record defined by PA-RET-001. All cited IDs
+must exist in the structured `source_refs`, and procedural steps must cite the
+passage that supports them.
 
 Live web-search results never enter the curated index automatically. They remain
 request-local evidence governed separately, and a promising result becomes only

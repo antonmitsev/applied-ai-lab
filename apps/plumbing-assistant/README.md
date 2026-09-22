@@ -34,6 +34,8 @@ Requirements definition. No production implementation is present yet.
 - [Source governance and ingestion specification](../../docs/sources/plumbing-assistant-source-governance.md)
 - [Deferred WP-01 source registry](../../sources/plumbing-assistant/manifest.json)
 - [Image input security and lifecycle](../../docs/security/plumbing-assistant-image-security.md)
+- [Retrieval threat model and prompt-injection controls](../../docs/security/plumbing-assistant-retrieval-security.md)
+- [Validated retrieval evidence schema](../../docs/contracts/retrieval-evidence.schema.json)
 
 ## Safety notice
 

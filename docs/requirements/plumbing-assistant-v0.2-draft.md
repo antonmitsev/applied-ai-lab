@@ -26,6 +26,7 @@ base document and this delta will be consolidated into a standalone v0.2.
 | `AUD-P1-005` | Added FR-17 and AC-41 through AC-49 | Approved for implementation; privacy review and WP-03 values pending |
 | `AUD-P1-006` | Added FR-18 and AC-50 through AC-59 | Approved design; WP-01 research and ingestion implementation pending |
 | `AUD-P1-007` | Added FR-19 and AC-60 through AC-70 | Approved design; implementation, privacy notice, and verification pending |
+| `AUD-P1-008` | Added FR-20 and AC-71 through AC-82; response schema v2 | Approved design; implementation and adversarial evaluation pending |
 
 ## Added functional requirements
 
@@ -258,6 +259,44 @@ Image evidence must not lower safety urgency or establish exact compatibility
 by visual similarity alone. Failure of image readiness or processing disables
 the image route explicitly and may leave text-only chat available; the system
 must never silently answer as if a rejected image had been inspected.
+
+### FR-20 — Staged retrieval and prompt-injection containment
+
+Retrieval must implement
+[PA-RET-001](../security/plumbing-assistant-retrieval-security.md). User input,
+conversation text, images/OCR, document bodies, web content, tool output, model
+output, titles, and URLs are untrusted data and must never be interpolated into
+developer messages or treated as permission.
+
+The application must separate retrieval planning, curated search, isolated live
+web search, evidence validation, tool-free final synthesis, and deterministic
+post-validation. Curated search is a direct server operation. The isolated web
+call receives only a minimized validated query and `web_search`; it receives no
+private context or other tool. The final synthesis call must have no tools.
+
+At most two 200-character minimized queries and two web tool calls are allowed.
+Queries must exclude raw messages/history, retrieved/OCR text, URLs, markup,
+controls, obfuscation, credentials, PII, secrets, and application identifiers.
+A later query must not be derived from an earlier result.
+
+Every retrieved item must pass the active source/domain policy, URL
+normalization, relevance, scope, score, injection-signal, and size gates and
+enter a request-local bundle conforming to
+[PA-EVIDENCE-001](../contracts/retrieval-evidence.schema.json). Live web evidence
+cannot establish exact compatibility. Quarantined items must not reach final
+synthesis. Absent eligible evidence, the system must return insufficient
+evidence without procedural guidance or model-memory fallback.
+
+Final model output must conform to assistant response schema version 2 and emit
+only evidence IDs. The server must validate claim eligibility and entailment,
+then hydrate titles, canonical HTTPS URLs, tiers, and localized labels from the
+validated registries. Retrieved HTML, model-authored URLs, and Markdown links
+must never be rendered.
+
+Raw plans, queries, results, excerpts, URLs, evidence bundles, and injection
+payloads are request-memory data and must not enter logs, traces, analytics,
+usage storage, conversation state, or backups. Injection detection is defense in
+depth and must not be represented as complete protection.
 
 ## Added acceptance criteria
 
@@ -599,3 +638,77 @@ timeout, concurrency, token, and atomic monetary limits.
 Reviewed Bulgarian and English notices, errors, and evaluation cases cover
 clear, unreadable, misleading, conflicting, safety-critical, label-detail, and
 exact-compatibility images and match deployed retention behavior.
+
+### AC-71 — Trust-channel separation
+
+Message-construction tests prove untrusted or model-generated variables never
+enter developer messages and API keys, tokens, internal records, and server
+paths never enter any model request.
+
+### AC-72 — Stage and tool isolation
+
+Tests prove curated search is server-owned, only the isolated public call has
+`web_search`, it has no private context or other tool, and final synthesis
+enforces an empty tool list and `tool_choice: none` or equivalent.
+
+### AC-73 — Query minimization
+
+Tests enforce two queries, 200 characters each, and reject controls, bidi and
+zero-width obfuscation, URLs, markup, code, credentials, PII, secrets, raw
+history/OCR/results, and result-derived query recursion.
+
+### AC-74 — Domain and URL enforcement
+
+Tests cover domain-policy expiry, suffix tricks, IDNA confusables, credentials,
+ports, IP/private hosts, shorteners, redirects, nested URLs, parameters,
+fragments, schemes, escaping, and secure external-link attributes.
+
+### AC-75 — Evidence contract and bounds
+
+Every retrieval result passes schema and semantic validation, unique active
+source joins, claim-scope and score rules, at most eight items, 1,200 characters
+per excerpt, 8,000 total excerpt characters, and quarantine rules.
+
+### AC-76 — Tool and budget containment
+
+SDK-boundary and load tests prove the fixed tool set, two-tool-call ceiling,
+timeouts, result/output limits, no autonomous recursion, and ADR-0002 atomic
+cost reservation and reconciliation.
+
+### AC-77 — ID-only model citations
+
+Assistant response schema version 2 accepts only source IDs from the model;
+unknown, stale, quarantined, wrong-scope, non-entailing, or exact-compatibility-
+ineligible IDs fail closed.
+
+### AC-78 — Server-owned citation rendering
+
+Rendering tests prove titles, URLs, tiers, and labels come only from validated
+server registries and no retrieved HTML, script, model URL, or Markdown link is
+rendered.
+
+### AC-79 — Insufficient-evidence behavior
+
+Retrieval failure, policy expiry, empty or all-quarantined results, conflicts,
+URL/citation failure, timeout, and circuit breaker produce
+`insufficient_evidence` with no procedural steps or model-memory fallback.
+
+### AC-80 — Retrieval-data exclusion
+
+Capture tests find no plans, queries, raw results, excerpts, URLs, evidence
+bundles, or injection payloads in general logs, traces, analytics, usage storage,
+conversation envelopes, metrics labels, or backups.
+
+### AC-81 — Adversarial retrieval gates
+
+The reviewed bilingual corpus covers direct and indirect injection, fake policy,
+urgency downgrade, tool and secret requests, exfiltration, hidden/encoded text,
+citation spoofing, malicious empty results, poisoned documents, OCR/images, and
+multi-turn persistence with zero unauthorized tool calls, safety-floor changes,
+unapproved URLs/actions, or exfiltration.
+
+### AC-82 — Retrieval release evidence
+
+The release report binds application, prompt, assistant/evidence schemas,
+domain/source policy, adversarial corpus, detector, model, and tool configuration
+versions and contains no open retrieval circuit-breaker incident.

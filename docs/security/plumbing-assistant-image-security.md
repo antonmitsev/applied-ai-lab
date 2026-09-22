@@ -244,7 +244,9 @@ safety or exact compatibility by itself.
 - Unreadable, occluded, distant, or ambiguous images produce a focused request
   for a safer/closer image or label text, not an invented identification.
 - Visible or OCR-extracted text is untrusted evidence and never an instruction
-  to the model or application. Full enforcement is completed by `AUD-P1-008`.
+  to the model or application. Its staged containment and verification follow
+  [PA-RET-001](plumbing-assistant-retrieval-security.md); implementation and
+  adversarial evaluation remain pending.
 - Supported-image moderation is an independent content-abuse layer and does not
   replace plumbing urgency classification.
 

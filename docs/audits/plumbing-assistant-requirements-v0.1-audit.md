@@ -110,7 +110,8 @@ Priorities mean:
 | `AUD-P1-005` | Ready for implementation and privacy review | [ADR-0003](../decisions/0003-anonymous-access-and-abuse-controls.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P1-006` | Ready for WP-01 execution and implementation | [PA-SOURCE-001](../sources/plumbing-assistant-source-governance.md), [source schema](../sources/source-manifest.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
 | `AUD-P1-007` | Ready for implementation and privacy review | [PA-IMG-001](../security/plumbing-assistant-image-security.md), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
-| `AUD-P1-008` through `AUD-P2-011` | Open | Address sequentially by priority |
+| `AUD-P1-008` | Ready for implementation and adversarial evaluation | [PA-RET-001](../security/plumbing-assistant-retrieval-security.md), [evidence schema](../contracts/retrieval-evidence.schema.json), [response schema](../contracts/assistant-response.schema.json), [Requirements v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
+| `AUD-P1-009` through `AUD-P2-011` | Open | Address sequentially by priority |
 
 ## 6. Detailed findings and remediation
 
@@ -356,6 +357,15 @@ recovery test, and matching privacy notice.
 
 ### AUD-P1-008 — Prompt injection and untrusted retrieval
 
+**Current status:** `Ready for implementation and adversarial evaluation`.
+The staged trust boundary, isolated tool use, query and evidence limits,
+server-owned citation rendering, failure behavior, and verification matrix are
+specified in
+[PA-RET-001](../security/plumbing-assistant-retrieval-security.md). The finding
+remains open until the domain policy and malicious bilingual corpus exist and
+the implementation passes message-channel, tool, URL, evidence, rendering,
+persistence, and adversarial tests.
+
 **Evidence:** The architecture correctly says that web content cannot override
 application or safety instructions, but no mechanism enforces this rule.
 
@@ -444,11 +454,12 @@ the safety notice remains visible and accessible.
 | 4 | Evaluation Plan and reviewed bilingual dataset | P0-003, P1-008 |
 | 5 | Cost and Quota ADR with atomic reservation algorithm | P1-004 |
 | 6 | Anonymous Abuse Threat Model and privacy assessment | P1-005 |
-| 7 | Source Governance and Ingestion Specification from WP-01 | P1-006, P1-008 |
-| 8 | Image Security Specification | P1-007 |
-| 9 | Admin Request Signing ADR and test vectors | P1-009 |
-| 10 | Requirements traceability matrix and CI evidence | P2-010 |
-| 11 | Bilingual Terms, Privacy, Safety, and Source Policy | P0-001, P1-005, P2-011 |
+| 7 | Source Governance and Ingestion Specification from WP-01 | P1-006 |
+| 8 | Retrieval Threat Model, evidence contract, and adversarial corpus | P1-008 |
+| 9 | Image Security Specification | P1-007 |
+| 10 | Admin Request Signing ADR and test vectors | P1-009 |
+| 11 | Requirements traceability matrix and CI evidence | P2-010 |
+| 12 | Bilingual Terms, Privacy, Safety, and Source Policy | P0-001, P1-005, P2-011 |
 
 Requirements v0.2 should introduce explicit identifiers for conversation state
 and retention, safety enforcement, image processing, source governance, and
@@ -496,6 +507,8 @@ change:
 - [Safety best practices](https://developers.openai.com/api/docs/guides/safety-best-practices): moderation, adversarial testing, human review, and safety identifiers;
 - [Vector Store search](https://developers.openai.com/api/reference/typescript/resources/vector_stores/methods/search) and [file upload](https://developers.openai.com/api/reference/typescript/resources/files/methods/create): filtered retrieval attributes, ingestion flow, and explicit lifecycle management for persistent files;
 - [Images and vision](https://developers.openai.com/api/docs/guides/images-vision) and [Files API](https://developers.openai.com/api/reference/cli/resources/files): supported image-input paths and explicit provider File deletion;
+- [Safety in building agents](https://developers.openai.com/api/docs/guides/agent-builder-safety): untrusted-input isolation, structured outputs, tool approvals, and the limits of prompt-injection detection;
+- [Deep research safety risks](https://developers.openai.com/api/docs/guides/deep-research#safety-risks-and-mitigations): link validation, restricted tool access, and controls for web-connected workflows;
 - [Model selection](https://developers.openai.com/api/docs/guides/model-selection): define accuracy targets and an evaluation dataset before optimizing cost and latency.
 
 ## 11. Final recommendation

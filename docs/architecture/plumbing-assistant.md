@@ -21,7 +21,12 @@ Node.js application
   ├─ per-visitor and global budget enforcement
   ├─ atomic worst-case reservation and usage reconciliation
   ├─ conversation orchestration
+  ├─ no-tool retrieval planner and minimized-query validator
+  ├─ direct curated search + isolated web-search request
+  ├─ evidence gateway and request-local evidence bundle
+  ├─ tool-free final synthesis
   ├─ strict response-schema and policy validation
+  ├─ server-owned citation hydration and safe-link rendering
   ├─ server-owned safety-template rendering
   └─ aggregated usage accounting
           │
@@ -33,8 +38,10 @@ OpenAI Responses API
   ├─ pseudonymous safety_identifier
   ├─ normalized inline input_image; no File on normal path
   ├─ bounded visible history and structured output
-  ├─ file_search ────────► Versioned curated vector store
-  └─ web_search ─────────► Current public sources
+  └─ isolated web_search ─► Current public sources
+
+OpenAI Vector Store API
+  └─ direct server search ─► Versioned curated vector store
 
 Source build pipeline
   ├─ reviewed repository source registry
@@ -62,8 +69,9 @@ Local admin CLI
 - MVP model requests set `store: false` and use neither provider Conversation
   objects nor `previous_response_id`. Provider abuse-monitoring and prompt-cache
   retention remain separate platform concerns disclosed to users.
-- Web content is untrusted input. Retrieved pages cannot override application or
-  safety instructions.
+- User, conversation, web, document, tool, model, image, and OCR content is
+  untrusted data. It never enters developer messages and cannot override
+  application policy, authorize a tool, or select a rendered URL.
 - The usage store contains operational aggregates, not conversation content.
 - The admin private key exists only on the administrator's device.
 
@@ -82,6 +90,17 @@ snapshot and rejects expired, withdrawn, superseded, out-of-scope, or
 wrong-build sources. Exact compatibility requires an approved passage for the
 exact model/variant. See
 [PA-SOURCE-001](../sources/plumbing-assistant-source-governance.md).
+
+Retrieval uses capability-separated stages. A no-tool planner emits at most two
+minimal validated queries. Curated search is a direct server operation. Live
+web search runs in a separate public-only request with `web_search` and no
+private context or other tool. Results pass through a bounded evidence gateway
+before tool-free synthesis. The model returns evidence IDs only; the server
+validates claim eligibility and hydrates citation metadata and links. Failed or
+unverifiable evidence returns an insufficient-evidence response instead of a
+model-memory fallback. See
+[PA-RET-001](../security/plumbing-assistant-retrieval-security.md) and
+[PA-EVIDENCE-001](../contracts/retrieval-evidence.schema.json).
 
 ## Fail-closed conditions
 
