@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "plan_id": "PA-PLAN-001",
+  "baseline_id": "PA-REQ-002",
+  "execution_contract": "PA-AGENT-001",
+  "execution_policy": "model-neutral",
+  "updated": "2026-09-22",
+  "tasks": [
+    {
+      "id": "PA-IMP-000",
+      "title": "Stack decision and application scaffold",
+      "status": "ready",
+      "depends_on": [],
+      "fr": ["FR-22"],
+      "ac": ["AC-95–AC-101"],
+      "audit_controls": ["IMP-010"],
+      "deliverables": ["approved stack decision", "React SSR/Node.js workspace", "real format/lint/type/unit/integration/e2e/coverage jobs"],
+      "verification": ["npm run validate", "new implementation quality commands"]
+    },
+    {
+      "id": "PA-IMP-010",
+      "title": "Bilingual SSR shell and public service routes",
+      "status": "planned",
+      "depends_on": ["PA-IMP-000"],
+      "fr": ["FR-01", "FR-23"],
+      "ac": ["AC-01", "AC-102–AC-112"],
+      "audit_controls": ["IMP-011"],
+      "deliverables": ["Bulgarian and English landing routes", "ten SSR service routes", "shared footer and pre-chat AI notice"],
+      "verification": ["SSR/no-JS route tests", "accessibility and footer-link browser tests", "cookie-profile tests"]
+    },
+    {
+      "id": "PA-IMP-020",
+      "title": "Anonymous request boundary and privacy-minimized abuse controls",
+      "status": "planned",
+      "depends_on": ["PA-IMP-000"],
+      "fr": ["FR-07", "FR-17"],
+      "ac": ["AC-04", "AC-41–AC-49"],
+      "audit_controls": ["IMP-005"],
+      "deliverables": ["visitor token and CSRF bootstrap", "Origin/Fetch Metadata gate", "trusted-proxy and short-lived bucket controls"],
+      "verification": ["auth/origin/csrf/proxy tests", "identifier and retention leakage tests"]
+    },
+    {
+      "id": "PA-IMP-030",
+      "title": "Client-carried conversation state and retention",
+      "status": "planned",
+      "depends_on": ["PA-IMP-000", "PA-IMP-020"],
+      "fr": ["FR-13"],
+      "ac": ["AC-11–AC-17"],
+      "audit_controls": ["IMP-001"],
+      "deliverables": ["state envelope codec", "expiry/size/visitor binding", "new-chat and cleanup behavior"],
+      "verification": ["state rejection and lifecycle tests", "provider boundary and log capture tests"]
+    },
+    {
+      "id": "PA-IMP-040",
+      "title": "Atomic usage, cost, quota, and circuit breaker",
+      "status": "planned",
+      "depends_on": ["PA-IMP-000", "PA-IMP-020"],
+      "fr": ["FR-08–FR-09", "FR-16"],
+      "ac": ["AC-05–AC-06", "AC-33–AC-40"],
+      "audit_controls": ["IMP-004"],
+      "deliverables": ["atomic ledger", "reservation/reconciliation/recovery", "price catalogue and global breaker"],
+      "verification": ["integer and transaction tests", "concurrency/crash/load tests", "WP-03 evidence"]
+    },
+    {
+      "id": "PA-IMP-050",
+      "title": "Deterministic safety pipeline",
+      "status": "planned",
+      "depends_on": ["PA-IMP-000"],
+      "fr": ["FR-04", "FR-14"],
+      "ac": ["AC-03", "AC-18–AC-24"],
+      "audit_controls": ["IMP-002"],
+      "deliverables": ["structured intake and pre-triage", "monotonic post-validation", "fixed critical/caution renderers"],
+      "verification": ["hazard and downgrade tests", "schema/action tests", "qualified domain review"]
+    },
+    {
+      "id": "PA-IMP-060",
+      "title": "Structured bilingual text conversation",
+      "status": "planned",
+      "depends_on": ["PA-IMP-010", "PA-IMP-030", "PA-IMP-040", "PA-IMP-050"],
+      "fr": ["FR-02–FR-03"],
+      "ac": ["AC-02"],
+      "audit_controls": ["IMP-001", "IMP-002"],
+      "deliverables": ["provider adapter", "strict response validation", "bilingual safe renderer and chat journey"],
+      "verification": ["adapter contract tests", "structured response integration tests", "BG/EN browser flow"]
+    },
+    {
+      "id": "PA-IMP-070",
+      "title": "Governed sources and contained retrieval",
+      "status": "planned",
+      "depends_on": ["PA-IMP-050", "PA-IMP-060"],
+      "fr": ["FR-05", "FR-18", "FR-20"],
+      "ac": ["AC-50–AC-59", "AC-71–AC-82"],
+      "audit_controls": ["IMP-006", "IMP-008"],
+      "deliverables": ["WP-01 source registry", "reproducible ingestion", "staged evidence gateway and safe citations"],
+      "verification": ["rights/freshness/withdrawal tests", "query/url/evidence tests", "adversarial retrieval gates"]
+    },
+    {
+      "id": "PA-IMP-080",
+      "title": "Secure image input lifecycle",
+      "status": "planned",
+      "depends_on": ["PA-IMP-040", "PA-IMP-050", "PA-IMP-060"],
+      "fr": ["FR-19"],
+      "ac": ["AC-60–AC-70"],
+      "audit_controls": ["IMP-007"],
+      "deliverables": ["bounded upload boundary", "isolated decode/normalize pipeline", "inline provider and cleanup path"],
+      "verification": ["format/bomb/isolation tests", "cleanup/recovery tests", "image safety and cost cases"]
+    },
+    {
+      "id": "PA-IMP-090",
+      "title": "Signed aggregate administrative statistics",
+      "status": "planned",
+      "depends_on": ["PA-IMP-000", "PA-IMP-040"],
+      "fr": ["FR-10–FR-12", "FR-21"],
+      "ac": ["AC-07–AC-08", "AC-83–AC-94"],
+      "audit_controls": ["IMP-009"],
+      "deliverables": ["local signing CLI", "server verifier/replay store", "private aggregate endpoint"],
+      "verification": ["published-vector interoperability", "tamper/replay/rotation/proxy tests", "response privacy tests"]
+    },
+    {
+      "id": "PA-IMP-100",
+      "title": "AI evaluation runner and release reports",
+      "status": "planned",
+      "depends_on": ["PA-IMP-060", "PA-IMP-070", "PA-IMP-080"],
+      "fr": ["FR-15"],
+      "ac": ["AC-10", "AC-25–AC-32"],
+      "audit_controls": ["IMP-003"],
+      "deliverables": ["reviewed dataset", "deterministic runner/graders", "versioned sanitized report"],
+      "verification": ["dataset and formula tests", "repetition/reproducibility tests", "all published release gates"]
+    },
+    {
+      "id": "PA-IMP-110",
+      "title": "Professional handoff experience",
+      "status": "planned",
+      "depends_on": ["PA-IMP-010", "PA-IMP-050", "PA-IMP-060"],
+      "fr": ["FR-06"],
+      "ac": [],
+      "audit_controls": ["IMP-002"],
+      "deliverables": ["neutral handoff renderer", "scope and non-endorsement copy", "deferred WP-02 boundary"],
+      "verification": ["handoff action tests", "BG/EN and non-endorsement review"]
+    },
+    {
+      "id": "PA-IMP-120",
+      "title": "Operational hardening and public release decision",
+      "status": "planned",
+      "depends_on": ["PA-IMP-010", "PA-IMP-020", "PA-IMP-030", "PA-IMP-040", "PA-IMP-050", "PA-IMP-060", "PA-IMP-070", "PA-IMP-080", "PA-IMP-090", "PA-IMP-100", "PA-IMP-110"],
+      "fr": [],
+      "ac": ["AC-09"],
+      "audit_controls": ["IMP-001", "IMP-002", "IMP-003", "IMP-004", "IMP-005", "IMP-006", "IMP-007", "IMP-008", "IMP-009", "IMP-010", "IMP-011"],
+      "deliverables": ["deployment and provider review", "monitoring/incident/backup/rollback runbooks", "qualified reviews and I5 decision"],
+      "verification": ["secret/security settings evidence", "operational exercises", "PA-AUDIT-002 signed GO/NO-GO record"]
+    }
+  ]
+}

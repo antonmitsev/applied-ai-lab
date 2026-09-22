@@ -11,7 +11,7 @@ cost controls, evaluation, observability, and a usable interface.
 
 | Project | Status | Description |
 | --- | --- | --- |
-| [Plumbing Assistant](apps/plumbing-assistant/) | Requirements | A bilingual AI assistant for non-professionals dealing with plumbing and hydronic-heating issues in Bulgaria. |
+| [Plumbing Assistant](apps/plumbing-assistant/) | Implementation ready | A bilingual AI assistant for non-professionals dealing with plumbing and hydronic-heating issues in Bulgaria. |
 
 ## Repository structure
 
@@ -44,6 +44,13 @@ security/privacy/legal artifacts, and a reusable pricing method, see the
 The required bilingual Terms, Privacy, Cookies, Safety, and Sources routes,
 landing-page links, AI notice, and copyright footer are defined by
 [PA-SERVICE-001](docs/service/README.md).
+
+Start or transfer implementation from the
+[v0.2 baseline](docs/requirements/plumbing-assistant-v0.2.md),
+[implementation/commercial handoff](docs/handoffs/plumbing-assistant-implementation-handoff.md),
+and [model-neutral execution plan](docs/planning/plumbing-assistant-implementation-plan.md).
+Repository-level instructions for any human or AI coding agent are in
+[AGENTS.md](AGENTS.md).
 
 ## Security
 

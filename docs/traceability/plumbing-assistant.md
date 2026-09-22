@@ -5,7 +5,7 @@
 | Matrix ID | `PA-TRACE-001` |
 | Status | Active; implementation evidence pending |
 | Date | 2026-09-22 |
-| Requirements | [v0.1 baseline](../requirements/plumbing-assistant-v0.1.md) plus [v0.2 working draft](../requirements/plumbing-assistant-v0.2-draft.md) |
+| Requirements | [PA-REQ-002 implementation baseline](../requirements/plumbing-assistant-v0.2.md) |
 | Convention | [PA-REPO-001](../engineering/repository-conventions.md) |
 
 ## How to read the matrix

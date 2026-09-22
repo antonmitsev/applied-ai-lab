@@ -33,6 +33,10 @@ OpenAI key, deployment secret, or private test data.
 - relative Markdown links point to existing files/directories;
 - every active FR/AC is mapped exactly once in PA-TRACE-001;
 - every active FR/AC has exactly one primary category in PA-SCOPE-001;
+- the model-neutral implementation graph is acyclic, dependency-valid, and
+  covers every active FR/AC and implementation-audit control;
+- the accepted baseline, split audits, durable handoff, and agent entry point
+  expose consistent implementation-ready status markers;
 - the bilingual public-service source pages, routes, footer, copyright, AI
   notice, and cookie profile match PA-SERVICE-001;
 - the published `PA-ADMIN-SIG-1` vector reproduces and verifies byte for byte;
@@ -59,6 +63,8 @@ replace GitHub secret scanning, push protection, or human review.
 | `validateTraceability()` | Builds the active ID set from requirements, expands matrix rows, and records missing, duplicate, unknown, malformed, or incomplete mappings. |
 | `validatePublicDisclosures()` | Validates the five Bulgarian/English service-document pairs, unique routes, version/date metadata, contact path, footer/copyright/repository links, pre-chat notices, and necessary-only storage profile; read-only. |
 | `validateScopeInventory()` | Expands the planning ledger's FR/AC ranges and proves every active requirement has one and only one primary estimation category; read-only. |
+| `validateImplementationPlan()` | Validates task IDs, statuses, dependency existence/readiness, acyclic ordering, deliverables, verification families, audit-control coverage, and complete active FR/AC allocation in the model-neutral implementation plan; read-only. |
+| `validateProjectBaseline()` | Checks that the final requirements manifest, closed definition audit, not-started implementation audit, durable handoff, execution contract, and root agent entry point expose their required status/identity markers; read-only. |
 | `validateAdminSigningVector()` | Reconstructs canonical bytes, hashes, keys, nonce, and deterministic Ed25519 signature from the public test fixture; never accesses a runtime key. |
 | `validateScriptDocumentation(files)` | Discovers JavaScript maintenance scripts and records missing per-script README sections, missing function-reference rows, or missing adjacent JSDoc comments. |
 | `validateRepositoryHygiene(files)` | Checks paths and text content for prohibited runtime artifacts and selected high-confidence credential forms; reads files but never deletes or rewrites them. |

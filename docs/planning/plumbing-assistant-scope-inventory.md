@@ -3,10 +3,10 @@
 | Field | Value |
 | --- | --- |
 | Inventory ID | `PA-SCOPE-001` |
-| Status | Active requirements-stage inventory |
+| Status | Active implementation-baseline inventory |
 | As of | 2026-09-22 |
 | Machine-readable allocation | [scope inventory JSON](plumbing-assistant-scope-inventory.json) |
-| Requirements source | [v0.1](../requirements/plumbing-assistant-v0.1.md) + [v0.2 draft](../requirements/plumbing-assistant-v0.2-draft.md) |
+| Requirements source | [PA-REQ-002](../requirements/plumbing-assistant-v0.2.md) |
 
 ## Why this document exists
 
@@ -49,7 +49,7 @@ allocation changes only through a reviewed update to the JSON ledger.
 
 | Artifact family | Current count | What is measured |
 | --- | ---: | --- |
-| Requirements baselines/deltas | 2 | v0.1 plus cumulative v0.2 draft |
+| Requirements baseline manifest/components | 1 / 2 | PA-REQ-002 plus frozen v0.1 scope and approved v0.2 audit delta |
 | Functional requirements | 23 | `FR-01` through `FR-23` |
 | Acceptance criteria | 112 | `AC-01` through `AC-112` |
 | Architecture decisions | 4 | Conversation, cost, anonymous access, admin signing |
@@ -61,6 +61,9 @@ allocation changes only through a reviewed update to the JSON ledger.
 | Machine-readable contracts/vectors | 3 | Response, retrieval evidence, signing vectors |
 | Public service source pages | 10 | Five Bulgarian/English document pairs |
 | Public service route manifests | 1 | Routes, footer, copyright, AI notice, storage profile |
+| Active audits / archived findings | 2 / 1 | Closed definition audit, open implementation audit, historical working paper |
+| Execution contract / task graph / task template | 1 / 1 / 1 | Model-neutral authority, dependencies, coverage, evidence protocol |
+| Durable implementation/commercial handoff | 1 | Resume and acquisition snapshot |
 | Repository quality scripts/workflows | 1 / 1 | Local validator / GitHub quality workflow |
 
 Counts measure scope, not completion. Ten written source pages, for example, do

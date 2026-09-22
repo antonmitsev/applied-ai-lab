@@ -5,7 +5,8 @@ plumbing and water-based heating installations in Bulgaria.
 
 ## Status
 
-Requirements definition. No production implementation is present yet.
+Project definition accepted; ready to begin implementation. No production
+application or public-release approval exists yet.
 
 ## Planned experience
 
@@ -20,10 +21,14 @@ Requirements definition. No production implementation is present yet.
 
 ## Documentation
 
-- [Requirements v0.1](../../docs/requirements/plumbing-assistant-v0.1.md)
-- [Requirements v0.2 working draft](../../docs/requirements/plumbing-assistant-v0.2-draft.md)
+- [Requirements v0.2 implementation baseline](../../docs/requirements/plumbing-assistant-v0.2.md)
 - [Architecture context](../../docs/architecture/plumbing-assistant.md)
-- [Requirements and repository audit](../../docs/audits/plumbing-assistant-requirements-v0.1-audit.md)
+- [Audit register](../../docs/audits/README.md)
+- [Closed project-definition audit](../../docs/audits/plumbing-assistant-project-definition-audit.md)
+- [Implementation/release audit](../../docs/audits/plumbing-assistant-implementation-readiness-audit.md)
+- [Implementation and commercial handoff](../../docs/handoffs/plumbing-assistant-implementation-handoff.md)
+- [Model-neutral implementation plan](../../docs/planning/plumbing-assistant-implementation-plan.md)
+- [Agent execution contract](../../docs/engineering/agent-execution-contract.md)
 - [ADR-0001: Conversation state and retention](../../docs/decisions/0001-conversation-state-and-retention.md)
 - [ADR-0002: Atomic cost and quota accounting](../../docs/decisions/0002-atomic-cost-and-quota-accounting.md)
 - [ADR-0003: Anonymous access and abuse controls](../../docs/decisions/0003-anonymous-access-and-abuse-controls.md)

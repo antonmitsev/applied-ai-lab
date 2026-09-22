@@ -2,10 +2,14 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft baseline |
+| Status | Frozen component of PA-REQ-002; superseded as a standalone baseline |
 | Date | 2026-09-22 |
 | Owner | Anton Mitsev |
 | Product type | Public portfolio demonstration |
+
+This document is retained as the original scope component of the accepted
+[Requirements v0.2 implementation baseline](plumbing-assistant-v0.2.md). It is
+not the current standalone entry point.
 
 ## 1. Purpose
 

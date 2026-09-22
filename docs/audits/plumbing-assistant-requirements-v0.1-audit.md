@@ -1,14 +1,20 @@
-# Plumbing Assistant — Requirements and Repository Audit
+# Plumbing Assistant — Archived Definition-audit Findings
 
 | Field | Value |
 | --- | --- |
-| Audit ID | `PA-AUDIT-001` |
-| Status | Open |
+| Working-paper ID | `PA-AUDIT-001-WP` |
+| Status | Archived; findings resolved at definition level |
 | Audit date | 2026-09-22 |
 | Audit role | Chief AI Architect |
 | Audited baseline | [Requirements v0.1](../requirements/plumbing-assistant-v0.1.md) |
 | Related architecture | [Architecture context](../architecture/plumbing-assistant.md) |
-| Next review | After the P0 exit criteria are met |
+| Canonical closure | [PA-AUDIT-001](plumbing-assistant-project-definition-audit.md) |
+| Successor audit | [PA-AUDIT-002](plumbing-assistant-implementation-readiness-audit.md) |
+
+> This file preserves the original detailed findings and remediation history.
+> The project-definition decision is closed in PA-AUDIT-001. Unimplemented
+> evidence was transferred to PA-AUDIT-002 and does not keep this historical
+> working paper open.
 
 ## 1. Executive decision
 
@@ -517,13 +523,17 @@ but it must not accept public production traffic before G5.
 
 ## 9. Finding lifecycle
 
-Each finding remains `Open` until its closure evidence exists. The valid states
-are `Open`, `In progress`, `Ready for review`, `Closed`, and `Risk accepted`.
+During this working paper's active remediation, each finding remained `Open`
+until its definition evidence existed. The valid states were `Open`,
+`In progress`, `Ready for review`, `Closed`, and `Risk accepted`.
 Only the product owner may accept risk, and a P0 risk acceptance must document
 the rationale, duration, compensating controls, and review date. A statement
 that the model or disclaimer will handle the issue is not closure evidence.
 
-At the next audit review:
+That lifecycle is complete for project definition. PA-AUDIT-001 records the
+closure decision; PA-AUDIT-002 now owns implementation and release evidence.
+
+The original remediation review required:
 
 1. link every finding to its remediation pull request or document;
 2. attach automated test or evaluation output;

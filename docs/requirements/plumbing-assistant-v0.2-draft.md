@@ -1,19 +1,21 @@
-# Plumbing Assistant — Requirements v0.2 Working Draft
+# Plumbing Assistant — Requirements v0.2 Approved Audit Delta
 
 | Field | Value |
 | --- | --- |
-| Status | Working draft; not yet a consolidated release baseline |
+| Status | Frozen normative component of PA-REQ-002 |
 | Date opened | 2026-09-22 |
 | Owner | Anton Mitsev |
 | Base document | [Requirements v0.1](plumbing-assistant-v0.1.md) |
-| Audit | [PA-AUDIT-001](../audits/plumbing-assistant-requirements-v0.1-audit.md) |
+| Baseline manifest | [PA-REQ-002](plumbing-assistant-v0.2.md) |
+| Audit | [PA-AUDIT-001](../audits/plumbing-assistant-project-definition-audit.md) |
 
-## Purpose of this draft
+## Purpose of this delta
 
-This document records approved requirement changes while the audit findings are
-addressed sequentially. It is cumulative over Requirements v0.1. When all P0
-findings and the specification portions of the P1 findings are resolved, the
-base document and this delta will be consolidated into a standalone v0.2.
+This document records the approved requirements introduced while the v0.1 audit
+findings were addressed. Together with Requirements v0.1 it is a frozen,
+normative component of PA-REQ-002. The baseline manifest supplies the stable
+implementation entry point and precedence rule without duplicating these
+requirements into a diverging copy.
 
 ## Change log
 

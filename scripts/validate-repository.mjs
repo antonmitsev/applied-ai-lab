@@ -292,6 +292,100 @@ async function validateScopeInventory() {
   return { categories: categoryIds.size, fr: allocated.FR.size, ac: allocated.AC.size };
 }
 
+/** Validates the model-neutral implementation DAG and complete FR/AC coverage. */
+async function validateImplementationPlan() {
+  const file = path.join(root, "docs/planning/plumbing-assistant-implementation-plan.json");
+  const plan = JSON.parse(await readFile(file, "utf8"));
+  const tasks = plan.tasks ?? [];
+  const taskById = new Map(tasks.map((task) => [task.id, task]));
+  const allowedStatuses = new Set(["planned", "ready", "in_progress", "ready_for_review", "blocked", "done"]);
+  const expected = { FR: new Set(), AC: new Set() };
+  const covered = { FR: new Set(), AC: new Set() };
+
+  const baseline = await readFile(path.join(root, "docs/requirements/plumbing-assistant-v0.1.md"), "utf8");
+  const delta = await readFile(path.join(root, "docs/requirements/plumbing-assistant-v0.2-draft.md"), "utf8");
+  for (const document of [baseline, delta]) {
+    for (const match of document.matchAll(/^### (FR-\d{2})\b/gm)) expected.FR.add(match[1]);
+  }
+  for (let number = 1; number <= 10; number += 1) expected.AC.add(`AC-${String(number).padStart(2, "0")}`);
+  for (const match of delta.matchAll(/^### (AC-\d{2,3})\b/gm)) expected.AC.add(match[1]);
+
+  if (plan.plan_id !== "PA-PLAN-001" || plan.baseline_id !== "PA-REQ-002") fail("Implementation plan identity or baseline is invalid");
+  if (plan.execution_contract !== "PA-AGENT-001" || plan.execution_policy !== "model-neutral") fail("Implementation plan is not bound to the model-neutral execution contract");
+  if (taskById.size !== tasks.length) fail("Implementation plan task IDs must be unique");
+
+  for (const task of tasks) {
+    if (!/^PA-IMP-\d{3}$/.test(task.id ?? "")) fail(`Invalid implementation task ID: ${task.id ?? "unknown"}`);
+    if (!allowedStatuses.has(task.status)) fail(`Invalid implementation task status for ${task.id}`);
+    if (!Array.isArray(task.deliverables) || task.deliverables.length === 0) fail(`${task.id} has no deliverables`);
+    if (!Array.isArray(task.verification) || task.verification.length === 0) fail(`${task.id} has no verification`);
+    for (const dependency of task.depends_on ?? []) {
+      if (dependency === task.id || !taskById.has(dependency)) fail(`${task.id} has invalid dependency ${dependency}`);
+    }
+    if (task.status === "ready" && (task.depends_on ?? []).some((id) => taskById.get(id)?.status !== "done")) {
+      fail(`${task.id} is ready before all dependencies are done`);
+    }
+    for (const control of task.audit_controls ?? []) {
+      if (!/^IMP-0(?:0[1-9]|1[01])$/.test(control)) fail(`${task.id} has invalid audit control ${control}`);
+    }
+    for (const prefix of ["FR", "AC"]) {
+      for (const range of task[prefix.toLowerCase()] ?? []) {
+        const ids = expandTraceRange(range);
+        if (ids.length === 0 || ids.some((id) => !id.startsWith(`${prefix}-`))) {
+          fail(`${task.id} has invalid ${prefix} range ${range}`);
+          continue;
+        }
+        for (const id of ids) covered[prefix].add(id);
+      }
+    }
+  }
+
+  const visiting = new Set();
+  const visited = new Set();
+  const visit = (id) => {
+    if (visiting.has(id)) {
+      fail(`Implementation plan dependency cycle includes ${id}`);
+      return;
+    }
+    if (visited.has(id)) return;
+    visiting.add(id);
+    for (const dependency of taskById.get(id)?.depends_on ?? []) visit(dependency);
+    visiting.delete(id);
+    visited.add(id);
+  };
+  for (const id of taskById.keys()) visit(id);
+
+  for (const prefix of ["FR", "AC"]) {
+    for (const id of expected[prefix]) if (!covered[prefix].has(id)) fail(`Implementation plan does not cover ${id}`);
+    for (const id of covered[prefix]) if (!expected[prefix].has(id)) fail(`Implementation plan covers inactive ${id}`);
+  }
+  const controls = new Set(tasks.flatMap((task) => task.audit_controls ?? []));
+  for (let number = 1; number <= 11; number += 1) {
+    const id = `IMP-${String(number).padStart(3, "0")}`;
+    if (!controls.has(id)) fail(`Implementation plan does not cover ${id}`);
+  }
+
+  return { tasks: tasks.length, fr: covered.FR.size, ac: covered.AC.size, controls: controls.size };
+}
+
+/** Confirms the durable baseline, split audits, handoff, and agent entry point. */
+async function validateProjectBaseline() {
+  const checks = [
+    ["docs/requirements/plumbing-assistant-v0.2.md", "| Status | Accepted for implementation |"],
+    ["docs/audits/plumbing-assistant-project-definition-audit.md", "| Status | Closed |"],
+    ["docs/audits/plumbing-assistant-project-definition-audit.md", "| Decision | Accepted for implementation |"],
+    ["docs/audits/plumbing-assistant-implementation-readiness-audit.md", "| Status | Not started |"],
+    ["docs/handoffs/plumbing-assistant-implementation-handoff.md", "| Status | Ready for implementation handoff |"],
+    ["docs/engineering/agent-execution-contract.md", "| Contract ID | `PA-AGENT-001` |"],
+    ["AGENTS.md", "docs/planning/plumbing-assistant-implementation-plan.md"],
+  ];
+  for (const [name, marker] of checks) {
+    const content = await readFile(path.join(root, name), "utf8");
+    if (!content.includes(marker)) fail(`${name} lacks required baseline marker: ${marker}`);
+  }
+  return checks.length;
+}
+
 /** Reproduces and verifies every published PA-ADMIN-SIG-1 positive vector. */
 async function validateAdminSigningVector() {
   const file = path.join(root, "docs/contracts/admin-signing-test-vectors.json");
@@ -417,6 +511,8 @@ const markdownCount = await validateMarkdownLinks(files);
 const traceability = await validateTraceability();
 const disclosurePages = await validatePublicDisclosures();
 const scopeInventory = await validateScopeInventory();
+const implementationPlan = await validateImplementationPlan();
+const baselineChecks = await validateProjectBaseline();
 const signingVectors = await validateAdminSigningVector();
 const documentedScripts = await validateScriptDocumentation(files);
 await validateRepositoryHygiene(files);
@@ -431,6 +527,8 @@ if (failures.length > 0) {
   console.log(`Traceability: ${traceability.mapped}/${traceability.expected} requirement IDs`);
   console.log(`Public disclosure source pages: ${disclosurePages}`);
   console.log(`Scope inventory: ${scopeInventory.fr} FR; ${scopeInventory.ac} AC; ${scopeInventory.categories} categories`);
+  console.log(`Implementation plan: ${implementationPlan.tasks} tasks; ${implementationPlan.fr} FR; ${implementationPlan.ac} AC; ${implementationPlan.controls} controls`);
+  console.log(`Implementation-ready baseline markers: ${baselineChecks}`);
   console.log(`Administrative signing vectors: ${signingVectors}`);
   console.log(`Documented maintenance scripts: ${documentedScripts}`);
   console.log("Repository hygiene: PASS");

@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Specification ID | `PA-REPO-001` |
-| Status | Active for the requirements-stage repository |
+| Status | Active for the implementation-ready repository |
 | Date | 2026-09-22 |
 | Owner | Anton Mitsev |
 | Audit finding | `AUD-P2-010` |
@@ -29,9 +29,11 @@ top-level collections:
 | `docs/safety/`, `docs/security/` | Enforceable safety and security specifications |
 | `docs/contracts/` | Machine-readable schemas and interoperability vectors |
 | `docs/evaluation/` | Evaluation policy, metrics, thresholds, and release rules |
-| `docs/planning/` | Measured scope inventory and reusable estimation model |
+| `docs/handoffs/` | Durable implementation/commercial transfer snapshots |
+| `docs/planning/` | Measured scope/estimation inventory and implementation dependency graph |
 | `docs/service/` | Versioned bilingual operated-service copy and public route contract |
 | `docs/sources/` | Source governance, ingestion, and index contracts |
+| `docs/templates/` | Model-neutral task and evidence templates |
 | `docs/traceability/` | Requirement-to-design/test/evidence mappings |
 | `evals/plumbing-assistant/` | Portable evaluation schemas, fixtures, and public cases |
 | `sources/plumbing-assistant/` | Content-free source registry; permitted document bytes only when redistributable |
@@ -106,6 +108,8 @@ repository-owned [validator](../../scripts/validate-repository.mjs) checks:
 - local Markdown links;
 - local JSON Schema references;
 - complete, unique FR/AC traceability coverage;
+- complete primary scope allocation and implementation-plan coverage;
+- acyclic task dependencies and consistent implementation-ready baseline markers;
 - the `PA-ADMIN-SIG-1` cryptographic vector;
 - per-script and per-function maintenance documentation;
 - forbidden secret/runtime filenames and high-confidence credential patterns.
