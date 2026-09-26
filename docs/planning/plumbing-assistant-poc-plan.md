@@ -24,9 +24,9 @@ so work can resume without reconstructing context.
 | Field | Value |
 | --- | --- |
 | POC status | Implementation in progress |
-| Current task | `POC-030` — `in_progress` |
-| Next action | Add typed configuration, health metadata, and the API error model |
-| Last completed task | `POC-020` |
+| Current task | `POC-040` — `in_progress` |
+| Next action | Register a small, provenance-complete pilot source batch |
+| Last completed task | `POC-030` |
 | Last validated commit | This checkpoint; see `git log -1` |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
@@ -39,8 +39,8 @@ so work can resume without reconstructing context.
 | `POC-000` | POC scope, acceptance criteria, and task board | `done` | — |
 | `POC-010` | Stack decision and application scaffold | `done` | `POC-000` |
 | `POC-020` | Docker Compose development environment | `done` | `POC-010` |
-| `POC-030` | Configuration, health endpoint, and error model | `in_progress` | `POC-010` |
-| `POC-040` | Source-backed pilot batch | `planned` | `POC-000` |
+| `POC-030` | Configuration, health endpoint, and error model | `done` | `POC-010` |
+| `POC-040` | Source-backed pilot batch | `in_progress` | `POC-000` |
 | `POC-050` | Local KB extraction, chunking, and lexical index | `planned` | `POC-040` |
 | `POC-060` | Express chat API boundary | `planned` | `POC-030`, `POC-050` |
 | `POC-070` | Landing page and bilingual legal routes | `planned` | `POC-030` |
@@ -156,7 +156,7 @@ does not define persistence, reverse proxying, TLS, or public deployment.
 
 ### POC-030 — Configuration, health endpoint, and error model
 
-Status: `planned`
+Status: `done`
 
 Deliverables:
 
@@ -172,6 +172,19 @@ Definition of Done:
 - health output does not expose secrets;
 - provider calls are impossible in default mock mode;
 - unit tests cover invalid configuration and provider failure.
+
+Evidence:
+
+- `apps/plumbing-assistant/src/config.ts` parses the port, environment, provider
+  mode, request-size limit, and per-request provider-call budget;
+- `apps/plumbing-assistant/src/server.ts` exposes safe health metadata, a stable
+  API 404 shape, and bounded JSON parsing;
+- integration tests cover invalid configuration, health output, SSR routes, and
+  the API error boundary;
+- workspace typecheck, lint, formatting, integration tests, and build pass.
+
+Known limitation: provider failure handling is exercised by the provider
+adapter task, because no provider adapter exists yet.
 
 ### POC-040 — Source-backed pilot batch
 
