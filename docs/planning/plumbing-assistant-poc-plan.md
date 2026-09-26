@@ -24,9 +24,9 @@ so work can resume without reconstructing context.
 | Field | Value |
 | --- | --- |
 | POC status | Implementation in progress |
-| Current task | `POC-060` — `in_progress` |
-| Next action | Add bounded chat and new-chat API contracts over the local index |
-| Last completed task | `POC-050` |
+| Current task | `POC-070` — `in_progress` |
+| Next action | Render the landing page and all bilingual service/legal routes from source copies |
+| Last completed task | `POC-060` |
 | Last validated commit | This checkpoint; see `git log -1` |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
@@ -42,8 +42,8 @@ so work can resume without reconstructing context.
 | `POC-030` | Configuration, health endpoint, and error model | `done` | `POC-010` |
 | `POC-040` | Source-backed pilot batch | `done` | `POC-000` |
 | `POC-050` | Local KB extraction, chunking, and lexical index | `done` | `POC-040` |
-| `POC-060` | Express chat API boundary | `in_progress` | `POC-030`, `POC-050` |
-| `POC-070` | Landing page and bilingual legal routes | `planned` | `POC-030` |
+| `POC-060` | Express chat API boundary | `done` | `POC-030`, `POC-050` |
+| `POC-070` | Landing page and bilingual legal routes | `in_progress` | `POC-030` |
 | `POC-080` | Deterministic safety pre-triage and response validation | `planned` | `POC-030` |
 | `POC-090` | Mock model/provider adapter | `planned` | `POC-030`, `POC-080` |
 | `POC-100` | Text-only bilingual chat UI | `planned` | `POC-060`, `POC-070`, `POC-090` |
@@ -257,7 +257,7 @@ approved source-backed production index.
 
 ### POC-060 — Express chat API boundary
 
-Status: `planned`
+Status: `done` (provider-neutral boundary)
 
 Deliverables:
 
@@ -273,6 +273,21 @@ Definition of Done:
 - response shape is validated before rendering;
 - provider credentials never reach the browser;
 - timeout, empty result, and provider failure paths are tested.
+
+Evidence:
+
+- `apps/plumbing-assistant/src/chat.ts` defines bounded bilingual requests,
+  response/citation types, typed validation, and an explicit unavailable runtime;
+- `src/server.ts` exposes `POST /api/new-chat` and `POST /api/chat` through
+  server-owned code and maps validation/provider failures to the stable error
+  shape;
+- unit tests cover invalid language, empty messages, history limits, and the
+  unavailable runtime;
+- integration tests cover server-owned chat IDs and validation before provider
+  execution.
+
+Known limitation: the default chat runtime intentionally returns
+`PROVIDER_NOT_CONFIGURED` until the deterministic mock adapter task is complete.
 
 ### POC-070 — Landing page and bilingual legal routes
 

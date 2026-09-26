@@ -6,8 +6,8 @@ import { createServer } from "../../src/server.js";
 
 const testConfig = parseConfig({ NODE_ENV: "test" });
 
-async function invoke(path: string) {
-  const request = createRequest({ method: "GET", url: path });
+async function invoke(path: string, options: { method?: "GET" | "POST" } = {}) {
+  const request = createRequest({ method: options.method ?? "GET", url: path });
   const response = createResponse({ eventEmitter: EventEmitter });
   const ended = new Promise<void>((resolve) => response.once("end", resolve));
 
@@ -37,6 +37,22 @@ describe("POC HTTP boundary", () => {
     expect(response.statusCode).toBe(404);
     expect(response._getJSONData()).toEqual({
       error: { code: "NOT_FOUND", message: "API route not found" },
+    });
+  });
+
+  it("creates a server-owned chat identifier", async () => {
+    const response = await invoke("/api/new-chat", { method: "POST" });
+
+    expect(response.statusCode).toBe(201);
+    expect(response._getJSONData().chatId).toMatch(/^[0-9a-f-]{36}$/);
+  });
+
+  it("rejects a chat request without a JSON payload before any provider call", async () => {
+    const response = await invoke("/api/chat", { method: "POST" });
+
+    expect(response.statusCode).toBe(400);
+    expect(response._getJSONData()).toEqual({
+      error: { code: "INVALID_REQUEST", message: "language must be bg or en" },
     });
   });
 

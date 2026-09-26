@@ -1,14 +1,29 @@
+import { randomUUID } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import express, { type Express } from "express";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { App, type Language } from "./app.js";
+import {
+  ApiError,
+  createUnavailableChatRuntime,
+  parseChatRequest,
+  type ChatRuntime,
+} from "./chat.js";
 import { parseConfig, type AppConfig } from "./config.js";
 
-export function createServer(config: AppConfig = parseConfig()): Express {
+export interface ServerDependencies {
+  chatRuntime?: ChatRuntime;
+}
+
+export function createServer(
+  config: AppConfig = parseConfig(),
+  dependencies: ServerDependencies = {},
+): Express {
   const server = express();
   server.disable("x-powered-by");
   server.use(express.json({ limit: config.maxRequestBytes }));
+  const chatRuntime = dependencies.chatRuntime ?? createUnavailableChatRuntime();
 
   server.get("/api/health", (_request, response) => {
     response.json({
@@ -19,6 +34,20 @@ export function createServer(config: AppConfig = parseConfig()): Express {
       providerMode: config.providerMode,
       maxProviderCallsPerRequest: config.maxProviderCallsPerRequest,
     });
+  });
+
+  server.post("/api/new-chat", (_request, response) => {
+    response.status(201).json({ chatId: randomUUID() });
+  });
+
+  server.post("/api/chat", async (request, response, next) => {
+    try {
+      const chatRequest = parseChatRequest(request.body);
+      const result = await chatRuntime.respond(chatRequest);
+      response.json(result);
+    } catch (error) {
+      next(error);
+    }
   });
 
   server.get(["/", "/en"], (request, response) => {
@@ -59,13 +88,27 @@ export function createServer(config: AppConfig = parseConfig()): Express {
       }
 
       const statusCode =
-        typeof error === "object" && error !== null && "status" in error && error.status === 413
-          ? 413
-          : 500;
+        error instanceof ApiError
+          ? error.statusCode
+          : typeof error === "object" && error !== null && "status" in error && error.status === 413
+            ? 413
+            : 500;
+      const code =
+        error instanceof ApiError
+          ? error.code
+          : statusCode === 413
+            ? "REQUEST_TOO_LARGE"
+            : "INTERNAL_ERROR";
+      const message =
+        error instanceof ApiError
+          ? error.message
+          : statusCode === 413
+            ? "Request body is too large"
+            : "Internal server error";
       response.status(statusCode).json({
         error: {
-          code: statusCode === 413 ? "REQUEST_TOO_LARGE" : "INTERNAL_ERROR",
-          message: statusCode === 413 ? "Request body is too large" : "Internal server error",
+          code,
+          message,
         },
       });
     },
