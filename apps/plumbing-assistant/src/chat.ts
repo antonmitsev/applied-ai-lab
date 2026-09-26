@@ -83,7 +83,73 @@ export function parseChatRequest(input: unknown): ChatRequest {
 }
 
 export interface ChatRuntime {
-  respond(request: ChatRequest): Promise<ChatResponse>;
+  respond(request: ChatRequest): Promise<unknown>;
+}
+
+export function validateChatResponse(input: unknown, language: ChatLanguage): ChatResponse {
+  if (!isRecord(input))
+    throw new ApiError(502, "INVALID_PROVIDER_RESPONSE", "Provider response is not an object");
+  if (typeof input.chatId !== "string" || input.chatId.length > 100) {
+    throw new ApiError(
+      502,
+      "INVALID_PROVIDER_RESPONSE",
+      "Provider response has an invalid chat ID",
+    );
+  }
+  if (input.language !== language) {
+    throw new ApiError(
+      502,
+      "INVALID_PROVIDER_RESPONSE",
+      "Provider response language does not match the request",
+    );
+  }
+  if (
+    typeof input.message !== "string" ||
+    input.message.length === 0 ||
+    input.message.length > 8_000
+  ) {
+    throw new ApiError(
+      502,
+      "INVALID_PROVIDER_RESPONSE",
+      "Provider response has an invalid message",
+    );
+  }
+  const responseClasses = ["informational", "diagnostic", "clarify-first", "stop-and-escalate"];
+  if (typeof input.responseClass !== "string" || !responseClasses.includes(input.responseClass)) {
+    throw new ApiError(
+      502,
+      "INVALID_PROVIDER_RESPONSE",
+      "Provider response has an invalid response class",
+    );
+  }
+  if (!Array.isArray(input.citations) || input.citations.length > 8) {
+    throw new ApiError(502, "INVALID_PROVIDER_RESPONSE", "Provider response has invalid citations");
+  }
+  const citations = input.citations.map((citation) => {
+    if (
+      !isRecord(citation) ||
+      typeof citation.unitId !== "string" ||
+      typeof citation.title !== "string"
+    ) {
+      throw new ApiError(
+        502,
+        "INVALID_PROVIDER_RESPONSE",
+        "Provider response has an invalid citation",
+      );
+    }
+    return {
+      unitId: citation.unitId,
+      title: citation.title,
+      sourceId: typeof citation.sourceId === "string" ? citation.sourceId : null,
+    };
+  });
+  return {
+    chatId: input.chatId,
+    language,
+    message: input.message,
+    citations,
+    responseClass: input.responseClass as ChatResponse["responseClass"],
+  };
 }
 
 export function createUnavailableChatRuntime(): ChatRuntime {

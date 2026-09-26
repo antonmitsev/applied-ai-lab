@@ -76,6 +76,20 @@ describe("POC HTTP boundary", () => {
     });
   });
 
+  it("uses the default mock runtime for a routine request", async () => {
+    const response = await invoke("/api/chat", {
+      method: "POST",
+      body: { language: "en", message: "How does a threaded plumbing connection seal?" },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response._getJSONData()).toMatchObject({
+      language: "en",
+      responseClass: "informational",
+    });
+    expect(response._getJSONData().citations.length).toBeGreaterThan(0);
+  });
+
   it("renders both SSR landing routes", async () => {
     const [bgResponse, enResponse] = await Promise.all([invoke("/"), invoke("/en")]);
 

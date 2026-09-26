@@ -24,9 +24,9 @@ so work can resume without reconstructing context.
 | Field | Value |
 | --- | --- |
 | POC status | Implementation in progress |
-| Current task | `POC-090` — `in_progress` |
-| Next action | Add a deterministic mock provider backed by bounded local retrieval |
-| Last completed task | `POC-080` |
+| Current task | `POC-100` — `in_progress` |
+| Next action | Add the bilingual text-only chat UI and connect it to `/api/chat` |
+| Last completed task | `POC-090` |
 | Last validated commit | This checkpoint; see `git log -1` |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
@@ -45,8 +45,8 @@ so work can resume without reconstructing context.
 | `POC-060` | Express chat API boundary | `done` | `POC-030`, `POC-050` |
 | `POC-070` | Landing page and bilingual legal routes | `done` | `POC-030` |
 | `POC-080` | Deterministic safety pre-triage and response validation | `done` | `POC-030` |
-| `POC-090` | Mock model/provider adapter | `in_progress` | `POC-030`, `POC-080` |
-| `POC-100` | Text-only bilingual chat UI | `planned` | `POC-060`, `POC-070`, `POC-090` |
+| `POC-090` | Mock model/provider adapter | `done` | `POC-030`, `POC-080` |
+| `POC-100` | Text-only bilingual chat UI | `in_progress` | `POC-060`, `POC-070`, `POC-090` |
 | `POC-110` | Optional real OpenAI adapter | `planned` | `POC-090`, `POC-100` |
 | `POC-120` | Thirty-pair bilingual pilot and baseline runner | `planned` | `POC-040`, `POC-100` |
 | `POC-130` | Integration, browser, failure-path, and Docker tests | `planned` | `POC-020`, `POC-060`, `POC-100`, `POC-120` |
@@ -360,7 +360,7 @@ qualified domain review required for public release.
 
 ### POC-090 — Mock model/provider adapter
 
-Status: `planned`
+Status: `done` (no-token runtime checkpoint)
 
 Deliverables:
 
@@ -376,6 +376,18 @@ Definition of Done:
 - fixtures exercise informational, diagnostic, clarify-first, and escalation
   responses;
 - mock output cannot bypass server-side safety validation.
+
+Evidence:
+
+- `apps/plumbing-assistant/src/mock-runtime.ts` implements the provider-neutral
+  `ChatRuntime` using the deterministic local lexical index and returns bounded
+  bilingual structured output with citations;
+- `src/chat.ts` validates provider output shape, language, response class, and
+  citation count before rendering;
+- `src/server.ts` selects the mock runtime by default when `MOCK_PROVIDER=true`,
+  while external mode remains unavailable until the explicit provider task;
+- unit and integration tests prove routine local retrieval works without an API
+  key and that critical safety responses bypass the runtime.
 
 ### POC-100 — Text-only bilingual chat UI
 

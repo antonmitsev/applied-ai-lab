@@ -10,9 +10,11 @@ import {
   ApiError,
   createUnavailableChatRuntime,
   parseChatRequest,
+  validateChatResponse,
   type ChatRuntime,
 } from "./chat.js";
 import { parseConfig, type AppConfig } from "./config.js";
+import { createMockChatRuntime } from "./mock-runtime.js";
 import { preTriage } from "./safety.js";
 import { getServiceManifest, loadServicePage, renderServicePage } from "./service-pages.js";
 
@@ -41,7 +43,9 @@ export function createServer(
   const server = express();
   server.disable("x-powered-by");
   server.use(express.json({ limit: config.maxRequestBytes }));
-  const chatRuntime = dependencies.chatRuntime ?? createUnavailableChatRuntime();
+  const chatRuntime =
+    dependencies.chatRuntime ??
+    (config.providerMode === "mock" ? createMockChatRuntime() : createUnavailableChatRuntime());
   const serviceRoot = dependencies.serviceRoot ?? defaultServiceRoot();
 
   server.get("/api/health", (_request, response) => {
@@ -77,7 +81,10 @@ export function createServer(
         });
         return;
       }
-      const result = await chatRuntime.respond(chatRequest);
+      const result = validateChatResponse(
+        await chatRuntime.respond(chatRequest),
+        chatRequest.language,
+      );
       response.json(result);
     } catch (error) {
       next(error);

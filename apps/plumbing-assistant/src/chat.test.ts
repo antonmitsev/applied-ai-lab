@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { ApiError, createUnavailableChatRuntime, parseChatRequest } from "./chat.js";
+import {
+  ApiError,
+  createUnavailableChatRuntime,
+  parseChatRequest,
+  validateChatResponse,
+} from "./chat.js";
 
 describe("chat request boundary", () => {
   it("accepts bounded bilingual text history", () => {
@@ -25,5 +30,20 @@ describe("chat request boundary", () => {
       statusCode: 503,
       code: "PROVIDER_NOT_CONFIGURED",
     });
+  });
+
+  it("rejects provider output that does not match the request language", () => {
+    expect(() =>
+      validateChatResponse(
+        {
+          chatId: "x",
+          language: "bg",
+          message: "x",
+          citations: [],
+          responseClass: "informational",
+        },
+        "en",
+      ),
+    ).toThrow("language does not match");
   });
 });

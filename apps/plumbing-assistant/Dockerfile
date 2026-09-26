@@ -26,6 +26,7 @@ RUN npm ci --omit=dev && npm cache clean --force
 
 COPY --from=build /app/apps/plumbing-assistant/dist apps/plumbing-assistant/dist
 COPY docs/service docs/service
+COPY docs/kb docs/kb
 
 USER node
 EXPOSE 3000
