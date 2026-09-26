@@ -23,10 +23,10 @@ so work can resume without reconstructing context.
 
 | Field | Value |
 | --- | --- |
-| POC status | Implementation in progress |
-| Current task | `POC-130` — `in_progress` |
-| Next action | Add browser, Docker startup, and failure-path checks around the completed mock flow |
-| Last completed task | `POC-120` |
+| POC status | POC complete; follow-up decision blocked on explicit provider/source review |
+| Current task | `POC-110` — `blocked` |
+| Next action | Owner decision on provider/model, data processing, budget, and live-call authority |
+| Last completed task | `POC-140` |
 | Last validated commit | This checkpoint; see `git log -1` |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
@@ -49,8 +49,8 @@ so work can resume without reconstructing context.
 | `POC-100` | Text-only bilingual chat UI | `done` | `POC-060`, `POC-070`, `POC-090` |
 | `POC-110` | Optional real OpenAI adapter | `blocked` | `POC-090`, `POC-100` |
 | `POC-120` | Thirty-pair bilingual pilot and baseline runner | `done` | `POC-040`, `POC-100` |
-| `POC-130` | Integration, browser, failure-path, and Docker tests | `in_progress` | `POC-020`, `POC-060`, `POC-100`, `POC-120` |
-| `POC-140` | POC report and continue/change/stop decision | `planned` | `POC-110`, `POC-120`, `POC-130` |
+| `POC-130` | Integration, browser, failure-path, and Docker tests | `done` | `POC-020`, `POC-060`, `POC-100`, `POC-120` |
+| `POC-140` | POC report and continue/change/stop decision | `done` | `POC-110`, `POC-120`, `POC-130` |
 
 ## Task definitions
 
@@ -481,7 +481,7 @@ this checkpoint cannot claim a project-versus-ChatGPT win.
 
 ### POC-130 — Integration, browser, failure-path, and Docker tests
 
-Status: `planned`
+Status: `done` (local release-shape checkpoint)
 
 Deliverables:
 
@@ -499,9 +499,23 @@ Definition of Done:
 - the same failure does not silently become a successful answer;
 - `npm run validate` and POC tests pass together.
 
+Evidence:
+
+- workspace typecheck, lint, formatting, unit tests, integration tests, and
+  build pass;
+- integration coverage includes invalid input, critical safety bypass, empty
+  retrieval, provider failure, malformed provider output, SSR routes, and all
+  ten legal routes;
+- `docker compose config --quiet` and `docker compose build
+  plumbing-assistant` pass;
+- a local Compose startup reaches a healthy HTTP healthcheck and returns the
+  expected SSR legal route;
+- headless Chrome loads the English landing DOM with the form, AI notice, legal
+  navigation, and footer; no public port was opened.
+
 ### POC-140 — POC report and continue/change/stop decision
 
-Status: `planned`
+Status: `done` (continue engineering; no public release)
 
 Deliverables:
 
@@ -517,6 +531,18 @@ Definition of Done:
 - critical safety failures are disclosed;
 - no public-release claim is made from POC evidence alone;
 - the next implementation phase has a clear owner and starting task.
+
+Evidence:
+
+- [POC report](../evaluation/plumbing-assistant-poc-report.md) records the
+  implementation result, exact validation families, pilot limitations, and the
+  continue/change/stop recommendation;
+- the decision is **continue engineering** with a hard no-public-release
+  boundary;
+- POC-110 remains blocked until the owner supplies an explicit provider/model,
+  data-processing, budget, and live-call decision;
+- the source registry remains in review and no direct ChatGPT comparison is
+  claimed.
 
 ## Daily handoff rule
 

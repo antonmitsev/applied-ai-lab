@@ -1,20 +1,26 @@
 import { EventEmitter } from "node:events";
 import nodePath from "node:path";
+import type { Express } from "express";
 import { createRequest, createResponse, type RequestOptions } from "node-mocks-http";
 import { describe, expect, it } from "vitest";
+import { ApiError, type ChatRuntime } from "../../src/chat.js";
 import { parseConfig } from "../../src/config.js";
 import { createServer } from "../../src/server.js";
 
 const testConfig = parseConfig({ NODE_ENV: "test" });
 
-async function invoke(path: string, options: Pick<RequestOptions, "method" | "body"> = {}) {
+async function invoke(
+  path: string,
+  options: Pick<RequestOptions, "method" | "body"> = {},
+  server?: Express,
+) {
   const requestOptions: RequestOptions = { method: options.method ?? "GET", url: path };
   if (options.body !== undefined) requestOptions.body = options.body;
   const request = createRequest(requestOptions);
   const response = createResponse({ eventEmitter: EventEmitter });
   const ended = new Promise<void>((resolve) => response.once("end", resolve));
 
-  createServer(testConfig, { serviceRoot: nodePath.resolve("../../docs/service") })(
+  (server ?? createServer(testConfig, { serviceRoot: nodePath.resolve("../../docs/service") }))(
     request,
     response,
   );
@@ -88,6 +94,61 @@ describe("POC HTTP boundary", () => {
       responseClass: "informational",
     });
     expect(response._getJSONData().citations.length).toBeGreaterThan(0);
+  });
+
+  it("returns an explicit clarification when retrieval has no evidence", async () => {
+    const response = await invoke("/api/chat", {
+      method: "POST",
+      body: { language: "en", message: "quantum banana plumbing" },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response._getJSONData()).toMatchObject({
+      responseClass: "clarify-first",
+      citations: [],
+    });
+  });
+
+  it("turns a provider failure into a stable 503 error", async () => {
+    const failingRuntime: ChatRuntime = {
+      async respond() {
+        throw new ApiError(503, "PROVIDER_TIMEOUT", "Provider timed out");
+      },
+    };
+    const server = createServer(testConfig, {
+      chatRuntime: failingRuntime,
+      serviceRoot: nodePath.resolve("../../docs/service"),
+    });
+    const response = await invoke(
+      "/api/chat",
+      { method: "POST", body: { language: "en", message: "How does a threaded connection seal?" } },
+      server,
+    );
+
+    expect(response.statusCode).toBe(503);
+    expect(response._getJSONData()).toEqual({
+      error: { code: "PROVIDER_TIMEOUT", message: "Provider timed out" },
+    });
+  });
+
+  it("rejects malformed provider output instead of rendering it", async () => {
+    const malformedRuntime: ChatRuntime = {
+      async respond() {
+        return { message: "unsafe" };
+      },
+    };
+    const server = createServer(testConfig, {
+      chatRuntime: malformedRuntime,
+      serviceRoot: nodePath.resolve("../../docs/service"),
+    });
+    const response = await invoke(
+      "/api/chat",
+      { method: "POST", body: { language: "en", message: "How does a threaded connection seal?" } },
+      server,
+    );
+
+    expect(response.statusCode).toBe(502);
+    expect(response._getJSONData().error.code).toBe("INVALID_PROVIDER_RESPONSE");
   });
 
   it("renders both SSR landing routes", async () => {

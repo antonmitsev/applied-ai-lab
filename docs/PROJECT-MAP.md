@@ -16,7 +16,7 @@ requirements → design → knowledge → sources → retrieval → safety → t
 | Requirements | `docs/requirements/` | What the product must do and how success is defined. |
 | Architecture and decisions | `docs/architecture/`, `docs/decisions/` | How the system should work and why important choices were made. |
 | Knowledge base | `docs/kb/` | Plumbing and heating knowledge: connections, seals, symptoms, failures, and diagnosis. |
-| Source governance | `docs/sources/`, `sources/` | Which external documents may support answers. The registry is currently empty by design. |
+| Source governance | `docs/sources/`, `sources/` | Which external documents may support answers. The registry has three metadata-only candidates; all remain in review. |
 | Retrieval evaluation | `evals/plumbing-kb/` | Small tests proving that the right KB units can be found. |
 | Full AI evaluation | `evals/plumbing-assistant/`, `docs/evaluation/` | Scenarios for safety, grounding, bilingual behavior, and release quality. |
 | Safety and security | `docs/safety/`, `docs/security/`, `SECURITY.md` | Boundaries for dangerous work, private data, images, prompt injection, and abuse. |
@@ -24,7 +24,7 @@ requirements → design → knowledge → sources → retrieval → safety → t
 | Planning and traceability | `docs/planning/`, `docs/traceability/` | What is being built, who owns it, and which requirement each task satisfies. The [POC task board](planning/plumbing-assistant-poc-plan.md) is the daily resume point. |
 | Audits and handoffs | `docs/audits/`, `docs/handoffs/` | Readiness decisions, open risks, and transfer notes. |
 | Validation scripts | `scripts/` | Deterministic checks for repository structure, KB content, and safety contracts. |
-| Applications | `apps/` | The runnable product. The Plumbing Assistant has a small POC scaffold; the chat/runtime is not implemented yet. |
+| Applications | `apps/` | The runnable product. The Plumbing Assistant now has a local end-to-end POC with SSR UI, mock chat, retrieval, safety gate, and legal routes. |
 | Shared packages | `packages/` | Reusable code, added only when it is genuinely shared. |
 | CI | `.github/workflows/` | Automated checks run for repository changes. |
 
@@ -63,6 +63,8 @@ Current validated baseline:
 - retrieval evaluation cases: `20`;
 - safety vectors: `10`;
 - KB tests: `6/6`.
+- POC unit tests: `15/15`;
+- POC integration tests: `13/13`;
 
 Passing these checks means the repository is internally consistent. It does
 not yet mean that a public AI service is ready. The runtime, reviewed source
@@ -71,14 +73,13 @@ still required.
 
 ## Current project status
 
-The requirements foundation, first draft KB package, and initial POC scaffold
-are complete. The next important step is a small end-to-end internal prototype:
+The requirements foundation, first draft KB package, and internal mock POC are
+complete. The next important step is controlled evidence work:
 
-1. review a source-backed batch of three to five KB units;
-2. build a text-only application path;
-3. connect retrieval and the independent safety pipeline;
-4. compare it with direct ChatGPT on the staged testing plan;
-5. continue only if the measured safety, grounding, or usefulness is better.
+1. review a source-backed batch and complete missing KB units;
+2. make an explicit provider/model, data, and budget decision;
+3. compare the reviewed project path with direct ChatGPT on the staged testing plan;
+4. complete release/legal/deployment evidence before any public traffic.
 
 ## Maintenance rule
 

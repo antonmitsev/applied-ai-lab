@@ -5,8 +5,8 @@ plumbing and water-based heating installations in Bulgaria.
 
 ## Status
 
-POC scaffold implemented; chat runtime and public-release evidence do not exist
-yet. No production application or public-release approval exists.
+Local end-to-end mock POC implemented; no live provider, production application,
+or public-release approval exists.
 
 ## Planned experience
 
@@ -23,14 +23,14 @@ yet. No production application or public-release approval exists.
 
 The first scaffold uses Node.js 22, TypeScript, Express, React server rendering,
 Vitest, ESLint, and Prettier. It currently provides a bilingual SSR shell,
-`GET /api/health` with a mock-safe default, and a deterministic local lexical
-index over the current English draft KB. Continue from the
+`GET /api/health`, bounded chat API, deterministic local lexical index, safety
+gate, mock runtime, bilingual legal routes, and text-only chat UI. Continue from the
 [POC task board](../../docs/planning/plumbing-assistant-poc-plan.md).
 
 The local index is development-only: candidate source records remain in
 review, and missing evaluation units are reported rather than silently
-synthesized. The chat runtime, provider adapter, legal-page renderer, and
-public release are not implemented yet.
+synthesized. The real provider adapter, qualified source/domain/legal review,
+and public release are not implemented yet.
 
 ## Documentation
 
