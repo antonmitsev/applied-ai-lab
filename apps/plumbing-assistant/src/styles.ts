@@ -100,7 +100,7 @@ button, textarea { font: inherit; }
   max-width: 12ch;
   margin: 0;
   color: var(--accent);
-  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-size: 2.85rem;
   line-height: 0.99;
   letter-spacing: -0.065em;
 }
@@ -263,7 +263,7 @@ button, textarea { font: inherit; }
 .document-shell article h1,
 .document-shell article h2,
 .document-shell article h3 { color: var(--accent); }
-.document-shell article h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+.document-shell article h1 { font-size: 2.5rem; }
 .document-shell article h2 { margin-top: 2rem; }
 .document-shell article p { color: #40584b; }
 .document-shell article li { margin: 0.4rem 0; color: #40584b; }
@@ -278,7 +278,7 @@ button, textarea { font: inherit; }
 
 @media (max-width: 760px) {
   .hero { grid-template-columns: 1fr; padding-top: 2rem; }
-  .hero h1 { max-width: 15ch; }
+  .hero h1 { max-width: 15ch; font-size: 2.25rem; }
   .chat-card { order: -1; }
   .site-footer { display: block; }
   .site-footer > * { display: inline-block; margin: 0.25rem 0.75rem 0.25rem 0; }
