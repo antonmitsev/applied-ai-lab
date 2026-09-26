@@ -18,3 +18,8 @@ The release process and thresholds are defined in
 
 `examples.jsonl` demonstrates the data structure only. Its cases have
 `review_status: "unreviewed"` and are excluded from all release metrics.
+
+`poc-pilot.jsonl` is a separate 30-pair bilingual development replay fixture.
+Its records are intentionally marked `review_status: "development"`; they are
+not a reviewed release set and are not evidence that the project beats a direct
+ChatGPT baseline.

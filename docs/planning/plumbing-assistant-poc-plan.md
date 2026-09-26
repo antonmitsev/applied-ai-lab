@@ -24,9 +24,9 @@ so work can resume without reconstructing context.
 | Field | Value |
 | --- | --- |
 | POC status | Implementation in progress |
-| Current task | `POC-100` — `in_progress` |
-| Next action | Add the bilingual text-only chat UI and connect it to `/api/chat` |
-| Last completed task | `POC-090` |
+| Current task | `POC-130` — `in_progress` |
+| Next action | Add browser, Docker startup, and failure-path checks around the completed mock flow |
+| Last completed task | `POC-120` |
 | Last validated commit | This checkpoint; see `git log -1` |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
@@ -46,10 +46,10 @@ so work can resume without reconstructing context.
 | `POC-070` | Landing page and bilingual legal routes | `done` | `POC-030` |
 | `POC-080` | Deterministic safety pre-triage and response validation | `done` | `POC-030` |
 | `POC-090` | Mock model/provider adapter | `done` | `POC-030`, `POC-080` |
-| `POC-100` | Text-only bilingual chat UI | `in_progress` | `POC-060`, `POC-070`, `POC-090` |
-| `POC-110` | Optional real OpenAI adapter | `planned` | `POC-090`, `POC-100` |
-| `POC-120` | Thirty-pair bilingual pilot and baseline runner | `planned` | `POC-040`, `POC-100` |
-| `POC-130` | Integration, browser, failure-path, and Docker tests | `planned` | `POC-020`, `POC-060`, `POC-100`, `POC-120` |
+| `POC-100` | Text-only bilingual chat UI | `done` | `POC-060`, `POC-070`, `POC-090` |
+| `POC-110` | Optional real OpenAI adapter | `blocked` | `POC-090`, `POC-100` |
+| `POC-120` | Thirty-pair bilingual pilot and baseline runner | `done` | `POC-040`, `POC-100` |
+| `POC-130` | Integration, browser, failure-path, and Docker tests | `in_progress` | `POC-020`, `POC-060`, `POC-100`, `POC-120` |
 | `POC-140` | POC report and continue/change/stop decision | `planned` | `POC-110`, `POC-120`, `POC-130` |
 
 ## Task definitions
@@ -391,7 +391,7 @@ Evidence:
 
 ### POC-100 — Text-only bilingual chat UI
 
-Status: `planned`
+Status: `done` (SSR/client boundary checkpoint)
 
 Deliverables:
 
@@ -409,9 +409,27 @@ Definition of Done:
 - citations and handoff are understandable;
 - basic keyboard and mobile checks pass.
 
+Evidence:
+
+- `apps/plumbing-assistant/src/app.tsx` renders a bilingual text form, bounded
+  textarea, new-chat control, live response region, and citation list in SSR;
+- the small client script calls only `/api/chat` and `/api/new-chat`, uses
+  `textContent` for response/citation rendering, and carries no credentials or
+  conversation persistence;
+- landing unit tests cover both language forms; API integration tests cover the
+  routine mock and critical safety flows.
+
+Known limitation: browser automation is deferred to POC-130; this checkpoint
+proves the SSR markup and server contract, not a public browser release.
+
 ### POC-110 — Optional real OpenAI adapter
 
-Status: `planned`
+Status: `blocked` (explicit owner/provider decision required)
+
+The adapter interface remains provider-neutral and the default mock path is
+complete. A real provider adapter is not activated because model, project,
+retention settings, budget ceiling, data-processing decision, and live-call
+authority have not been supplied for this POC. No API key or paid call is used.
 
 Deliverables:
 
@@ -429,7 +447,7 @@ Definition of Done:
 
 ### POC-120 — Thirty-pair bilingual pilot and baseline runner
 
-Status: `planned`
+Status: `done` (development replay checkpoint)
 
 Deliverables:
 
@@ -445,6 +463,21 @@ Definition of Done:
 - safety, grounding, usefulness, uncertainty, and language parity are scored;
 - critical failures are individually visible and block a positive conclusion;
 - the report binds results to commit, KB, model, prompt, and index versions.
+
+Evidence:
+
+- `evals/plumbing-assistant/poc-pilot.jsonl` contains 30 bilingual development
+  pairs covering critical, caution, routine, uncertainty, chemicals, shared
+  systems, and evidence-conflict cases;
+- `apps/plumbing-assistant/src/pilot.test.ts` replays both languages through
+  deterministic pre-triage and the mock project path;
+- the replay is bound to the repository KB and mock runtime, and uses no API
+  key or paid call.
+
+Known limitation: the cases are `development`, not qualified human-reviewed
+release cases. A direct ChatGPT baseline and human comparison are intentionally
+not run without an explicit provider/data-processing/budget decision; therefore
+this checkpoint cannot claim a project-versus-ChatGPT win.
 
 ### POC-130 — Integration, browser, failure-path, and Docker tests
 

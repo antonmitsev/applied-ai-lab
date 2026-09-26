@@ -82,6 +82,7 @@ export function preTriage(
     includesAny(text, [
       "flooding",
       "burst pipe",
+      "pipe burst",
       "uncontrolled leak",
       "наводн",
       "спукана тръба",
@@ -104,11 +105,39 @@ export function preTriage(
   if (includesAny(text, ["sewage", "wastewater", "канализация", "отпадна вода"])) {
     addHazard("HZ-005", "caution", "stop-and-escalate");
   }
-  if (includesAny(text, ["mix chemicals", "chemical", "химикал", "смесвам препарати"])) {
+  if (
+    includesAny(text, [
+      "mix chemicals",
+      "chemical",
+      "химикал",
+      "смесвам препарати",
+      "смеся",
+      "препарата",
+    ])
+  ) {
     addHazard("HZ-011", "caution", "clarify-first");
   }
-  if (includesAny(text, ["shared riser", "building heating", "общ щранг", "обща инсталация"])) {
+  if (
+    includesAny(text, [
+      "shared riser",
+      "building heating",
+      "общ щранг",
+      "общия щранг",
+      "обща инсталация",
+    ])
+  ) {
     addHazard("HZ-007", "caution", "stop-and-escalate");
+  }
+  if (
+    includesAny(text, [
+      "sealed heat meter",
+      "sealed meter",
+      "пломбиран",
+      "топломер",
+      "водомер с пломба",
+    ])
+  ) {
+    addHazard("HZ-008", "caution", "clarify-first");
   }
   if (
     includesAny(text, [
@@ -119,6 +148,7 @@ export function preTriage(
       "режа тръбата",
       "пробивам",
       "заварявам",
+      "заваря",
     ])
   ) {
     addHazard("HZ-010", "caution", "stop-and-escalate");
@@ -128,13 +158,51 @@ export function preTriage(
       "which part",
       "what seal",
       "what fitting",
+      "o-ring",
+      "exact part",
+      "photo",
+      "dismantle",
       "кой детайл",
       "какъв о-пръстен",
       "каква гарнитура",
+      "снимка",
+      "точния размер",
+      "epdm",
+      "минерално масло",
+      "mineral oil",
+      "разглоб",
     ]) &&
-    includesAny(text, ["buy", "replace", "change", "купя", "сменя", "подходящ"])
+    includesAny(text, [
+      "buy",
+      "replace",
+      "change",
+      "use",
+      "can i",
+      "suitable",
+      "size",
+      "купя",
+      "сменя",
+      "подходящ",
+      "размер",
+      "разглоб",
+      "dismantle",
+      "може",
+    ])
   ) {
     addHazard("HZ-009", "caution", "clarify-first");
+  }
+  if (includesAny(text, ["underfloor", "manifold", "подово отопление", "колектор"])) {
+    addHazard("HZ-012", "caution", "clarify-first");
+  }
+  if (
+    includesAny(text, [
+      "conflicting evidence",
+      "evidence conflict",
+      "противоречиви данни",
+      "данните се разминават",
+    ])
+  ) {
+    addHazard("HZ-013", "caution", "clarify-first");
   }
 
   const finalUrgency = urgency as Urgency;
