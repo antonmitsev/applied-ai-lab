@@ -21,7 +21,7 @@ requirements → design → knowledge → sources → retrieval → safety → t
 | Full AI evaluation | `evals/plumbing-assistant/`, `docs/evaluation/` | Scenarios for safety, grounding, bilingual behavior, and release quality. |
 | Safety and security | `docs/safety/`, `docs/security/`, `SECURITY.md` | Boundaries for dangerous work, private data, images, prompt injection, and abuse. |
 | Public service rules | `docs/service/` | AI notices, privacy, terms, cookies, sources, and public-facing wording. |
-| Planning and traceability | `docs/planning/`, `docs/traceability/` | What is being built, who owns it, and which requirement each task satisfies. |
+| Planning and traceability | `docs/planning/`, `docs/traceability/` | What is being built, who owns it, and which requirement each task satisfies. The [POC task board](planning/plumbing-assistant-poc-plan.md) is the daily resume point. |
 | Audits and handoffs | `docs/audits/`, `docs/handoffs/` | Readiness decisions, open risks, and transfer notes. |
 | Validation scripts | `scripts/` | Deterministic checks for repository structure, KB content, and safety contracts. |
 | Applications | `apps/` | The runnable product. The Plumbing Assistant runtime is not implemented yet. |
@@ -93,4 +93,3 @@ This includes:
 
 Small content edits inside an already documented area do not require a map
 change. Run `npm run validate` after updating this map and keep links current.
-
