@@ -5,8 +5,8 @@ plumbing and water-based heating installations in Bulgaria.
 
 ## Status
 
-Project definition accepted; ready to begin implementation. No production
-application or public-release approval exists yet.
+POC scaffold implemented; chat runtime and public-release evidence do not exist
+yet. No production application or public-release approval exists.
 
 ## Planned experience
 
@@ -18,6 +18,13 @@ application or public-release approval exists yet.
 - explicit urgency classification, stop conditions, and professional handoff;
 - anonymous access protected by pseudonymous quotas and a global cost budget;
 - read-only aggregated statistics through signed administrative API calls.
+
+## POC checkpoint
+
+The first scaffold uses Node.js 22, TypeScript, Express, React server rendering,
+Vitest, ESLint, and Prettier. It currently provides a bilingual SSR shell and
+`GET /api/health` with a mock-safe default. Continue from the
+[POC task board](../../docs/planning/plumbing-assistant-poc-plan.md).
 
 ## Documentation
 

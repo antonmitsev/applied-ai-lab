@@ -23,11 +23,11 @@ so work can resume without reconstructing context.
 
 | Field | Value |
 | --- | --- |
-| POC status | Implementation in progress |
-| Current task | `POC-010` — `in_progress` |
-| Next action | Record the stack decision and scaffold the app |
-| Last completed task | `POC-000` |
-| Last validated commit | `16f1fcd` |
+| POC status | Scaffold checkpoint complete |
+| Current task | `POC-020` — `ready` |
+| Next action | Add Dockerfile and Docker Compose development environment |
+| Last completed task | `POC-010` |
+| Last validated commit | This checkpoint; see `git log -1` |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
 | Public traffic | Disabled; internal/local POC only |
@@ -37,8 +37,8 @@ so work can resume without reconstructing context.
 | ID | Task | Status | Depends on |
 | --- | --- | --- | --- |
 | `POC-000` | POC scope, acceptance criteria, and task board | `done` | — |
-| `POC-010` | Stack decision and application scaffold | `in_progress` | `POC-000` |
-| `POC-020` | Docker Compose development environment | `planned` | `POC-010` |
+| `POC-010` | Stack decision and application scaffold | `done` | `POC-000` |
+| `POC-020` | Docker Compose development environment | `ready` | `POC-010` |
 | `POC-030` | Configuration, health endpoint, and error model | `planned` | `POC-010` |
 | `POC-040` | Source-backed pilot batch | `planned` | `POC-000` |
 | `POC-050` | Local KB extraction, chunking, and lexical index | `planned` | `POC-040` |
@@ -73,7 +73,7 @@ Definition of Done:
 
 ### POC-010 — Stack decision and application scaffold
 
-Status: `in_progress`
+Status: `done`
 
 Scope alignment: this is the POC slice of `PA-IMP-000`, covering `FR-22`,
 `AC-95–AC-101`, and audit control `IMP-010`. It does not claim that the full
@@ -103,6 +103,25 @@ Definition of Done:
 - `npm run validate` still passes;
 - the chosen boundaries do not require changing the accepted safety or privacy
   design.
+
+Evidence:
+
+- decision: [ADR-0005](../decisions/0005-poc-stack-and-local-topology.md);
+- workspace: `apps/plumbing-assistant/`;
+- SSR shell: `src/app.tsx` and `src/server.ts`;
+- unit tests: `src/app.test.tsx`;
+- integration tests: `tests/integration/server.test.ts`;
+- package checks: `typecheck`, `lint`, `format:check`, `test:unit`,
+  `test:integration`, and `build`;
+- dependency audit: `npm audit --omit=optional` reports zero vulnerabilities.
+
+Known limitations carried to later tasks:
+
+- no Docker environment yet;
+- no chat endpoint or provider call;
+- no KB retrieval or source-backed index;
+- no legal-page renderer or full landing experience;
+- no public traffic or deployment.
 
 ### POC-020 — Docker Compose development environment
 

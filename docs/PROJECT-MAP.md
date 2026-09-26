@@ -24,7 +24,7 @@ requirements → design → knowledge → sources → retrieval → safety → t
 | Planning and traceability | `docs/planning/`, `docs/traceability/` | What is being built, who owns it, and which requirement each task satisfies. The [POC task board](planning/plumbing-assistant-poc-plan.md) is the daily resume point. |
 | Audits and handoffs | `docs/audits/`, `docs/handoffs/` | Readiness decisions, open risks, and transfer notes. |
 | Validation scripts | `scripts/` | Deterministic checks for repository structure, KB content, and safety contracts. |
-| Applications | `apps/` | The runnable product. The Plumbing Assistant runtime is not implemented yet. |
+| Applications | `apps/` | The runnable product. The Plumbing Assistant has a small POC scaffold; the chat/runtime is not implemented yet. |
 | Shared packages | `packages/` | Reusable code, added only when it is genuinely shared. |
 | CI | `.github/workflows/` | Automated checks run for repository changes. |
 
@@ -71,8 +71,8 @@ still required.
 
 ## Current project status
 
-The requirements foundation and first draft KB package are complete. The next
-important step is a small end-to-end internal prototype:
+The requirements foundation, first draft KB package, and initial POC scaffold
+are complete. The next important step is a small end-to-end internal prototype:
 
 1. review a source-backed batch of three to five KB units;
 2. build a text-only application path;
