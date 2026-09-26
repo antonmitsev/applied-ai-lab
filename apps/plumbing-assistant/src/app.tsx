@@ -1,5 +1,7 @@
 export type Language = "bg" | "en";
 
+import { siteStyles } from "./styles.js";
+
 type AppProps = {
   language: Language;
 };
@@ -7,11 +9,15 @@ type AppProps = {
 const copy = {
   bg: {
     title: "Plumbing Assistant — POC",
+    eyebrow: "Спокоен първи разговор",
     heading: "Разберете какво се случва с Вашата водопроводна връзка.",
     description: "Това е вътрешен прототип на AI помощник за водопроводни и отоплителни проблеми.",
     notice:
       "Разговаряте с AI помощник, не с човек. Прототипът може да греши и не заменя специалист.",
     status: "Прототипът работи",
+    chatTitle: "Опишете проблема",
+    chatDescription: "Ще подредим следващите безопасни стъпки.",
+    trust: ["На български и английски", "Без регистрация", "С мисъл за безопасността"],
     inputLabel: "Опишете проблема",
     inputPlaceholder: "Например: Връзката тече повече, когато затегна гайката.",
     send: "Изпрати",
@@ -21,11 +27,15 @@ const copy = {
   },
   en: {
     title: "Plumbing Assistant — POC",
+    eyebrow: "A calm first conversation",
     heading: "Understand what is happening at your plumbing connection.",
     description: "This is an internal proof of concept for plumbing and heating assistance.",
     notice:
       "You are interacting with an AI assistant, not a person. The prototype can be wrong and does not replace a professional.",
     status: "Prototype is running",
+    chatTitle: "Describe the problem",
+    chatDescription: "We will organise the next safe steps.",
+    trust: ["Bulgarian and English", "No sign-up", "Safety-aware by design"],
     inputLabel: "Describe the problem",
     inputPlaceholder: "For example: The joint leaks more when I tighten the nut.",
     send: "Send",
@@ -41,36 +51,69 @@ export function App({ language }: AppProps) {
   const alternatePath = language === "bg" ? "/en" : "/";
 
   return (
-    <main lang={language}>
-      <p>
-        <a href={alternatePath}>{alternateLanguage.toUpperCase()}</a>
-      </p>
-      <h1>{text.heading}</h1>
-      <p>{text.description}</p>
-      <p role="note">{text.notice}</p>
-      <p>{text.status}</p>
-      <form id="chat-form" data-language={language}>
-        <label htmlFor="chat-message">{text.inputLabel}</label>
-        <textarea
-          id="chat-message"
-          name="message"
-          maxLength={4000}
-          required
-          placeholder={text.inputPlaceholder}
-        />
-        <input id="chat-id" name="chatId" type="hidden" />
-        <p>
-          <button type="submit">{text.send}</button>{" "}
-          <button id="new-chat" type="button">
-            {text.newChat}
-          </button>
-        </p>
-      </form>
-      <section aria-live="polite" id="chat-response">
-        <p id="chat-status">{text.emptyResponse}</p>
-        <ol id="chat-citations" />
+    <main lang={language} className="site-shell">
+      <style dangerouslySetInnerHTML={{ __html: siteStyles }} />
+      <header className="site-header">
+        <a className="brand" href={language === "bg" ? "/" : "/en"}>
+          <span className="brand-mark" aria-hidden="true">
+            ⌁
+          </span>
+          {text.title}
+        </a>
+        <a className="language-switcher" href={alternatePath}>
+          {alternateLanguage.toUpperCase()}
+        </a>
+      </header>
+      <section className="hero" aria-labelledby="hero-heading">
+        <div>
+          <p className="eyebrow">{text.eyebrow}</p>
+          <h1 id="hero-heading">{text.heading}</h1>
+          <p className="hero-description">{text.description}</p>
+          <div className="trust-row" aria-label="Product qualities">
+            {text.trust.map((item) => (
+              <span className="trust-pill" key={item}>
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="chat-card">
+          <div className="chat-card-header">
+            <div>
+              <h2>{text.chatTitle}</h2>
+              <p>{text.chatDescription}</p>
+            </div>
+            <span className="status-pill">{text.status}</span>
+          </div>
+          <form id="chat-form" className="chat-form" data-language={language}>
+            <label htmlFor="chat-message">{text.inputLabel}</label>
+            <textarea
+              id="chat-message"
+              name="message"
+              maxLength={4000}
+              required
+              placeholder={text.inputPlaceholder}
+            />
+            <input id="chat-id" name="chatId" type="hidden" />
+            <div className="button-row">
+              <button className="button button-primary" type="submit">
+                {text.send}
+              </button>
+              <button className="button button-secondary" id="new-chat" type="button">
+                {text.newChat}
+              </button>
+            </div>
+          </form>
+          <p className="ai-notice" role="note">
+            {text.notice}
+          </p>
+          <section className="response-panel" aria-live="polite" id="chat-response">
+            <p id="chat-status">{text.emptyResponse}</p>
+            <ol id="chat-citations" />
+          </section>
+        </div>
       </section>
-      <nav aria-label="Legal links">
+      <nav className="site-nav" aria-label="Legal links">
         <a href={language === "bg" ? "/terms" : "/en/terms"}>{text.legal[0]}</a>
         {" · "}
         <a href={language === "bg" ? "/privacy" : "/en/privacy"}>{text.legal[1]}</a>
@@ -81,7 +124,7 @@ export function App({ language }: AppProps) {
         {" · "}
         <a href={language === "bg" ? "/sources" : "/en/sources"}>{text.legal[4]}</a>
       </nav>
-      <footer>
+      <footer className="site-footer">
         <a href="mailto:me@tonymitsev.com">me@tonymitsev.com</a>
         {" · "}
         <a href="https://github.com/antonmitsev/applied-ai-lab">Source</a>
@@ -127,9 +170,6 @@ export function App({ language }: AppProps) {
 })();`,
         }}
       />
-      <p>
-        <small>{text.title}</small>
-      </p>
     </main>
   );
 }

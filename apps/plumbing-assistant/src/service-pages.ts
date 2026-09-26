@@ -120,5 +120,5 @@ export function renderServicePage(page: ServicePage, manifest: PageManifest): st
   ];
   const home = page.language === "bg" ? manifest.landing_routes.bg : manifest.landing_routes.en;
   const body = renderMarkdown(page.markdown, page.language, manifest.documents);
-  return `<main lang="${page.language}"><nav><a href="${home}">${page.language === "bg" ? "Начало" : "Home"}</a> · <a href="${alternate?.route ?? home}">${alternateLanguage.toUpperCase()}</a></nav><article>${body}</article></main>`;
+  return `<main class="document-shell" lang="${page.language}"><nav class="site-header"><a class="brand" href="${home}"><span class="brand-mark" aria-hidden="true">⌁</span>Plumbing Assistant</a><a class="language-switcher" href="${alternate?.route ?? home}">${alternateLanguage.toUpperCase()}</a></nav><article>${body}</article></main>`;
 }

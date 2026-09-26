@@ -11,6 +11,8 @@ describe("POC landing shell", () => {
     expect(markup).toContain('href="/en"');
     expect(markup).toContain('id="chat-form"');
     expect(markup).toContain("Изпрати");
+    expect(markup).toContain("--mint");
+    expect(markup).toContain("chat-card");
   });
 
   it("renders the English AI notice", () => {
@@ -21,5 +23,7 @@ describe("POC landing shell", () => {
     expect(markup).toContain('href="/"');
     expect(markup).toContain('id="chat-form"');
     expect(markup).toContain("Send");
+    expect(markup).toContain("--mint");
+    expect(markup).toContain("chat-card");
   });
 });

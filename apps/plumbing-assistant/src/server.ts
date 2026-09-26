@@ -17,6 +17,7 @@ import { parseConfig, type AppConfig } from "./config.js";
 import { createMockChatRuntime } from "./mock-runtime.js";
 import { preTriage } from "./safety.js";
 import { getServiceManifest, loadServicePage, renderServicePage } from "./service-pages.js";
+import { siteStyles } from "./styles.js";
 
 export interface ServerDependencies {
   chatRuntime?: ChatRuntime;
@@ -102,6 +103,7 @@ export function createServer(
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>${title}</title>
+    <style>${siteStyles}</style>
   </head>
   <body>${body}</body>
     </html>`);
@@ -134,7 +136,7 @@ export function createServer(
         response
           .type("html")
           .send(
-            `<!doctype html><html lang="${page.language}"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>${page.title}</title></head><body>${body}</body></html>`,
+            `<!doctype html><html lang="${page.language}"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>${page.title}</title><style>${siteStyles}</style></head><body>${body}</body></html>`,
           );
       } catch (error) {
         next(error);
