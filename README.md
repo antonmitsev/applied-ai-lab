@@ -24,6 +24,9 @@ scripts/        Repository-owned deterministic validation and maintenance tools
 sources/        Reviewed source registries; document bytes only when redistributable
 ```
 
+For a concise human explanation of how these areas fit together, see the
+[Human Project Map](docs/PROJECT-MAP.md).
+
 ## Engineering principles
 
 - Ground answers in traceable sources.
