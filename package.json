@@ -5,7 +5,7 @@
   "license": "0BSD",
   "description": "Production-oriented applied AI portfolio projects",
   "scripts": {
-    "validate": "node scripts/validate-repository.mjs && node scripts/validate-kb.mjs && node scripts/validate-safety-response.mjs",
+    "validate": "node scripts/validate-repository.mjs && node scripts/validate-kb.mjs && node scripts/validate-source-manifest.mjs && node scripts/validate-safety-response.mjs",
     "validate:kb": "node scripts/validate-kb.mjs",
     "test:kb": "node scripts/validate-kb.test.mjs",
     "validate:safety": "node scripts/validate-safety-response.mjs",

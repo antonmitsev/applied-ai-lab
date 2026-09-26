@@ -24,9 +24,9 @@ so work can resume without reconstructing context.
 | Field | Value |
 | --- | --- |
 | POC status | Implementation in progress |
-| Current task | `POC-040` — `in_progress` |
-| Next action | Register a small, provenance-complete pilot source batch |
-| Last completed task | `POC-030` |
+| Current task | `POC-050` — `in_progress` |
+| Next action | Extract draft KB units and build a deterministic local lexical index |
+| Last completed task | `POC-040` |
 | Last validated commit | This checkpoint; see `git log -1` |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
@@ -40,8 +40,8 @@ so work can resume without reconstructing context.
 | `POC-010` | Stack decision and application scaffold | `done` | `POC-000` |
 | `POC-020` | Docker Compose development environment | `done` | `POC-010` |
 | `POC-030` | Configuration, health endpoint, and error model | `done` | `POC-010` |
-| `POC-040` | Source-backed pilot batch | `in_progress` | `POC-000` |
-| `POC-050` | Local KB extraction, chunking, and lexical index | `planned` | `POC-040` |
+| `POC-040` | Source-backed pilot batch | `done` | `POC-000` |
+| `POC-050` | Local KB extraction, chunking, and lexical index | `in_progress` | `POC-040` |
 | `POC-060` | Express chat API boundary | `planned` | `POC-030`, `POC-050` |
 | `POC-070` | Landing page and bilingual legal routes | `planned` | `POC-030` |
 | `POC-080` | Deterministic safety pre-triage and response validation | `planned` | `POC-030` |
@@ -188,23 +188,35 @@ adapter task, because no provider adapter exists yet.
 
 ### POC-040 — Source-backed pilot batch
 
-Status: `planned`
+Status: `done` (development registration checkpoint)
 
 Deliverables:
 
-- three to five reviewed source records;
-- rights, scope, URL, version, checksum, and review metadata;
-- three to five KB units promoted from `draft` only where evidence supports
-  the claims;
-- source IDs connected to the KB claims or citations.
+- three provenance-complete candidate source records;
+- rights, scope, URL, version, and review metadata fields populated without
+  inventing approval evidence;
+- a source registry validator that fails closed for malformed records and never
+  permits non-approved records into an index.
 
 Definition of Done:
 
-- sources pass the source-manifest schema and governance checks;
-- no copied document is committed without redistribution approval;
-- a reviewer can find the supporting passage again;
-- the batch is explicitly marked development-only until applicable review is
-  complete.
+- candidate records validate against the pinned source schema;
+- all three records are explicitly `in_review`, have pending rights decisions,
+  and are excluded from indexing;
+- the pilot boundary states that production source approval is still pending.
+
+Evidence:
+
+- `sources/plumbing-assistant/manifest.json` contains three official GB
+  candidate records with canonical HTTPS URLs and explicit pending review and
+  rights state;
+- `scripts/validate-source-manifest.mjs` validates the manifest and enforces
+  the approved-for-index lifecycle invariant;
+- `npm run validate` includes the source-manifest check.
+
+Known limitation: these records are not approved for production retrieval. The
+POC may use the existing repository draft KB as a development corpus, but it
+must not present that corpus as an approved external source index.
 
 ### POC-050 — Local KB extraction, chunking, and lexical index
 

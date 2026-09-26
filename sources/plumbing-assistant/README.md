@@ -1,8 +1,9 @@
 # Plumbing Assistant source registry
 
 `manifest.json` is the repository-owned source of truth for curated documents.
-It is intentionally empty because WP-01 manufacturer and documentation research
-has not started.
+It currently contains a small in-review pilot registry. The records are
+metadata-only candidates and are not eligible for production indexing because
+rights, jurisdiction, technical scope, and qualified review are still pending.
 
 Before adding records, follow
 [PA-SOURCE-001](../../docs/sources/plumbing-assistant-source-governance.md) and

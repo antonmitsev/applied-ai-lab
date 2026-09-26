@@ -3,7 +3,164 @@
   "schema_version": "1.0.0",
   "registry_id": "plumbing-assistant",
   "registry_version": "0.1.0",
-  "updated_at": "2026-09-22T00:00:00Z",
-  "research_status": "not_started",
-  "sources": []
+  "updated_at": "2026-09-26T00:00:00Z",
+  "research_status": "in_progress",
+  "sources": [
+    {
+      "source_id": "src_uk_water_fittings_1999",
+      "status": "in_review",
+      "publisher": "UK Parliament",
+      "manufacturer": null,
+      "source_type": "regulatory_guidance",
+      "authority_class": "public_authority",
+      "document_title": "The Water Supply (Water Fittings) Regulations 1999",
+      "document_version": "1999 No. 1148; official consolidated publication",
+      "publication_date": "1999-04-07",
+      "language": "en-GB",
+      "canonical_url": "https://www.legislation.gov.uk/uksi/1999/1148/pdfs/uksi_19991148_en.pdf",
+      "accessed_at": "2026-09-26T00:00:00Z",
+      "product_scope": {
+        "jurisdictions": ["GB"],
+        "system_types": ["potable_water", "general_water_side"],
+        "product_family": null,
+        "model_variants": []
+      },
+      "content": {
+        "mime_type": null,
+        "byte_length": null,
+        "sha256": null,
+        "artifact_locator": null
+      },
+      "usage_rights": {
+        "access_basis": "public",
+        "ingestion_decision": "pending",
+        "redistribution_decision": "pending",
+        "evidence": null,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "review": {
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "next_review_at": null,
+        "notes": "Candidate official regulatory text; jurisdiction and rights review pending."
+      },
+      "citation": {
+        "source_tier": "authority",
+        "title_bg": "Водоснабдителни фитинги — регулаторни изисквания (кандидат)",
+        "title_en": "Water fittings regulations (candidate)"
+      },
+      "ingestion": {
+        "approved_for_index": false,
+        "priority": 2,
+        "chunking_profile": null
+      },
+      "superseded_by": null,
+      "withdrawal_reason": null
+    },
+    {
+      "source_id": "src_dwi_find_a_plumber",
+      "status": "in_review",
+      "publisher": "Drinking Water Inspectorate",
+      "manufacturer": null,
+      "source_type": "professional_guidance",
+      "authority_class": "public_authority",
+      "document_title": "Advice for Finding a Plumber",
+      "document_version": null,
+      "publication_date": null,
+      "language": "en-GB",
+      "canonical_url": "https://www.dwi.gov.uk/consumers/learn-more-about-your-water/advice-for-finding-a-plumber/",
+      "accessed_at": "2026-09-26T00:00:00Z",
+      "product_scope": {
+        "jurisdictions": ["GB"],
+        "system_types": ["potable_water"],
+        "product_family": null,
+        "model_variants": []
+      },
+      "content": {
+        "mime_type": null,
+        "byte_length": null,
+        "sha256": null,
+        "artifact_locator": null
+      },
+      "usage_rights": {
+        "access_basis": "public",
+        "ingestion_decision": "pending",
+        "redistribution_decision": "pending",
+        "evidence": null,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "review": {
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "next_review_at": null,
+        "notes": "Candidate public guidance; relevance, freshness, and rights review pending."
+      },
+      "citation": {
+        "source_tier": "authority",
+        "title_bg": "Съвети за избор на водопроводчик (кандидат)",
+        "title_en": "Advice for finding a plumber (candidate)"
+      },
+      "ingestion": {
+        "approved_for_index": false,
+        "priority": 3,
+        "chunking_profile": null
+      },
+      "superseded_by": null,
+      "withdrawal_reason": null
+    },
+    {
+      "source_id": "src_defra_water_fittings_specs",
+      "status": "in_review",
+      "publisher": "Department for Environment, Food and Rural Affairs",
+      "manufacturer": null,
+      "source_type": "regulatory_guidance",
+      "authority_class": "public_authority",
+      "document_title": "Water fittings regulations: specifications approved by the regulators",
+      "document_version": null,
+      "publication_date": "2026-05-06",
+      "language": "en-GB",
+      "canonical_url": "https://www.gov.uk/guidance/water-fittings-regulations-specifications-approved-by-the-regulators",
+      "accessed_at": "2026-09-26T00:00:00Z",
+      "product_scope": {
+        "jurisdictions": ["GB"],
+        "system_types": ["potable_water", "general_water_side"],
+        "product_family": null,
+        "model_variants": []
+      },
+      "content": {
+        "mime_type": null,
+        "byte_length": null,
+        "sha256": null,
+        "artifact_locator": null
+      },
+      "usage_rights": {
+        "access_basis": "public",
+        "ingestion_decision": "pending",
+        "redistribution_decision": "pending",
+        "evidence": null,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "review": {
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "next_review_at": null,
+        "notes": "Candidate current guidance; future effective dates and target-jurisdiction fit require review."
+      },
+      "citation": {
+        "source_tier": "authority",
+        "title_bg": "Одобрени спецификации за водопроводни фитинги (кандидат)",
+        "title_en": "Approved water-fittings specifications (candidate)"
+      },
+      "ingestion": {
+        "approved_for_index": false,
+        "priority": 3,
+        "chunking_profile": null
+      },
+      "superseded_by": null,
+      "withdrawal_reason": null
+    }
+  ]
 }

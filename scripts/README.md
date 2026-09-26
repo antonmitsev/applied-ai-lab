@@ -139,6 +139,25 @@ access the network, or require credentials.
 | --- | --- |
 | `fixture(` | Joins test fixture lines into a Markdown string; no I/O. |
 
+## `validate-source-manifest.mjs`
+
+Run from the repository root:
+
+```bash
+node scripts/validate-source-manifest.mjs
+```
+
+The validator is read-only. It reads the source manifest and pinned source
+schema, validates the registry shape, checks unique source IDs, and enforces
+that only approved records can be marked eligible for indexing. It uses the
+repository's already-pinned Ajv dependency and requires no environment
+variables, network access, credentials, or source-document bytes.
+
+### Function reference
+
+This script is intentionally a top-level validation command with no exported
+functions or write side effects.
+
 ## `validate-safety-response.mjs`
 
 Run from the repository root:
