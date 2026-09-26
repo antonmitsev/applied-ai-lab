@@ -25,6 +25,7 @@ COPY apps/plumbing-assistant/package.json apps/plumbing-assistant/package.json
 RUN npm ci --omit=dev && npm cache clean --force
 
 COPY --from=build /app/apps/plumbing-assistant/dist apps/plumbing-assistant/dist
+COPY docs/service docs/service
 
 USER node
 EXPOSE 3000

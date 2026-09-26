@@ -1,4 +1,5 @@
 import { EventEmitter } from "node:events";
+import nodePath from "node:path";
 import { createRequest, createResponse } from "node-mocks-http";
 import { describe, expect, it } from "vitest";
 import { parseConfig } from "../../src/config.js";
@@ -11,7 +12,10 @@ async function invoke(path: string, options: { method?: "GET" | "POST" } = {}) {
   const response = createResponse({ eventEmitter: EventEmitter });
   const ended = new Promise<void>((resolve) => response.once("end", resolve));
 
-  createServer(testConfig)(request, response);
+  createServer(testConfig, { serviceRoot: nodePath.resolve("../../docs/service") })(
+    request,
+    response,
+  );
   await ended;
   return response;
 }
@@ -63,6 +67,25 @@ describe("POC HTTP boundary", () => {
     expect(enResponse.statusCode).toBe(200);
     expect(bgResponse._getData()).toContain('lang="bg"');
     expect(enResponse._getData()).toContain('lang="en"');
+  });
+
+  it("renders all bilingual legal pages from service source copies", async () => {
+    for (const route of [
+      "/terms",
+      "/privacy",
+      "/cookies",
+      "/safety",
+      "/sources",
+      "/en/terms",
+      "/en/privacy",
+      "/en/cookies",
+      "/en/safety",
+      "/en/sources",
+    ]) {
+      const response = await invoke(route);
+      expect(response.statusCode, route).toBe(200);
+      expect(response._getData(), route).toContain("<article>");
+    }
   });
 });
 

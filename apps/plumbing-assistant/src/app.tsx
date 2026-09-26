@@ -12,6 +12,7 @@ const copy = {
     notice:
       "Разговаряте с AI помощник, не с човек. Прототипът може да греши и не заменя специалист.",
     status: "Прототипът работи",
+    legal: ["Условия", "Поверителност", "Бисквитки", "Безопасност", "Източници"],
   },
   en: {
     title: "Plumbing Assistant — POC",
@@ -20,6 +21,7 @@ const copy = {
     notice:
       "You are interacting with an AI assistant, not a person. The prototype can be wrong and does not replace a professional.",
     status: "Prototype is running",
+    legal: ["Terms", "Privacy", "Cookies", "Safety", "Sources"],
   },
 } as const;
 
@@ -37,6 +39,23 @@ export function App({ language }: AppProps) {
       <p>{text.description}</p>
       <p role="note">{text.notice}</p>
       <p>{text.status}</p>
+      <nav aria-label="Legal links">
+        <a href={language === "bg" ? "/terms" : "/en/terms"}>{text.legal[0]}</a>
+        {" · "}
+        <a href={language === "bg" ? "/privacy" : "/en/privacy"}>{text.legal[1]}</a>
+        {" · "}
+        <a href={language === "bg" ? "/cookies" : "/en/cookies"}>{text.legal[2]}</a>
+        {" · "}
+        <a href={language === "bg" ? "/safety" : "/en/safety"}>{text.legal[3]}</a>
+        {" · "}
+        <a href={language === "bg" ? "/sources" : "/en/sources"}>{text.legal[4]}</a>
+      </nav>
+      <footer>
+        <a href="mailto:me@tonymitsev.com">me@tonymitsev.com</a>
+        {" · "}
+        <a href="https://github.com/antonmitsev/applied-ai-lab">Source</a>
+        {" · "}© 2026 Anton Mitsev
+      </footer>
       <p>
         <small>{text.title}</small>
       </p>

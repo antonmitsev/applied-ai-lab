@@ -1,5 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { fileURLToPath } from "node:url";
+import { existsSync } from "node:fs";
+import path from "node:path";
 import express, { type Express } from "express";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -11,9 +13,24 @@ import {
   type ChatRuntime,
 } from "./chat.js";
 import { parseConfig, type AppConfig } from "./config.js";
+import { getServiceManifest, loadServicePage, renderServicePage } from "./service-pages.js";
 
 export interface ServerDependencies {
   chatRuntime?: ChatRuntime;
+  serviceRoot?: string;
+}
+
+function defaultServiceRoot(): string {
+  const candidates = [
+    path.resolve(process.cwd(), "docs/service"),
+    path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../docs/service"),
+    path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../../docs/service"),
+  ];
+  return (
+    candidates.find((candidate) => existsSync(path.join(candidate, "public-pages.json"))) ??
+    candidates[0] ??
+    process.cwd()
+  );
 }
 
 export function createServer(
@@ -24,6 +41,7 @@ export function createServer(
   server.disable("x-powered-by");
   server.use(express.json({ limit: config.maxRequestBytes }));
   const chatRuntime = dependencies.chatRuntime ?? createUnavailableChatRuntime();
+  const serviceRoot = dependencies.serviceRoot ?? defaultServiceRoot();
 
   server.get("/api/health", (_request, response) => {
     response.json({
@@ -65,6 +83,41 @@ export function createServer(
   <body>${body}</body>
     </html>`);
   });
+
+  server.get(
+    [
+      "/terms",
+      "/privacy",
+      "/cookies",
+      "/safety",
+      "/sources",
+      "/en/terms",
+      "/en/privacy",
+      "/en/cookies",
+      "/en/safety",
+      "/en/sources",
+    ],
+    async (request, response, next) => {
+      try {
+        const [page, manifest] = await Promise.all([
+          loadServicePage(serviceRoot, request.path),
+          getServiceManifest(serviceRoot),
+        ]);
+        if (!page) {
+          response.status(404).send("Not found");
+          return;
+        }
+        const body = renderServicePage(page, manifest);
+        response
+          .type("html")
+          .send(
+            `<!doctype html><html lang="${page.language}"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>${page.title}</title></head><body>${body}</body></html>`,
+          );
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
 
   server.use("/api", (_request, response) => {
     response.status(404).json({
