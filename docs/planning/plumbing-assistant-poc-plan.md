@@ -23,10 +23,10 @@ so work can resume without reconstructing context.
 
 | Field | Value |
 | --- | --- |
-| POC status | Scaffold checkpoint complete |
-| Current task | `POC-020` — `ready` |
-| Next action | Add Dockerfile and Docker Compose development environment |
-| Last completed task | `POC-010` |
+| POC status | Implementation in progress |
+| Current task | `POC-030` — `in_progress` |
+| Next action | Add typed configuration, health metadata, and the API error model |
+| Last completed task | `POC-020` |
 | Last validated commit | This checkpoint; see `git log -1` |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
@@ -38,8 +38,8 @@ so work can resume without reconstructing context.
 | --- | --- | --- | --- |
 | `POC-000` | POC scope, acceptance criteria, and task board | `done` | — |
 | `POC-010` | Stack decision and application scaffold | `done` | `POC-000` |
-| `POC-020` | Docker Compose development environment | `ready` | `POC-010` |
-| `POC-030` | Configuration, health endpoint, and error model | `planned` | `POC-010` |
+| `POC-020` | Docker Compose development environment | `done` | `POC-010` |
+| `POC-030` | Configuration, health endpoint, and error model | `in_progress` | `POC-010` |
 | `POC-040` | Source-backed pilot batch | `planned` | `POC-000` |
 | `POC-050` | Local KB extraction, chunking, and lexical index | `planned` | `POC-040` |
 | `POC-060` | Express chat API boundary | `planned` | `POC-030`, `POC-050` |
@@ -117,7 +117,6 @@ Evidence:
 
 Known limitations carried to later tasks:
 
-- no Docker environment yet;
 - no chat endpoint or provider call;
 - no KB retrieval or source-backed index;
 - no legal-page renderer or full landing experience;
@@ -125,21 +124,35 @@ Known limitations carried to later tasks:
 
 ### POC-020 — Docker Compose development environment
 
-Status: `planned`
+Status: `done`
 
 Deliverables:
 
 - `Dockerfile` for the app;
-- `compose.yaml` with one app service and a development data volume;
+- `compose.yaml` with one app service and a loopback-only published port;
 - safe default environment with `MOCK_PROVIDER=true`;
 - healthcheck and documented start/stop commands;
 - no secrets committed to the repository.
 
 Definition of Done:
 
-- a new machine can start the POC with one documented Compose command;
-- the container can run validation and tests;
+- a new machine can build and start the POC with one documented Compose command;
+- the image builds the application and runs the production-shaped runtime;
 - no network or provider credential is required for the default mode.
+
+Evidence:
+
+- `.dockerignore` excludes secrets, dependencies, build output, and VCS data;
+- `apps/plumbing-assistant/Dockerfile` uses a Node 22 multi-stage build and a
+  non-root runtime user;
+- `compose.yaml` binds only to `127.0.0.1`, enables `MOCK_PROVIDER=true`, and
+  defines an HTTP healthcheck;
+- `docker compose config --quiet` passes;
+- `docker compose build plumbing-assistant` passes and reports zero image-build
+  dependency vulnerabilities.
+
+Known limitation: the Compose file is intentionally for local development and
+does not define persistence, reverse proxying, TLS, or public deployment.
 
 ### POC-030 — Configuration, health endpoint, and error model
 

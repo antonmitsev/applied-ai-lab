@@ -1,0 +1,21 @@
+services:
+  plumbing-assistant:
+    build:
+      context: .
+      dockerfile: apps/plumbing-assistant/Dockerfile
+    environment:
+      NODE_ENV: development
+      PORT: "3000"
+      MOCK_PROVIDER: "true"
+    ports:
+      - "127.0.0.1:3000:3000"
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/api/health').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
