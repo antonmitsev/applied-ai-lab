@@ -10,6 +10,7 @@ export const siteStyles = `
   --mint-strong: #b9dfc5;
   --green: #2f7654;
   --green-dark: #22563e;
+  --accent: #7b3047;
   --shadow: 0 18px 50px rgba(40, 91, 62, 0.11);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -98,6 +99,7 @@ button, textarea { font: inherit; }
 .hero h1 {
   max-width: 12ch;
   margin: 0;
+  color: var(--accent);
   font-size: clamp(2.5rem, 6vw, 5rem);
   line-height: 0.99;
   letter-spacing: -0.065em;
@@ -157,6 +159,7 @@ button, textarea { font: inherit; }
 
 .chat-card h2 {
   margin: 0;
+  color: var(--accent);
   font-size: 1.3rem;
   letter-spacing: -0.025em;
 }
@@ -257,6 +260,9 @@ button, textarea { font: inherit; }
 .document-shell article h1,
 .document-shell article h2,
 .document-shell article h3 { line-height: 1.15; letter-spacing: -0.035em; }
+.document-shell article h1,
+.document-shell article h2,
+.document-shell article h3 { color: var(--accent); }
 .document-shell article h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
 .document-shell article h2 { margin-top: 2rem; }
 .document-shell article p { color: #40584b; }

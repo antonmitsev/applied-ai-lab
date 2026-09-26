@@ -12,6 +12,7 @@ describe("POC landing shell", () => {
     expect(markup).toContain('id="chat-form"');
     expect(markup).toContain("Изпрати");
     expect(markup).toContain("--mint");
+    expect(markup).toContain("--accent");
     expect(markup).toContain("chat-card");
   });
 
@@ -24,6 +25,7 @@ describe("POC landing shell", () => {
     expect(markup).toContain('id="chat-form"');
     expect(markup).toContain("Send");
     expect(markup).toContain("--mint");
+    expect(markup).toContain("--accent");
     expect(markup).toContain("chat-card");
   });
 });
