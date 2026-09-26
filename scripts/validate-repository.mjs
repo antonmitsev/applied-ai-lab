@@ -227,7 +227,7 @@ async function validatePublicDisclosures() {
         if (!content.startsWith(`# ${entry.title}\n`)) fail(`${relative(source)} title does not match its manifest entry`);
         if (!content.includes(`\`${manifest.content_version}\``)) fail(`${relative(source)} does not display the manifest content version`);
         if (!content.includes(expectedDate[locale])) fail(`${relative(source)} does not display the manifest update date`);
-        if (!content.includes("mailto:me@tonymitsev.com")) fail(`${relative(source)} lacks the correction/contact path`);
+        if (/mailto:|me@tonymitsev\.com/i.test(content)) fail(`${relative(source)} publishes a private email address`);
       } catch (error) {
         fail(`Public disclosure source ${entry.source} cannot be read: ${error.message}`);
       }
@@ -236,7 +236,7 @@ async function validatePublicDisclosures() {
 
   if (JSON.stringify(manifest.footer?.required_document_ids) !== JSON.stringify(requiredIds)) fail("Footer disclosure links are incomplete");
   if (manifest.footer?.copyright?.text !== "© 2026 Anton Mitsev" || manifest.footer?.copyright?.href !== "https://tonymitsev.com") fail("Footer copyright text or link is invalid");
-  if (manifest.footer?.contact?.href !== "mailto:me@tonymitsev.com") fail("Footer contact link is invalid");
+  if (manifest.footer?.contact) fail("Footer must not publish a private email address");
   if (manifest.footer?.source_code?.href !== "https://github.com/antonmitsev/applied-ai-lab") fail("Footer source-code link is invalid");
   if (manifest.footer?.license?.label !== "0BSD" || !manifest.footer?.license?.href?.endsWith("/blob/main/LICENSE")) fail("Footer 0BSD link is invalid");
   if (manifest.storage_profile?.mode !== "necessary-only" || manifest.storage_profile?.nonessential_enabled !== false || manifest.storage_profile?.consent_required_before_nonessential !== true) fail("Public storage/consent profile is invalid");

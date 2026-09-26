@@ -262,6 +262,13 @@ button, textarea { font: inherit; }
 .document-shell article p { color: #40584b; }
 .document-shell article li { margin: 0.4rem 0; color: #40584b; }
 .document-shell code { padding: 0.12rem 0.3rem; border-radius: 0.3rem; background: var(--surface-soft); }
+.table-wrap { overflow-x: auto; margin: 1.35rem 0; border: 1px solid var(--line); border-radius: 0.75rem; }
+.document-shell table { width: 100%; min-width: 620px; border-collapse: collapse; font-size: 0.9rem; }
+.document-shell th,
+.document-shell td { padding: 0.75rem 0.85rem; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
+.document-shell th { color: var(--green-dark); background: var(--surface-soft); font-size: 0.8rem; letter-spacing: 0.02em; }
+.document-shell tr:last-child td { border-bottom: 0; }
+.document-shell td p { margin: 0; }
 
 @media (max-width: 760px) {
   .hero { grid-template-columns: 1fr; padding-top: 2rem; }

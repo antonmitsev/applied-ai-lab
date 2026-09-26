@@ -125,8 +125,6 @@ export function App({ language }: AppProps) {
         <a href={language === "bg" ? "/sources" : "/en/sources"}>{text.legal[4]}</a>
       </nav>
       <footer className="site-footer">
-        <a href="mailto:me@tonymitsev.com">me@tonymitsev.com</a>
-        {" · "}
         <a href="https://github.com/antonmitsev/applied-ai-lab">Source</a>
         {" · "}© 2026 Anton Mitsev
       </footer>

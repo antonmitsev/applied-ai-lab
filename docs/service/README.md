@@ -60,7 +60,7 @@ The footer contains these visible items in both languages:
 
 - `© 2026 Anton Mitsev`, linked to <https://tonymitsev.com>;
 - Terms, Privacy, Cookies, Safety, and Sources links;
-- a contact/correction link to `mailto:me@tonymitsev.com`;
+- a contact/correction channel, to be published before public release;
 - a source-code link to <https://github.com/antonmitsev/applied-ai-lab>;
 - an `0BSD` link to the repository `LICENSE` file.
 

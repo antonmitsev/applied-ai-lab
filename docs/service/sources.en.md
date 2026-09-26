@@ -5,7 +5,7 @@
 | Status | Pre-publication draft — WP-01 registry pending |
 | Version | `0.1.0-draft` |
 | Last updated | 22 September 2026 |
-| Corrections contact | [me@tonymitsev.com](mailto:me@tonymitsev.com) |
+| Corrections channel | Will be published before public release |
 
 ## How sources are selected
 
@@ -43,8 +43,8 @@ quality guarantee, and publish its inclusion and correction criteria.
 
 Exact-compatibility and safety sources are reviewed at least every 90 days and
 may be withdrawn immediately for safety, accuracy, change, or rights concerns.
-Send corrections to [me@tonymitsev.com](mailto:me@tonymitsev.com), identifying
-the URL, affected claim, and reason. Do not send a protected document copy
-unless you are entitled to share it.
+Send corrections through the contact channel that will be published before
+public release, identifying the URL, affected claim, and reason. Do not send a
+protected document copy unless you are entitled to share it.
 
 Also see the [Safety Notice](safety.en.md).

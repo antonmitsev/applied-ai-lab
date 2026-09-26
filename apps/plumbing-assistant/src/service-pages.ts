@@ -47,6 +47,72 @@ function inlineMarkdown(value: string, language: "bg" | "en", documents: PageDoc
   return html;
 }
 
+function tableCells(line: string): string[] | null {
+  const trimmed = line.trim();
+  if (!trimmed.includes("|")) return null;
+  const content = trimmed.replace(/^\|/, "").replace(/\|$/, "");
+  const cells: string[] = [];
+  let current = "";
+  let escaped = false;
+  for (const character of content) {
+    if (character === "|" && !escaped) {
+      cells.push(current.trim());
+      current = "";
+      continue;
+    }
+    if (character === "\\" && !escaped) {
+      escaped = true;
+      current += character;
+      continue;
+    }
+    escaped = false;
+    current += character;
+  }
+  cells.push(current.trim());
+  return cells.length > 1 ? cells : null;
+}
+
+function isTableDelimiter(line: string): boolean {
+  const cells = tableCells(line);
+  return Boolean(cells?.length && cells.every((cell) => /^:?-{3,}:?$/.test(cell)));
+}
+
+function tableAlignment(cell: string): "left" | "center" | "right" | undefined {
+  const left = cell.startsWith(":");
+  const right = cell.endsWith(":");
+  if (left && right) return "center";
+  if (left) return "left";
+  if (right) return "right";
+  return undefined;
+}
+
+function renderTable(
+  header: string[],
+  delimiter: string[],
+  rows: string[][],
+  language: "bg" | "en",
+  documents: PageDocument[],
+): string {
+  const headings = header.map((cell, index) => {
+    const alignment = tableAlignment(delimiter[index] ?? "");
+    const attribute = alignment ? ` align="${alignment}"` : "";
+    return `<th scope="col"${attribute}>${inlineMarkdown(cell, language, documents)}</th>`;
+  });
+  const body = rows
+    .map(
+      (row) =>
+        `<tr>${header
+          .map((_, index) => {
+            const alignment = tableAlignment(delimiter[index] ?? "");
+            const attribute = alignment ? ` align="${alignment}"` : "";
+            return `<td${attribute}>${inlineMarkdown(row[index] ?? "", language, documents)}</td>`;
+          })
+          .join("")}</tr>`,
+    )
+    .join("");
+  return `<div class="table-wrap"><table><thead><tr>${headings.join("")}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+
 export function renderMarkdown(
   markdown: string,
   language: "bg" | "en",
@@ -55,12 +121,31 @@ export function renderMarkdown(
   const lines = markdown.replaceAll("\r\n", "\n").split("\n");
   const output: string[] = [];
   let listOpen = false;
-  for (const line of lines) {
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index] ?? "";
     if (!line.trim()) {
       if (listOpen) {
         output.push("</ul>");
         listOpen = false;
       }
+      continue;
+    }
+    const header = tableCells(line);
+    const delimiter = tableCells(lines[index + 1] ?? "");
+    if (header && delimiter && isTableDelimiter(lines[index + 1] ?? "")) {
+      if (listOpen) {
+        output.push("</ul>");
+        listOpen = false;
+      }
+      const rows: string[][] = [];
+      index += 1;
+      while (index + 1 < lines.length) {
+        const row = tableCells(lines[index + 1] ?? "");
+        if (!row) break;
+        rows.push(row);
+        index += 1;
+      }
+      output.push(renderTable(header, delimiter, rows, language, documents));
       continue;
     }
     const heading = /^(#{1,3})\s+(.+)$/.exec(line);

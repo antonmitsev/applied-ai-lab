@@ -6,7 +6,7 @@
 | Version | `0.1.0-draft` |
 | Last updated | 22 September 2026 |
 | Controller | Anton Mitsev |
-| Privacy contact | [me@tonymitsev.com](mailto:me@tonymitsev.com) |
+| Privacy contact | The channel will be published before public release |
 
 This draft describes the approved minimal MVP design. It must not be published
 as final until the real hosting, OpenAI project settings, logs, vendors, and
@@ -22,7 +22,7 @@ international transfers have been verified and recorded.
 | Short-lived keyed network bucket | Limit automated abuse | Up to 48 hours; the raw IP address is used only in request memory |
 | Token, cost, latency, error, and outcome counters | Budget, reliability, and aggregate statistics | Pseudonymous usage rows for up to 30 days; anonymous aggregates for up to 13 months |
 | Content-free access/error logs | Security and diagnosis | Access logs up to 7 days; error logs up to 30 days |
-| Information in email to the operator | Answer a question, correction, or rights request | Only while needed for the request and legal duties |
+| Information in a future contact request | Answer a question, correction, or rights request | Only while needed for the request and legal duties |
 
 The application must not record questions, answers, images, conversation
 envelopes, authorization headers, or raw IP addresses in the usage store,
@@ -86,8 +86,8 @@ erasure, restriction, objection, and portability, and rights concerning certain
 solely automated decisions. The service does not make decisions with legal or
 similarly significant effects about you.
 
-Email [me@tonymitsev.com](mailto:me@tonymitsev.com). Minimal verification may be
-needed to avoid disclosing another person's data. With short-lived pseudonymous
+Use the contact channel that will be published before public release. Minimal
+verification may be needed to avoid disclosing another person's data. With short-lived pseudonymous
 records, the operator may be unable to associate a row with a real person
 without more information and will not collect extra data solely to identify
 you.

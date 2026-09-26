@@ -6,7 +6,7 @@
 | Version | `0.1.0-draft` |
 | Last updated | 22 September 2026 |
 | Operator | Anton Mitsev |
-| Contact | [me@tonymitsev.com](mailto:me@tonymitsev.com) |
+| Contact | A contact channel will be published before public release |
 
 ## 1. About the service
 
@@ -93,6 +93,6 @@ to complain to a competent authority or court.
 ## 11. Questions and corrections
 
 For a question, report of an unsafe or incorrect answer, correction request, or
-rights request, email [me@tonymitsev.com](mailto:me@tonymitsev.com). Do not
-resend sensitive content; where possible provide the public source, language,
-date, and a short description.
+rights request, use the contact channel that will be published before public
+release. Do not resend sensitive content; where possible provide the public
+source, language, date, and a short description.

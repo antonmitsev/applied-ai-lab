@@ -5,7 +5,7 @@
 | Status | Pre-publication draft — domain-professional review required |
 | Version | `0.1.0-draft` |
 | Last updated | 22 September 2026 |
-| Corrections contact | [me@tonymitsev.com](mailto:me@tonymitsev.com) |
+| Corrections channel | Will be published before public release |
 
 ## Important
 
@@ -54,8 +54,8 @@ guess. Image evidence cannot lower an already established risk.
 
 ## Reports and corrections
 
-Report unsafe, inaccurate, or outdated output to
-[me@tonymitsev.com](mailto:me@tonymitsev.com). Do not resend personal or
+Report unsafe, inaccurate, or outdated output through the corrections channel
+that will be published before public release. Do not resend personal or
 sensitive information. Where possible, provide the language, approximate date,
 claim, and a reliable public source.
 

@@ -5,7 +5,7 @@
 | Status | Pre-publication draft — verify against the real deployment |
 | Version | `0.1.0-draft` |
 | Last updated | 22 September 2026 |
-| Contact | [me@tonymitsev.com](mailto:me@tonymitsev.com) |
+| Contact | The channel will be published before public release |
 
 ## Approved MVP profile
 
