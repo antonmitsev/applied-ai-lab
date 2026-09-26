@@ -24,9 +24,9 @@ so work can resume without reconstructing context.
 | Field | Value |
 | --- | --- |
 | POC status | Implementation in progress |
-| Current task | `POC-050` — `in_progress` |
-| Next action | Extract draft KB units and build a deterministic local lexical index |
-| Last completed task | `POC-040` |
+| Current task | `POC-060` — `in_progress` |
+| Next action | Add bounded chat and new-chat API contracts over the local index |
+| Last completed task | `POC-050` |
 | Last validated commit | This checkpoint; see `git log -1` |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
@@ -41,8 +41,8 @@ so work can resume without reconstructing context.
 | `POC-020` | Docker Compose development environment | `done` | `POC-010` |
 | `POC-030` | Configuration, health endpoint, and error model | `done` | `POC-010` |
 | `POC-040` | Source-backed pilot batch | `done` | `POC-000` |
-| `POC-050` | Local KB extraction, chunking, and lexical index | `in_progress` | `POC-040` |
-| `POC-060` | Express chat API boundary | `planned` | `POC-030`, `POC-050` |
+| `POC-050` | Local KB extraction, chunking, and lexical index | `done` | `POC-040` |
+| `POC-060` | Express chat API boundary | `in_progress` | `POC-030`, `POC-050` |
 | `POC-070` | Landing page and bilingual legal routes | `planned` | `POC-030` |
 | `POC-080` | Deterministic safety pre-triage and response validation | `planned` | `POC-030` |
 | `POC-090` | Mock model/provider adapter | `planned` | `POC-030`, `POC-080` |
@@ -220,7 +220,7 @@ must not present that corpus as an approved external source index.
 
 ### POC-050 — Local KB extraction, chunking, and lexical index
 
-Status: `planned`
+Status: `done` (development corpus checkpoint)
 
 Deliverables:
 
@@ -236,6 +236,24 @@ Definition of Done:
 - expected units are returned for symptom, connection, seal, and alias queries;
 - unrelated and missing-evidence cases fail closed or request clarification;
 - the index build is reproducible from a pinned input set.
+
+Evidence:
+
+- `apps/plumbing-assistant/src/kb.ts` extracts English content units, skips
+  `meta` and `requirements` documents, creates stable section chunk IDs, and
+  returns unit/title/source/evidence metadata;
+- lexical search supports Bulgarian suffix variants and a small explicit
+  Bulgarian-to-English plumbing vocabulary bridge;
+- `src/kb.test.ts` covers deterministic indexing, Bulgarian retrieval, and
+  empty/unknown fail-closed behavior;
+- `src/kb.retrieval.test.ts` runs all 20 current retrieval cases against the
+  local index and verifies every expected ID that exists in the corpus is
+  returned within the bounded result set.
+
+Known limitation: the evaluation set intentionally names future units that are
+not yet present in `docs/kb`; the test records this as an explicit coverage gap
+instead of fabricating chunks. This is development retrieval only, not an
+approved source-backed production index.
 
 ### POC-060 — Express chat API boundary
 

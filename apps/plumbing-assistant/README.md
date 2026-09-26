@@ -22,9 +22,15 @@ yet. No production application or public-release approval exists.
 ## POC checkpoint
 
 The first scaffold uses Node.js 22, TypeScript, Express, React server rendering,
-Vitest, ESLint, and Prettier. It currently provides a bilingual SSR shell and
-`GET /api/health` with a mock-safe default. Continue from the
+Vitest, ESLint, and Prettier. It currently provides a bilingual SSR shell,
+`GET /api/health` with a mock-safe default, and a deterministic local lexical
+index over the current English draft KB. Continue from the
 [POC task board](../../docs/planning/plumbing-assistant-poc-plan.md).
+
+The local index is development-only: candidate source records remain in
+review, and missing evaluation units are reported rather than silently
+synthesized. The chat runtime, provider adapter, legal-page renderer, and
+public release are not implemented yet.
 
 ## Documentation
 
