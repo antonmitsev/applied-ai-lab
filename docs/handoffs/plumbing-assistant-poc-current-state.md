@@ -4,7 +4,8 @@
 | --- | --- |
 | Checkpoint date | 2026-09-26 |
 | Branch | `main` |
-| Last pushed commit | `db6fdfc` |
+| Last implementation commit | `db6fdfc` |
+| Checkpoint commit | `01823df` |
 | POC status | Local, internal-only POC complete; no public release |
 | Default runtime | `MOCK_PROVIDER=true` |
 | Resume authority | This file, then the POC task board |
