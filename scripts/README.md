@@ -81,3 +81,102 @@ When a requirement format, matrix format, contract, or repository layout
 changes, update the validator, this README, PA-REPO-001, and the affected tests
 in the same change. Do not weaken a check solely to make CI green; document and
 review the underlying policy change.
+
+## `validate-kb.mjs`
+
+Run from the repository root:
+
+```bash
+npm run validate:kb
+npm run validate:kb -- --production
+```
+
+The validator is read-only. It reads Markdown files below `docs/kb`, parses the
+small YAML frontmatter subset used by this KB, checks controlled metadata,
+stable IDs, references, headings, required sections, filenames, and production
+provenance gates. It also validates the versioned retrieval evaluation set
+under `evals/plumbing-kb`. It requires no environment variables, network access,
+credentials, or external dependencies.
+
+Development mode permits draft-only warnings for references to planned future
+units. Production mode turns those warnings into failures and requires
+reviewed/verified content status and provenance fields. User-language terms may remain in aliases
+and evaluation examples; canonical document metadata and prose are English.
+
+### Function reference
+
+| Function | Purpose and side effects |
+| --- | --- |
+| `displayPath(` | Converts a path to a repository-relative slash-separated display path; read-only. |
+| `parseScalar(` | Parses one supported frontmatter scalar or empty-list value; no I/O. |
+| `parseFrontmatter(` | Parses the KB frontmatter subset and returns metadata/body boundaries; no I/O. |
+| `extractHeadings(` | Extracts Markdown headings while ignoring fenced code blocks; no I/O. |
+| `normalizeLabel(` | Normalizes heading labels for required-section comparisons; no I/O. |
+| `makeIssue(` | Creates one structured validation issue; no I/O. |
+| `validateKnowledgeDocument(` | Checks one document against metadata, filename, reference, heading, and section rules; read-only. |
+| `listMarkdownFiles(` | Recursively lists Markdown files below the KB directory; read-only filesystem traversal. |
+| `validateKnowledgeBase(` | Validates all KB documents and returns errors/warnings without writing files. |
+| `validateEvaluationSet(` | Validates the versioned retrieval evaluation JSON, case shape, ID format, and minimum coverage; read-only. |
+| `printReport(` | Prints the structured validation result; stdout/stderr only. |
+| `main(` | Parses the production flag, runs the KB validator, and sets a non-zero exit status on errors. |
+
+## `validate-kb.test.mjs`
+
+Run from the repository root:
+
+```bash
+npm run test:kb
+```
+
+The tests use Node's built-in test runner and in-memory fixtures. They verify
+frontmatter parsing, fenced-heading handling, production failures, and the
+current KB development-mode baseline. They do not write repository files,
+access the network, or require credentials.
+
+### Function reference
+
+| Function | Purpose and side effects |
+| --- | --- |
+| `fixture(` | Joins test fixture lines into a Markdown string; no I/O. |
+
+## `validate-safety-response.mjs`
+
+Run from the repository root:
+
+```bash
+npm run validate:safety
+```
+
+The validator checks the machine-readable safety response policy and executes
+the frozen deterministic vectors in `docs/contracts/`. It does not call a
+model, network, provider, or production service.
+
+### Function reference
+
+| Function | Purpose and side effects |
+| --- | --- |
+| `maxSeverity(` | Returns the highest monotonic severity; no I/O. |
+| `moreRestrictiveClass(` | Selects the more restrictive response class; no I/O. |
+| `resolveSafetyDecision(` | Applies severity floors, hazard overrides, unknown-safety rules, and step gating; no I/O. |
+| `issue(` | Creates one structured contract-validation issue; no I/O. |
+| `validateContract(` | Checks contract identity, classes, hazards, actions, and references; no I/O. |
+| `validateVectors(` | Executes all frozen vectors against the deterministic resolver; no I/O. |
+| `validateSafetyResponseContract(` | Loads and validates the contract and vectors; read-only filesystem access. |
+| `main(` | Runs the safety validator and sets a non-zero exit status on failure. |
+
+## `validate-safety-response.test.mjs`
+
+Run from the repository root:
+
+```bash
+npm run test:safety
+```
+
+The tests cover critical-hazard escalation, unknown-safety blocking, and the
+complete frozen vector set. They do not access the network or credentials.
+
+### Function reference
+
+| Function | Purpose and side effects |
+| --- | --- |
+| `loadContract(` | Loads the repository contract for pure policy tests; read-only filesystem access. |

@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/plumbing-kb/retrieval-cases.schema.json",
+  "title": "Plumbing KB Retrieval Evaluation Set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "cases"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "reviewed",
+        "verified"
+      ]
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 20,
+      "items": {
+        "$ref": "#/$defs/case"
+      }
+    }
+  },
+  "$defs": {
+    "stableId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "query",
+        "language",
+        "query_type",
+        "expected_ids",
+        "useful_ids",
+        "avoid_ids",
+        "safety_expectation",
+        "response_class"
+      ],
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "pattern": "^KB-EVAL-[0-9]{3}$"
+        },
+        "query": {
+          "type": "string",
+          "minLength": 1
+        },
+        "language": {
+          "enum": [
+            "bg",
+            "en"
+          ]
+        },
+        "query_type": {
+          "enum": [
+            "technical-term",
+            "conversational",
+            "misspelling",
+            "symptom",
+            "connection",
+            "seal",
+            "material",
+            "incomplete",
+            "image-unavailable",
+            "safety",
+            "clarify-first",
+            "negative",
+            "diagnostic"
+          ]
+        },
+        "expected_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableId"
+          }
+        },
+        "useful_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableId"
+          }
+        },
+        "avoid_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableId"
+          }
+        },
+        "safety_expectation": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "clarify-first",
+            "stop-and-escalate"
+          ]
+        },
+        "response_class": {
+          "enum": [
+            "informational",
+            "diagnostic",
+            "local-diy",
+            "clarify-first",
+            "stop-and-escalate"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

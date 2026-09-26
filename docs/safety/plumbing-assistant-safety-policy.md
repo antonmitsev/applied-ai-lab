@@ -8,6 +8,7 @@
 | Date | 2026-09-22 |
 | Audit finding | `AUD-P0-002` |
 | Output contract | [Assistant response schema](../contracts/assistant-response.schema.json) |
+| Deterministic policy contract | [PA-SAFE-CONTRACT-001](../contracts/kb-safety-response-contract.json) |
 
 ## 1. Objective
 

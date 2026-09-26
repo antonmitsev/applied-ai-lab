@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/plumbing-assistant/safety-response-contract.schema.json",
+  "title": "PA-SAFE-CONTRACT-001",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "schema_version",
+    "status",
+    "severity_order",
+    "response_classes",
+    "decision_rules",
+    "hazard_floors",
+    "allowed_action_codes",
+    "output_schema",
+    "safety_policy"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "PA-SAFE-CONTRACT-001"
+    },
+    "schema_version": {
+      "const": "1"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "reviewed",
+        "verified"
+      ]
+    },
+    "severity_order": {
+      "const": [
+        "routine",
+        "caution",
+        "critical"
+      ]
+    },
+    "response_classes": {
+      "type": "object",
+      "minProperties": 5
+    },
+    "decision_rules": {
+      "type": "object"
+    },
+    "hazard_floors": {
+      "type": "object",
+      "minProperties": 13
+    },
+    "allowed_action_codes": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "output_schema": {
+      "const": "docs/contracts/assistant-response.schema.json"
+    },
+    "safety_policy": {
+      "const": "docs/safety/plumbing-assistant-safety-policy.md"
+    }
+  }
+}

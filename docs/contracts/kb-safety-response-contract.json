@@ -1,0 +1,125 @@
+{
+  "contract_id": "PA-SAFE-CONTRACT-001",
+  "schema_version": "1",
+  "status": "draft",
+  "severity_order": [
+    "routine",
+    "caution",
+    "critical"
+  ],
+  "response_classes": {
+    "informational": {
+      "minimum_urgency": "routine",
+      "maximum_urgency": "routine",
+      "generated_steps_allowed": false,
+      "professional_required": false
+    },
+    "diagnostic": {
+      "minimum_urgency": "routine",
+      "maximum_urgency": "routine",
+      "generated_steps_allowed": true,
+      "professional_required": false
+    },
+    "local-diy": {
+      "minimum_urgency": "routine",
+      "maximum_urgency": "routine",
+      "generated_steps_allowed": true,
+      "professional_required": false
+    },
+    "clarify-first": {
+      "minimum_urgency": "caution",
+      "maximum_urgency": "caution",
+      "generated_steps_allowed": false,
+      "professional_required": false
+    },
+    "stop-and-escalate": {
+      "minimum_urgency": "caution",
+      "maximum_urgency": "critical",
+      "generated_steps_allowed": false,
+      "professional_required": true
+    }
+  },
+  "decision_rules": {
+    "urgency_floor": "maximum_of_pre_triage_model_post_validation_and_hazard_floors",
+    "critical_forces_stop_and_escalate": true,
+    "unknown_material_safety_forces_clarify_first": true,
+    "high_safety_level_blocks_local_diy": true,
+    "caution_blocks_generated_steps": true,
+    "draft_kb_content": "development-only",
+    "deprecated_kb_content": "blocked"
+  },
+  "hazard_floors": {
+    "HZ-001": {
+      "minimum_urgency": "critical",
+      "response_class": "stop-and-escalate"
+    },
+    "HZ-002": {
+      "minimum_urgency": "critical",
+      "response_class": "stop-and-escalate"
+    },
+    "HZ-003": {
+      "minimum_urgency": "critical",
+      "response_class": "stop-and-escalate"
+    },
+    "HZ-004": {
+      "minimum_urgency": "critical",
+      "response_class": "stop-and-escalate"
+    },
+    "HZ-005": {
+      "minimum_urgency": "caution",
+      "response_class": "stop-and-escalate",
+      "critical_when_active": true
+    },
+    "HZ-006": {
+      "minimum_urgency": "critical",
+      "response_class": "stop-and-escalate"
+    },
+    "HZ-007": {
+      "minimum_urgency": "caution",
+      "response_class": "stop-and-escalate"
+    },
+    "HZ-008": {
+      "minimum_urgency": "caution",
+      "response_class": "stop-and-escalate"
+    },
+    "HZ-009": {
+      "minimum_urgency": "caution",
+      "response_class": "clarify-first"
+    },
+    "HZ-010": {
+      "minimum_urgency": "caution",
+      "response_class": "stop-and-escalate"
+    },
+    "HZ-011": {
+      "minimum_urgency": "caution",
+      "response_class": "stop-and-escalate",
+      "critical_when_active": true
+    },
+    "HZ-012": {
+      "minimum_urgency": "caution",
+      "response_class": "clarify-first"
+    },
+    "HZ-013": {
+      "minimum_urgency": "caution",
+      "response_class": "clarify-first"
+    }
+  },
+  "allowed_action_codes": [
+    "KEEP_DISTANCE",
+    "KEEP_OTHERS_AWAY",
+    "CALL_112_IMMEDIATE_DANGER",
+    "CONTACT_BUILDING_MANAGER",
+    "CONTACT_EMERGENCY_PLUMBER",
+    "CONTACT_HEATING_SPECIALIST",
+    "DO_NOT_TOUCH_ELECTRICAL",
+    "DO_NOT_MIX_CHEMICALS",
+    "CLOSE_KNOWN_ACCESSIBLE_WATER_VALVE",
+    "PLACE_CONTAINER_IF_SAFE",
+    "OBSERVE_WITHOUT_TOUCHING",
+    "READ_GAUGE_WITHOUT_ADJUSTING",
+    "PHOTOGRAPH_LABEL_FROM_SAFE_DISTANCE",
+    "CHECK_OTHER_FIXTURE_FLOW"
+  ],
+  "output_schema": "docs/contracts/assistant-response.schema.json",
+  "safety_policy": "docs/safety/plumbing-assistant-safety-policy.md"
+}

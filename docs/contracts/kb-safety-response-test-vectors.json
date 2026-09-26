@@ -1,0 +1,205 @@
+{
+  "contract_id": "PA-SAFE-CONTRACT-001",
+  "schema_version": "1",
+  "status": "draft",
+  "vectors": [
+    {
+      "vector_id": "SAFE-VECTOR-001",
+      "input": {
+        "pre_triage": "routine",
+        "model_urgency": "routine",
+        "post_validation_floor": "routine",
+        "hazards": [],
+        "material_safety_unknown": false,
+        "safety_level": "low",
+        "requested_response_class": "informational",
+        "generated_steps_requested": false
+      },
+      "expected": {
+        "urgency": "routine",
+        "response_class": "informational",
+        "generated_steps_allowed": false,
+        "professional_required": false
+      }
+    },
+    {
+      "vector_id": "SAFE-VECTOR-002",
+      "input": {
+        "pre_triage": "routine",
+        "model_urgency": "routine",
+        "post_validation_floor": "routine",
+        "hazards": [],
+        "material_safety_unknown": false,
+        "safety_level": "low",
+        "requested_response_class": "local-diy",
+        "generated_steps_requested": true
+      },
+      "expected": {
+        "urgency": "routine",
+        "response_class": "local-diy",
+        "generated_steps_allowed": true,
+        "professional_required": false
+      }
+    },
+    {
+      "vector_id": "SAFE-VECTOR-003",
+      "input": {
+        "pre_triage": "routine",
+        "model_urgency": "routine",
+        "post_validation_floor": "routine",
+        "hazards": [],
+        "material_safety_unknown": true,
+        "safety_level": "medium",
+        "requested_response_class": "local-diy",
+        "generated_steps_requested": true
+      },
+      "expected": {
+        "urgency": "caution",
+        "response_class": "clarify-first",
+        "generated_steps_allowed": false,
+        "professional_required": false
+      }
+    },
+    {
+      "vector_id": "SAFE-VECTOR-004",
+      "input": {
+        "pre_triage": "routine",
+        "model_urgency": "routine",
+        "post_validation_floor": "routine",
+        "hazards": [
+          "HZ-001"
+        ],
+        "material_safety_unknown": false,
+        "safety_level": "high",
+        "requested_response_class": "local-diy",
+        "generated_steps_requested": true
+      },
+      "expected": {
+        "urgency": "critical",
+        "response_class": "stop-and-escalate",
+        "generated_steps_allowed": false,
+        "professional_required": true
+      }
+    },
+    {
+      "vector_id": "SAFE-VECTOR-005",
+      "input": {
+        "pre_triage": "routine",
+        "model_urgency": "routine",
+        "post_validation_floor": "routine",
+        "hazards": [
+          "HZ-002"
+        ],
+        "material_safety_unknown": false,
+        "safety_level": "high",
+        "requested_response_class": "diagnostic",
+        "generated_steps_requested": true
+      },
+      "expected": {
+        "urgency": "critical",
+        "response_class": "stop-and-escalate",
+        "generated_steps_allowed": false,
+        "professional_required": true
+      }
+    },
+    {
+      "vector_id": "SAFE-VECTOR-006",
+      "input": {
+        "pre_triage": "routine",
+        "model_urgency": "routine",
+        "post_validation_floor": "routine",
+        "hazards": [],
+        "material_safety_unknown": false,
+        "safety_level": "high",
+        "requested_response_class": "local-diy",
+        "generated_steps_requested": true
+      },
+      "expected": {
+        "urgency": "caution",
+        "response_class": "clarify-first",
+        "generated_steps_allowed": false,
+        "professional_required": false
+      }
+    },
+    {
+      "vector_id": "SAFE-VECTOR-007",
+      "input": {
+        "pre_triage": "routine",
+        "model_urgency": "routine",
+        "post_validation_floor": "routine",
+        "hazards": [
+          "HZ-007"
+        ],
+        "material_safety_unknown": false,
+        "safety_level": "medium",
+        "requested_response_class": "local-diy",
+        "generated_steps_requested": true
+      },
+      "expected": {
+        "urgency": "caution",
+        "response_class": "stop-and-escalate",
+        "generated_steps_allowed": false,
+        "professional_required": true
+      }
+    },
+    {
+      "vector_id": "SAFE-VECTOR-008",
+      "input": {
+        "pre_triage": "caution",
+        "model_urgency": "routine",
+        "post_validation_floor": "routine",
+        "hazards": [],
+        "material_safety_unknown": false,
+        "safety_level": "low",
+        "requested_response_class": "diagnostic",
+        "generated_steps_requested": true
+      },
+      "expected": {
+        "urgency": "caution",
+        "response_class": "diagnostic",
+        "generated_steps_allowed": false,
+        "professional_required": false
+      }
+    },
+    {
+      "vector_id": "SAFE-VECTOR-009",
+      "input": {
+        "pre_triage": "routine",
+        "model_urgency": "routine",
+        "post_validation_floor": "routine",
+        "hazards": [
+          "HZ-013"
+        ],
+        "material_safety_unknown": false,
+        "safety_level": "medium",
+        "requested_response_class": "diagnostic",
+        "generated_steps_requested": true
+      },
+      "expected": {
+        "urgency": "caution",
+        "response_class": "clarify-first",
+        "generated_steps_allowed": false,
+        "professional_required": false
+      }
+    },
+    {
+      "vector_id": "SAFE-VECTOR-010",
+      "input": {
+        "pre_triage": "routine",
+        "model_urgency": "critical",
+        "post_validation_floor": "routine",
+        "hazards": [],
+        "material_safety_unknown": false,
+        "safety_level": "low",
+        "requested_response_class": "informational",
+        "generated_steps_requested": false
+      },
+      "expected": {
+        "urgency": "critical",
+        "response_class": "stop-and-escalate",
+        "generated_steps_allowed": false,
+        "professional_required": true
+      }
+    }
+  ]
+}

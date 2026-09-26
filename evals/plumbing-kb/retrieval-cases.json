@@ -1,0 +1,362 @@
+{
+  "schema_version": "1",
+  "status": "draft",
+  "cases": [
+    {
+      "case_id": "KB-EVAL-001",
+      "query": "Радиаторната връзка тече повече, когато затегна гайката докрай.",
+      "language": "bg",
+      "query_type": "symptom",
+      "expected_ids": [
+        "diagnostic-leak-tightening-001",
+        "seal-o-ring-radial-001"
+      ],
+      "useful_ids": [
+        "connection-insert-o-ring-001"
+      ],
+      "avoid_ids": [
+        "connection-threaded-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-002",
+      "query": "Тая гайка защо като я стегна повече пак тече?",
+      "language": "bg",
+      "query_type": "conversational",
+      "expected_ids": [
+        "diagnostic-leak-tightening-001",
+        "connection-insert-o-ring-001"
+      ],
+      "useful_ids": [
+        "seal-o-ring-radial-001"
+      ],
+      "avoid_ids": [
+        "connection-threaded-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-003",
+      "query": "What does radial O-ring sealing mean in a plumbing connection?",
+      "language": "en",
+      "query_type": "technical-term",
+      "expected_ids": [
+        "seal-o-ring-radial-001"
+      ],
+      "useful_ids": [
+        "connection-insert-o-ring-001"
+      ],
+      "avoid_ids": [
+        "seal-flat-gasket-001"
+      ],
+      "safety_expectation": "low",
+      "response_class": "informational"
+    },
+    {
+      "case_id": "KB-EVAL-004",
+      "query": "О рингът на щуцера е сменен, но още просълзява.",
+      "language": "bg",
+      "query_type": "misspelling",
+      "expected_ids": [
+        "seal-o-ring-radial-001",
+        "connection-insert-o-ring-001"
+      ],
+      "useful_ids": [
+        "diagnostic-leak-after-reassembly-001"
+      ],
+      "avoid_ids": [
+        "connection-threaded-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-005",
+      "query": "Кое държи щуцера в корпуса и кое реално спира водата?",
+      "language": "bg",
+      "query_type": "connection",
+      "expected_ids": [
+        "connection-insert-o-ring-001",
+        "seal-o-ring-radial-001"
+      ],
+      "useful_ids": [
+        "diagnostic-leak-tightening-001"
+      ],
+      "avoid_ids": [
+        "connection-threaded-001"
+      ],
+      "safety_expectation": "low",
+      "response_class": "informational"
+    },
+    {
+      "case_id": "KB-EVAL-006",
+      "query": "How does a threaded plumbing connection actually seal?",
+      "language": "en",
+      "query_type": "connection",
+      "expected_ids": [
+        "connection-threaded-001"
+      ],
+      "useful_ids": [
+        "seal-threaded-001"
+      ],
+      "avoid_ids": [
+        "connection-insert-o-ring-001"
+      ],
+      "safety_expectation": "low",
+      "response_class": "informational"
+    },
+    {
+      "case_id": "KB-EVAL-007",
+      "query": "Какво уплътнява холендър с плоска гарнитура?",
+      "language": "bg",
+      "query_type": "connection",
+      "expected_ids": [
+        "connection-union-flat-gasket-001",
+        "seal-flat-gasket-001"
+      ],
+      "useful_ids": [
+        "diagnostic-leak-after-reassembly-001"
+      ],
+      "avoid_ids": [
+        "connection-threaded-001"
+      ],
+      "safety_expectation": "low",
+      "response_class": "informational"
+    },
+    {
+      "case_id": "KB-EVAL-008",
+      "query": "Как работи компресионният фитинг и кое може да протече?",
+      "language": "bg",
+      "query_type": "connection",
+      "expected_ids": [
+        "connection-compression-001"
+      ],
+      "useful_ids": [
+        "diagnostic-leak-after-reassembly-001"
+      ],
+      "avoid_ids": [
+        "connection-press-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "informational"
+    },
+    {
+      "case_id": "KB-EVAL-009",
+      "query": "Why can a conical-seat connection leak after it has been tightened?",
+      "language": "en",
+      "query_type": "diagnostic",
+      "expected_ids": [
+        "connection-conical-seat-001"
+      ],
+      "useful_ids": [
+        "diagnostic-leak-after-reassembly-001"
+      ],
+      "avoid_ids": [
+        "connection-union-flat-gasket-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-010",
+      "query": "Тече само когато радиаторът загрее, а на студено е сухо.",
+      "language": "bg",
+      "query_type": "symptom",
+      "expected_ids": [
+        "diagnostic-leak-hot-only-001",
+        "concept-thermal-expansion-001"
+      ],
+      "useful_ids": [
+        "component-radiator-valve-001"
+      ],
+      "avoid_ids": [
+        "diagnostic-leak-cold-only-001"
+      ],
+      "safety_expectation": "high",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-011",
+      "query": "Като помръдна твърдата тръба, течът от връзката се променя.",
+      "language": "bg",
+      "query_type": "symptom",
+      "expected_ids": [
+        "diagnostic-leak-pipe-movement-001",
+        "connection-insert-o-ring-001"
+      ],
+      "useful_ids": [
+        "seal-o-ring-radial-001"
+      ],
+      "avoid_ids": [
+        "connection-threaded-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-012",
+      "query": "What do the dimensions 16 × 2 mm mean for an O-ring?",
+      "language": "en",
+      "query_type": "seal",
+      "expected_ids": [
+        "concept-o-ring-dimensions-001",
+        "seal-o-ring-radial-001"
+      ],
+      "useful_ids": [
+        "tool-calipers-001"
+      ],
+      "avoid_ids": [
+        "seal-flat-gasket-001"
+      ],
+      "safety_expectation": "low",
+      "response_class": "informational"
+    },
+    {
+      "case_id": "KB-EVAL-013",
+      "query": "Тече от радиатора. Какво да сменя?",
+      "language": "bg",
+      "query_type": "incomplete",
+      "expected_ids": [
+        "diagnostic-leak-source-001"
+      ],
+      "useful_ids": [
+        "component-radiator-valve-001"
+      ],
+      "avoid_ids": [
+        "seal-o-ring-radial-001"
+      ],
+      "safety_expectation": "clarify-first",
+      "response_class": "clarify-first",
+      "notes": "The answer must first locate the actual source instead of recommending a part."
+    },
+    {
+      "case_id": "KB-EVAL-014",
+      "query": "Мога ли да отворя бойлера, докато е включен в контакта?",
+      "language": "bg",
+      "query_type": "safety",
+      "expected_ids": [
+        "safety-boiler-electrical-001"
+      ],
+      "useful_ids": [
+        "safety-depressurize-and-cool-001"
+      ],
+      "avoid_ids": [
+        "procedure-boiler-flange-repair-001"
+      ],
+      "safety_expectation": "stop-and-escalate",
+      "response_class": "stop-and-escalate"
+    },
+    {
+      "case_id": "KB-EVAL-015",
+      "query": "I uploaded a photo of a leaking fitting. Can you tell me exactly which seal to buy?",
+      "language": "en",
+      "query_type": "image-unavailable",
+      "expected_ids": [
+        "diagnostic-leak-source-001",
+        "concept-o-ring-dimensions-001"
+      ],
+      "useful_ids": [
+        "tool-calipers-001"
+      ],
+      "avoid_ids": [
+        "seal-o-ring-radial-001"
+      ],
+      "safety_expectation": "clarify-first",
+      "response_class": "clarify-first",
+      "notes": "Do not infer an exact seal size without a usable image or measurements."
+    },
+    {
+      "case_id": "KB-EVAL-016",
+      "query": "Мога ли да разглобя връзката, ако не знам къде е спирателният кран?",
+      "language": "bg",
+      "query_type": "clarify-first",
+      "expected_ids": [
+        "safety-depressurize-and-isolate-001"
+      ],
+      "useful_ids": [
+        "diagnostic-leak-source-001"
+      ],
+      "avoid_ids": [
+        "procedure-radiator-o-ring-replacement-001"
+      ],
+      "safety_expectation": "high",
+      "response_class": "clarify-first"
+    },
+    {
+      "case_id": "KB-EVAL-017",
+      "query": "Подходящ ли е EPDM O-ring за радиаторна връзка и каква грес се използва?",
+      "language": "bg",
+      "query_type": "material",
+      "expected_ids": [
+        "material-epdm-001",
+        "seal-o-ring-radial-001"
+      ],
+      "useful_ids": [
+        "material-silicone-grease-001"
+      ],
+      "avoid_ids": [
+        "material-mineral-oil-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "informational"
+    },
+    {
+      "case_id": "KB-EVAL-018",
+      "query": "The nut holds the joint together, but the O-ring seals it. Which knowledge should explain this distinction?",
+      "language": "en",
+      "query_type": "negative",
+      "expected_ids": [
+        "connection-insert-o-ring-001",
+        "seal-o-ring-radial-001"
+      ],
+      "useful_ids": [
+        "diagnostic-leak-tightening-001"
+      ],
+      "avoid_ids": [
+        "connection-threaded-001",
+        "connection-press-001"
+      ],
+      "safety_expectation": "low",
+      "response_class": "informational"
+    },
+    {
+      "case_id": "KB-EVAL-019",
+      "query": "Тази гумена гарнитура за холендър как се поставя и защо пак тече?",
+      "language": "bg",
+      "query_type": "conversational",
+      "expected_ids": [
+        "seal-flat-gasket-001",
+        "connection-union-flat-gasket-001"
+      ],
+      "useful_ids": [
+        "diagnostic-leak-after-reassembly-001"
+      ],
+      "avoid_ids": [
+        "seal-o-ring-radial-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-020",
+      "query": "Water is leaking through a pipe thread even though the fitting is tight. What should be checked?",
+      "language": "en",
+      "query_type": "symptom",
+      "expected_ids": [
+        "connection-threaded-001",
+        "diagnostic-thread-leak-001"
+      ],
+      "useful_ids": [
+        "seal-threaded-001"
+      ],
+      "avoid_ids": [
+        "connection-insert-o-ring-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    }
+  ]
+}
