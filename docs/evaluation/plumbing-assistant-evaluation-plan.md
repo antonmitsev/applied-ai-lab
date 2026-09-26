@@ -8,6 +8,7 @@
 | Date | 2026-09-22 |
 | Audit finding | `AUD-P0-003` |
 | Safety policy | [PA-SAFE-001](../safety/plumbing-assistant-safety-policy.md) |
+| Operational test sequence | [PA-TEST-001](plumbing-assistant-testing-plan.md) |
 
 ## 1. Objective
 
