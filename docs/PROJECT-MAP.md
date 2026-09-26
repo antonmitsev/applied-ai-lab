@@ -63,7 +63,7 @@ Current validated baseline:
 - retrieval evaluation cases: `20`;
 - safety vectors: `10`;
 - KB tests: `6/6`.
-- POC unit tests: `15/15`;
+- POC unit tests: `18/18`;
 - POC integration tests: `13/13`;
 
 Passing these checks means the repository is internally consistent. It does
@@ -74,7 +74,9 @@ still required.
 ## Current project status
 
 The requirements foundation, first draft KB package, and internal mock POC are
-complete. The next important step is controlled evidence work:
+complete. The current implementation checkpoint is recorded in the [POC
+current-state handoff](handoffs/plumbing-assistant-poc-current-state.md). The
+next important step is controlled evidence work:
 
 1. review a source-backed batch and complete missing KB units;
 2. make an explicit provider/model, data, and budget decision;

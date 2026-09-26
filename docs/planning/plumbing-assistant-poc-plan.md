@@ -23,11 +23,11 @@ so work can resume without reconstructing context.
 
 | Field | Value |
 | --- | --- |
-| POC status | POC complete; follow-up decision blocked on explicit provider/source review |
+| POC status | POC complete; UI, Markdown tables, and mock external-call preview are checkpointed |
 | Current task | `POC-110` — `blocked` |
 | Next action | Owner decision on provider/model, data processing, budget, and live-call authority |
 | Last completed task | `POC-140` |
-| Last validated commit | This checkpoint; see `git log -1` |
+| Last validated commit | `db6fdfc` — see [current-state checkpoint](../handoffs/plumbing-assistant-poc-current-state.md) |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
 | Public traffic | Disabled; internal/local POC only |

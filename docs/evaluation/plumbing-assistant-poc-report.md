@@ -14,8 +14,9 @@
 The repository can now run one bounded path from server-rendered landing page to
 chat request, deterministic safety pre-triage, local lexical retrieval, mock
 structured response, citation metadata, and escaped client rendering. It also
-has bilingual legal/source pages, local Docker packaging, a healthcheck, and
-failure-path handling.
+has bilingual legal/source pages, local Docker packaging, a healthcheck,
+failure-path handling, styled responsive UI, Markdown tables, and an explicit
+dry-run preview of the future provider call when local retrieval is empty.
 
 The POC does **not** prove that the product is more useful or safer than direct
 ChatGPT. The source registry is still in review, the KB is draft/development
@@ -31,6 +32,9 @@ project-versus-baseline comparison has been run.
 - Docker Compose builds and starts a healthy localhost-only container;
 - headless Chrome loads the English SSR landing page and exposes the text chat,
   notice, legal links, and footer;
+- service pages render Markdown tables as semantic HTML tables;
+- the mock fallback shows the bounded `call ai-app({...})` preview without
+  making a provider request;
 - failure tests cover invalid input, critical hazard bypass, empty retrieval,
   provider failure, and malformed provider output.
 
@@ -47,4 +51,5 @@ project-versus-baseline comparison has been run.
    baseline, then publish only content-free comparison evidence.
 
 The POC is therefore a useful engineering checkpoint, not a launch approval or
-a claim of superiority over ChatGPT.
+a claim of superiority over ChatGPT. The durable resume details are in the
+[current-state checkpoint](../handoffs/plumbing-assistant-poc-current-state.md).
