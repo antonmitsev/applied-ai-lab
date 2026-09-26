@@ -24,9 +24,9 @@ so work can resume without reconstructing context.
 | Field | Value |
 | --- | --- |
 | POC status | Implementation in progress |
-| Current task | `POC-080` — `in_progress` |
-| Next action | Add deterministic safety pre-triage and response-class validation before mock generation |
-| Last completed task | `POC-070` |
+| Current task | `POC-090` — `in_progress` |
+| Next action | Add a deterministic mock provider backed by bounded local retrieval |
+| Last completed task | `POC-080` |
 | Last validated commit | This checkpoint; see `git log -1` |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
@@ -44,8 +44,8 @@ so work can resume without reconstructing context.
 | `POC-050` | Local KB extraction, chunking, and lexical index | `done` | `POC-040` |
 | `POC-060` | Express chat API boundary | `done` | `POC-030`, `POC-050` |
 | `POC-070` | Landing page and bilingual legal routes | `done` | `POC-030` |
-| `POC-080` | Deterministic safety pre-triage and response validation | `in_progress` | `POC-030` |
-| `POC-090` | Mock model/provider adapter | `planned` | `POC-030`, `POC-080` |
+| `POC-080` | Deterministic safety pre-triage and response validation | `done` | `POC-030` |
+| `POC-090` | Mock model/provider adapter | `in_progress` | `POC-030`, `POC-080` |
 | `POC-100` | Text-only bilingual chat UI | `planned` | `POC-060`, `POC-070`, `POC-090` |
 | `POC-110` | Optional real OpenAI adapter | `planned` | `POC-090`, `POC-100` |
 | `POC-120` | Thirty-pair bilingual pilot and baseline runner | `planned` | `POC-040`, `POC-100` |
@@ -325,7 +325,7 @@ does not claim final typography, accessibility, or legal/deployment approval.
 
 ### POC-080 — Deterministic safety pre-triage and response validation
 
-Status: `planned`
+Status: `done` (server-owned safety gate)
 
 Deliverables:
 
@@ -341,6 +341,22 @@ Definition of Done:
 - critical hazards bypass normal generated procedure;
 - unsafe model actions cannot lower established severity;
 - unknown high-risk conditions do not receive local-DIY steps.
+
+Evidence:
+
+- `apps/plumbing-assistant/src/safety.ts` applies the monotonic
+  routine/caution/critical floor, hazard classes, server-owned action codes,
+  and bilingual language selection;
+- `src/server.ts` executes pre-triage before `ChatRuntime.respond()` and returns
+  a fixed stop response for non-routine cases;
+- unit tests cover critical electricity, unknown compatibility, and routine
+  local-DIY decisions;
+- integration tests prove the critical path returns without the unavailable
+  runtime/provider.
+
+Known limitation: this POC pre-triage is a conservative keyword detector and
+does not claim the complete structured intake, reviewed localized templates, or
+qualified domain review required for public release.
 
 ### POC-090 — Mock model/provider adapter
 

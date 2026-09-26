@@ -1,14 +1,16 @@
 import { EventEmitter } from "node:events";
 import nodePath from "node:path";
-import { createRequest, createResponse } from "node-mocks-http";
+import { createRequest, createResponse, type RequestOptions } from "node-mocks-http";
 import { describe, expect, it } from "vitest";
 import { parseConfig } from "../../src/config.js";
 import { createServer } from "../../src/server.js";
 
 const testConfig = parseConfig({ NODE_ENV: "test" });
 
-async function invoke(path: string, options: { method?: "GET" | "POST" } = {}) {
-  const request = createRequest({ method: options.method ?? "GET", url: path });
+async function invoke(path: string, options: Pick<RequestOptions, "method" | "body"> = {}) {
+  const requestOptions: RequestOptions = { method: options.method ?? "GET", url: path };
+  if (options.body !== undefined) requestOptions.body = options.body;
+  const request = createRequest(requestOptions);
   const response = createResponse({ eventEmitter: EventEmitter });
   const ended = new Promise<void>((resolve) => response.once("end", resolve));
 
@@ -57,6 +59,20 @@ describe("POC HTTP boundary", () => {
     expect(response.statusCode).toBe(400);
     expect(response._getJSONData()).toEqual({
       error: { code: "INVALID_REQUEST", message: "language must be bg or en" },
+    });
+  });
+
+  it("returns a server-owned critical safety response before the runtime", async () => {
+    const response = await invoke("/api/chat", {
+      method: "POST",
+      body: { language: "en", message: "There is water near electricity and sparks." },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response._getJSONData()).toMatchObject({
+      language: "en",
+      responseClass: "stop-and-escalate",
+      citations: [],
     });
   });
 

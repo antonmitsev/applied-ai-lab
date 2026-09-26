@@ -13,6 +13,7 @@ import {
   type ChatRuntime,
 } from "./chat.js";
 import { parseConfig, type AppConfig } from "./config.js";
+import { preTriage } from "./safety.js";
 import { getServiceManifest, loadServicePage, renderServicePage } from "./service-pages.js";
 
 export interface ServerDependencies {
@@ -61,6 +62,21 @@ export function createServer(
   server.post("/api/chat", async (request, response, next) => {
     try {
       const chatRequest = parseChatRequest(request.body);
+      const safety = preTriage(chatRequest.message, chatRequest.language);
+      if (safety.urgency !== "routine") {
+        const message =
+          chatRequest.language === "bg"
+            ? "Спрете действията и не докосвайте рисковата зона. Това не може да бъде безопасно потвърдено дистанционно; потърсете подходящ квалифициран или спешен професионалист."
+            : "Stop and keep away from the hazardous area. This cannot be confirmed safe remotely; contact an appropriate qualified or emergency professional.";
+        response.json({
+          chatId: chatRequest.chatId ?? randomUUID(),
+          language: chatRequest.language,
+          message,
+          citations: [],
+          responseClass: safety.responseClass,
+        });
+        return;
+      }
       const result = await chatRuntime.respond(chatRequest);
       response.json(result);
     } catch (error) {
