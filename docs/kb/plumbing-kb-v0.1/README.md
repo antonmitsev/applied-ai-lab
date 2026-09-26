@@ -45,10 +45,10 @@ The primary model is:
 
 **component → connection → mechanical retention → sealing → failure → symptom → diagnosis → repair**
 
-## Requirements layer
+## Requirements and current content
 
-This version contains requirements and rules, but is not yet populated with
-complete canonical content:
+This version contains the requirements and the first draft canonical package.
+The requirements and operational documents are:
 
 1. 01-scope.md — scope and boundaries;
 2. 02-taxonomy.md — classification and metadata;
@@ -60,6 +60,22 @@ complete canonical content:
 8. 07-provenance-and-evidence.md — sources and evidence levels;
 9. 08-retrieval-evaluation.md — retrieval and answer evaluation;
 10. 09-safety-response-policy.md — chatbot boundaries and safety behavior.
+
+The first canonical package is currently `draft` and contains:
+
+- `connection-threaded-001.md`;
+- `connection-union-flat-gasket-001.md`;
+- `seal-o-ring-radial-001.md`;
+- `seal-o-ring-axial-001.md`;
+- `connection-compression-001.md`;
+- `connection-conical-001.md`;
+- `connection-press-001.md`;
+- `connection-insert-o-ring-001.md`;
+- `diagnostic-leak-tightening-001.md`;
+- the radiator case example and the earlier case findings document.
+
+Draft status is intentional: source registry review, applicability review, and
+human technical review are still required before production indexing.
 
 ## Definition of Done for the architecture
 
@@ -80,14 +96,11 @@ The architecture is ready for content population when:
 
 ## Next step
 
-Before building the first knowledge package, implement a minimal validator,
-evaluation set, and safety response contract. Then build:
+The architecture gate is implemented. The next work is to:
 
-- glossary/;
-- fundamentals/;
-- fittings/;
-- seals/;
-- valves/.
-
-The first real knowledge package should cover threaded connections, flat
-gaskets, O-rings, unions, and compression fittings.
+- complete the first development and production index manifests;
+- run source-governance research and create approved source records;
+- add sealing-material units for EPDM, NBR, PTFE, gaskets, thread sealants,
+  and compatibility;
+- expand diagnostic patterns and radiator-specific units;
+- promote individual units only after provenance and technical review.
