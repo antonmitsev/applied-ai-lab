@@ -23,9 +23,9 @@ so work can resume without reconstructing context.
 
 | Field | Value |
 | --- | --- |
-| POC status | Planning complete; implementation not started |
-| Current task | `POC-010` |
-| Next action | Choose and record the POC stack, then scaffold the app |
+| POC status | Implementation in progress |
+| Current task | `POC-010` — `in_progress` |
+| Next action | Record the stack decision and scaffold the app |
 | Last completed task | `POC-000` |
 | Last validated commit | `16f1fcd` |
 | Repository baseline | `npm run validate` passes |
@@ -37,7 +37,7 @@ so work can resume without reconstructing context.
 | ID | Task | Status | Depends on |
 | --- | --- | --- | --- |
 | `POC-000` | POC scope, acceptance criteria, and task board | `done` | — |
-| `POC-010` | Stack decision and application scaffold | `ready` | `POC-000` |
+| `POC-010` | Stack decision and application scaffold | `in_progress` | `POC-000` |
 | `POC-020` | Docker Compose development environment | `planned` | `POC-010` |
 | `POC-030` | Configuration, health endpoint, and error model | `planned` | `POC-010` |
 | `POC-040` | Source-backed pilot batch | `planned` | `POC-000` |
@@ -73,7 +73,11 @@ Definition of Done:
 
 ### POC-010 — Stack decision and application scaffold
 
-Status: `ready`
+Status: `in_progress`
+
+Scope alignment: this is the POC slice of `PA-IMP-000`, covering `FR-22`,
+`AC-95–AC-101`, and audit control `IMP-010`. It does not claim that the full
+repository-quality or public-release requirements are complete.
 
 Recommended initial choice:
 
@@ -361,4 +365,3 @@ At the end of every work session:
 
 At the start of the next session, read this section and the current task row
 before changing code. Do not infer progress from conversation history alone.
-
