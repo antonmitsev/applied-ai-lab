@@ -5,6 +5,25 @@ import { fileURLToPath } from "node:url";
 import type { ChatRequest, ChatResponse, ChatRuntime } from "./chat.js";
 import { buildKnowledgeIndex, searchKnowledge, type KnowledgeIndex } from "./kb.js";
 
+function formatExternalCallPreview(request: ChatRequest): string {
+  const args = {
+    language: request.language,
+    message: request.message,
+    historyTurns: request.history.length,
+    safetyGate: "passed",
+    retrieval: {
+      source: "local-kb",
+      evidence: "none-found",
+      maxCitations: 3,
+    },
+  };
+  const explanation =
+    request.language === "bg"
+      ? "Няма достатъчно локално знание. В реален режим следващата стъпка би била този provider call. Това е dry-run preview — реален AI provider не е извикан."
+      : "There is not enough local knowledge. In external mode, the next step would be this provider call. This is a dry-run preview — no AI provider was called.";
+  return `${explanation}\n\ncall ai-app(${JSON.stringify(args, null, 2)})`;
+}
+
 function defaultKbRoot(): string {
   const currentFile = path.dirname(fileURLToPath(import.meta.url));
   const candidates = [
@@ -31,10 +50,10 @@ export function createMockChatRuntime(kbRoot = defaultKbRoot()): ChatRuntime {
         request.language === "bg"
           ? results.length > 0
             ? `Това е локален mock отговор върху draft KB. Най-релевантно: ${results.map((result) => result.title).join("; ")}. Не приемайте това за потвърдена съвместимост.`
-            : "Не намирам достатъчно локално знание за този въпрос. Нужно е уточнение за системата, компонента и безопасното състояние."
+            : formatExternalCallPreview(request)
           : results.length > 0
             ? `This is a local mock response over the draft KB. Most relevant: ${results.map((result) => result.title).join("; ")}. Do not treat this as confirmed compatibility.`
-            : "I do not have enough local evidence for this question. Clarify the system, component, and safe state before proceeding.";
+            : formatExternalCallPreview(request);
       return {
         chatId: request.chatId ?? randomUUID(),
         language: request.language,

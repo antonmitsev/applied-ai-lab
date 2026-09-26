@@ -107,6 +107,7 @@ describe("POC HTTP boundary", () => {
       responseClass: "clarify-first",
       citations: [],
     });
+    expect(response._getJSONData().message).toContain("call ai-app({");
   });
 
   it("turns a provider failure into a stable 503 error", async () => {
