@@ -2,10 +2,10 @@
 
 | Field | Value |
 | --- | --- |
-| Checkpoint date | 2026-09-26 |
+| Checkpoint date | 2026-10-04 |
 | Branch | `main` |
-| Last implementation commit | `db6fdfc` |
-| Checkpoint commit | `01823df` |
+| Last implementation commit | `df30fd0` |
+| Handoff basis | Source-backed radiator batch at `df30fd0` |
 | POC status | Local, internal-only POC complete; no public release |
 | Default runtime | `MOCK_PROVIDER=true` |
 | Resume authority | This file, then the POC task board |
@@ -36,6 +36,13 @@ mock runtime with citations or external-call dry-run preview
   returns a validated response shape.
 - Routine questions with local evidence receive a deterministic mock answer and
   citations.
+- The local development index includes all 16 eligible repository-owned
+  knowledge units as 193 heading-based chunks and exposes a reproducible
+  content fingerprint/receipt.
+- Five new radiator units cover cold-top, cold-bottom, gurgling,
+  completely-cold, and bleeding paths. They paraphrase six official source
+  pages/documents and retain source IDs and locators; no third-party source body
+  is stored or uploaded.
 - Routine questions without local evidence receive a dry-run preview such as
   `call ai-app({...})`; no AI provider is called.
 - Critical/caution safety cases bypass the runtime and return the fixed safety
@@ -79,9 +86,15 @@ docker compose down
 ## Verified at this checkpoint
 
 - `npm run validate` passes repository, KB, source-manifest, and safety checks;
+- `npm run index:development --workspace=@applied-ai-lab/plumbing-assistant`
+  emits build `idx_local_1dcdcb4aff8bd991` for the complete
+  16-document/193-chunk corpus without network access;
+- the development baseline contains 28 validated KB Markdown files, 30
+  bilingual retrieval cases, and 9 metadata-only source records;
 - app typecheck, lint, format, build, 18 unit tests, and 13 integration tests
   pass;
-- Docker image builds and the local container starts on loopback;
+- Docker build/start remain verified by the preceding application checkpoint;
+  they were not rerun for this content/index-only batch;
 - legal pages render actual `<table>`, `<thead>`, `<th>`, `<tbody>`, and `<td>`
   elements;
 - an unknown local query returns the `call ai-app({...})` dry-run preview;
@@ -89,10 +102,11 @@ docker compose down
 
 ## What remains blocked
 
-The next controlled product decision is `POC-110`: provider/model, data
-processing, budget, source approval, and explicit authority for a live call.
-Do not enable a real provider, ingest unapproved source bodies, or publish the
-service until that decision and the applicable release evidence exist.
+The next controlled product decisions are qualified technical/applicability
+review of the five new radiator units and `POC-110`: provider/model, data
+processing, budget, and explicit authority for a live call. Do not enable a
+real provider, ingest unapproved source bodies, or publish the service until
+the applicable approval and release evidence exist.
 
 ## Easy new-session prompt
 

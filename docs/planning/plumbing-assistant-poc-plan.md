@@ -27,7 +27,7 @@ so work can resume without reconstructing context.
 | Current task | `POC-110` — `blocked` |
 | Next action | Owner decision on provider/model, data processing, budget, and live-call authority |
 | Last completed task | `POC-160` |
-| Last validated commit | `db6fdfc` — see [current-state checkpoint](../handoffs/plumbing-assistant-poc-current-state.md) |
+| Last validated commit | `df30fd0` — see [current-state checkpoint](../handoffs/plumbing-assistant-poc-current-state.md) |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
 | Public traffic | Disabled; internal/local POC only |
