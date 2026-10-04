@@ -72,10 +72,17 @@ The first canonical package is currently `draft` and contains:
 - `connection-press-001.md`;
 - `connection-insert-o-ring-001.md`;
 - `diagnostic-leak-tightening-001.md`;
-- the radiator case example and the earlier case findings document.
+- the radiator case example and the earlier case findings document;
+- `diagnostic-radiator-cold-top-001.md`;
+- `diagnostic-radiator-cold-bottom-001.md`;
+- `diagnostic-radiator-gurgling-001.md`;
+- `diagnostic-radiator-completely-cold-001.md`;
+- `procedure-radiator-bleeding-001.md`.
 
 Draft status is intentional: source registry review, applicability review, and
-human technical review are still required before production indexing.
+human technical review are still required before production indexing. The five
+radiator units are repository-owned paraphrases with source IDs and locators;
+the external pages and PDF are not copied into the KB.
 
 ## Definition of Done for the architecture
 
@@ -98,9 +105,14 @@ The architecture is ready for content population when:
 
 The architecture gate is implemented. The next work is to:
 
-- complete the first development and production index manifests;
-- run source-governance research and create approved source records;
+- maintain the deterministic local development receipt as the corpus changes;
+- implement the governed staging/production index manifest after source
+  approval;
+- technically review the first source-backed radiator batch and its source
+  applicability;
+- continue source-governance research and create approved source records where
+  source-body ingestion is actually needed;
 - add sealing-material units for EPDM, NBR, PTFE, gaskets, thread sealants,
   and compatibility;
-- expand diagnostic patterns and radiator-specific units;
+- expand diagnostic patterns beyond the initial radiator batch;
 - promote individual units only after provenance and technical review.

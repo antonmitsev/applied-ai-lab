@@ -16,7 +16,7 @@ requirements → design → knowledge → sources → retrieval → safety → t
 | Requirements | `docs/requirements/` | What the product must do and how success is defined. |
 | Architecture and decisions | `docs/architecture/`, `docs/decisions/` | How the system should work and why important choices were made. |
 | Knowledge base | `docs/kb/` | Plumbing and heating knowledge: connections, seals, symptoms, failures, and diagnosis. |
-| Source governance | `docs/sources/`, `sources/` | Which external documents may support answers. The registry has three metadata-only candidates; all remain in review. |
+| Source governance | `docs/sources/`, `sources/` | Which external documents may support answers. The registry has nine metadata-only candidates; all remain in review and no third-party source body is stored. |
 | Retrieval evaluation | `evals/plumbing-kb/` | Small tests proving that the right KB units can be found. |
 | Full AI evaluation | `evals/plumbing-assistant/`, `docs/evaluation/` | Scenarios for safety, grounding, bilingual behavior, and release quality. |
 | Safety and security | `docs/safety/`, `docs/security/`, `SECURITY.md` | Boundaries for dangerous work, private data, images, prompt injection, and abuse. |
@@ -40,9 +40,10 @@ Its canonical language is English. Bulgarian terms are kept as aliases and
 evaluation queries so people can search naturally in Bulgarian.
 
 The current KB contains the requirements layer, the first eight foundational
-connection/seal units, one diagnostic unit, and case examples. They are valid
-for development but remain `draft` until sources and human technical review are
-completed.
+connection/seal units, case examples, and a five-unit source-backed radiator
+batch covering cold-top, cold-bottom, gurgling, completely-cold, and bleeding
+paths. The units are valid for development but remain `draft` until source
+applicability and human technical review are completed.
 
 ## How quality is checked
 
@@ -52,6 +53,8 @@ From the repository root:
 npm run validate       # repository + KB + safety contract
 npm run test:kb        # KB parser and retrieval-baseline tests
 npm run test:safety    # deterministic safety-contract tests
+npm run index:development --workspace=@applied-ai-lab/plumbing-assistant
+                       # deterministic local development-index receipt
 ```
 
 The checks are read-only and do not need credentials or network access.
@@ -59,8 +62,10 @@ The checks are read-only and do not need credentials or network access.
 Current validated baseline:
 
 - requirements traceability: `135/135`;
-- KB documents: `23`, with `0` validation warnings;
-- retrieval evaluation cases: `20`;
+- KB documents: `28`, with `0` validation warnings;
+- locally indexed knowledge units: `16`, producing `193` chunks;
+- source-manifest records: `9`, all metadata-only and `in_review`;
+- retrieval evaluation cases: `30`;
 - safety vectors: `10`;
 - KB tests: `6/6`.
 - POC unit tests: `18/18`;

@@ -106,7 +106,8 @@ safety review.
 
 Measure whether the right knowledge is found before answer generation.
 
-The current 20-case bilingual retrieval set is the initial structural baseline.
+The current 30-case bilingual retrieval set is the structural baseline. Ten
+cases cover the first source-backed radiator batch in Bulgarian and English.
 The next retrieval batch should add:
 
 - material and compatibility queries;
@@ -305,4 +306,3 @@ The repository currently passes document, retrieval-fixture, and safety-contract
 checks, but it does not yet contain the runtime, reviewed source registry,
 application evaluation runner, or release evidence required to claim that the
 project beats direct ChatGPT in production.
-

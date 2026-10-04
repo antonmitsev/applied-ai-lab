@@ -2,8 +2,8 @@
   "$schema": "../../docs/sources/source-manifest.schema.json",
   "schema_version": "1.0.0",
   "registry_id": "plumbing-assistant",
-  "registry_version": "0.1.0",
-  "updated_at": "2026-09-26T00:00:00Z",
+  "registry_version": "0.2.0",
+  "updated_at": "2026-10-04T00:00:00Z",
   "research_status": "in_progress",
   "sources": [
     {
@@ -157,6 +157,318 @@
       "ingestion": {
         "approved_for_index": false,
         "priority": 3,
+        "chunking_profile": null
+      },
+      "superseded_by": null,
+      "withdrawal_reason": null
+    },
+    {
+      "source_id": "src_worcester_bleed_radiator",
+      "status": "in_review",
+      "publisher": "Worcester Bosch",
+      "manufacturer": "Worcester Bosch",
+      "source_type": "professional_guidance",
+      "authority_class": "manufacturer_family",
+      "document_title": "How to bleed a radiator",
+      "document_version": null,
+      "publication_date": null,
+      "language": "en-GB",
+      "canonical_url": "https://www.worcester-bosch.co.uk/support/troubleshooting/faqs/home-heating-faqs/how-to-bleed-a-radiator",
+      "accessed_at": "2026-10-04T00:00:00Z",
+      "product_scope": {
+        "jurisdictions": ["GB"],
+        "system_types": ["radiator_heating"],
+        "product_family": "Domestic water-filled radiator heating",
+        "model_variants": []
+      },
+      "content": {
+        "mime_type": null,
+        "byte_length": null,
+        "sha256": null,
+        "artifact_locator": null
+      },
+      "usage_rights": {
+        "access_basis": "public",
+        "ingestion_decision": "pending",
+        "redistribution_decision": "pending",
+        "evidence": null,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "review": {
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "next_review_at": null,
+        "notes": "Official manufacturer homeowner guidance used only to draft paraphrased KB claims. Bulgarian applicability, technical review, and source-body ingestion rights remain pending."
+      },
+      "citation": {
+        "source_tier": "manufacturer",
+        "title_bg": "Как се обезвъздушава радиатор — Worcester Bosch (кандидат)",
+        "title_en": "How to bleed a radiator — Worcester Bosch (candidate)"
+      },
+      "ingestion": {
+        "approved_for_index": false,
+        "priority": 1,
+        "chunking_profile": null
+      },
+      "superseded_by": null,
+      "withdrawal_reason": null
+    },
+    {
+      "source_id": "src_worcester_cold_bottom",
+      "status": "in_review",
+      "publisher": "Worcester Bosch",
+      "manufacturer": "Worcester Bosch",
+      "source_type": "professional_guidance",
+      "authority_class": "manufacturer_family",
+      "document_title": "Why is my radiator cold at the bottom?",
+      "document_version": null,
+      "publication_date": null,
+      "language": "en-GB",
+      "canonical_url": "https://www.worcester-bosch.co.uk/radiator-cold-at-the-bottom-possible-causes-and-solutions",
+      "accessed_at": "2026-10-04T00:00:00Z",
+      "product_scope": {
+        "jurisdictions": ["GB"],
+        "system_types": ["radiator_heating"],
+        "product_family": "Domestic water-filled radiator heating",
+        "model_variants": []
+      },
+      "content": {
+        "mime_type": null,
+        "byte_length": null,
+        "sha256": null,
+        "artifact_locator": null
+      },
+      "usage_rights": {
+        "access_basis": "public",
+        "ingestion_decision": "pending",
+        "redistribution_decision": "pending",
+        "evidence": null,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "review": {
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "next_review_at": null,
+        "notes": "Official manufacturer symptom guidance used only to draft paraphrased KB claims. Bulgarian applicability, technical review, and source-body ingestion rights remain pending."
+      },
+      "citation": {
+        "source_tier": "manufacturer",
+        "title_bg": "Защо радиаторът е студен отдолу — Worcester Bosch (кандидат)",
+        "title_en": "Why is my radiator cold at the bottom? — Worcester Bosch (candidate)"
+      },
+      "ingestion": {
+        "approved_for_index": false,
+        "priority": 1,
+        "chunking_profile": null
+      },
+      "superseded_by": null,
+      "withdrawal_reason": null
+    },
+    {
+      "source_id": "src_danfoss_winter_radiator",
+      "status": "in_review",
+      "publisher": "Danfoss",
+      "manufacturer": "Danfoss",
+      "source_type": "professional_guidance",
+      "authority_class": "manufacturer_family",
+      "document_title": "Winter preparations: Save money on heating by winter proofing your radiator",
+      "document_version": null,
+      "publication_date": null,
+      "language": "en-GB",
+      "canonical_url": "https://www.danfoss.com/en-gb/industries/buildings-residential/dhs/solutions-for-homeowners/winter-preparations/",
+      "accessed_at": "2026-10-04T00:00:00Z",
+      "product_scope": {
+        "jurisdictions": ["GB"],
+        "system_types": ["radiator_heating"],
+        "product_family": "Radiator thermostats and valves",
+        "model_variants": []
+      },
+      "content": {
+        "mime_type": null,
+        "byte_length": null,
+        "sha256": null,
+        "artifact_locator": null
+      },
+      "usage_rights": {
+        "access_basis": "public",
+        "ingestion_decision": "pending",
+        "redistribution_decision": "pending",
+        "evidence": null,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "review": {
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "next_review_at": null,
+        "notes": "Official manufacturer homeowner guidance used only to draft paraphrased KB claims. Exact valve applicability, Bulgarian context, and source-body ingestion rights remain pending."
+      },
+      "citation": {
+        "source_tier": "manufacturer",
+        "title_bg": "Подготовка на радиаторите за зимата — Danfoss (кандидат)",
+        "title_en": "Winter preparations for radiators — Danfoss (candidate)"
+      },
+      "ingestion": {
+        "approved_for_index": false,
+        "priority": 2,
+        "chunking_profile": null
+      },
+      "superseded_by": null,
+      "withdrawal_reason": null
+    },
+    {
+      "source_id": "src_vaillant_cold_radiators",
+      "status": "in_review",
+      "publisher": "Vaillant",
+      "manufacturer": "Vaillant",
+      "source_type": "professional_guidance",
+      "authority_class": "manufacturer_family",
+      "document_title": "Getting ready for winter: Why are my radiators cold?",
+      "document_version": null,
+      "publication_date": null,
+      "language": "en-GB",
+      "canonical_url": "https://www.vaillant.co.uk/advice/heating-tips/winter-weather-advice/getting-ready-for-winter-why-are-my-radiators-cold/",
+      "accessed_at": "2026-10-04T00:00:00Z",
+      "product_scope": {
+        "jurisdictions": ["GB"],
+        "system_types": ["radiator_heating"],
+        "product_family": "Domestic water-filled radiator heating",
+        "model_variants": []
+      },
+      "content": {
+        "mime_type": null,
+        "byte_length": null,
+        "sha256": null,
+        "artifact_locator": null
+      },
+      "usage_rights": {
+        "access_basis": "public",
+        "ingestion_decision": "pending",
+        "redistribution_decision": "pending",
+        "evidence": null,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "review": {
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "next_review_at": null,
+        "notes": "Official manufacturer homeowner guidance used only to draft paraphrased KB claims. Appliance-specific pressure ranges and Bulgarian applicability require separate review."
+      },
+      "citation": {
+        "source_tier": "manufacturer",
+        "title_bg": "Защо радиаторите са студени — Vaillant (кандидат)",
+        "title_en": "Why are my radiators cold? — Vaillant (candidate)"
+      },
+      "ingestion": {
+        "approved_for_index": false,
+        "priority": 1,
+        "chunking_profile": null
+      },
+      "superseded_by": null,
+      "withdrawal_reason": null
+    },
+    {
+      "source_id": "src_vaillant_radiator_not_working",
+      "status": "in_review",
+      "publisher": "Vaillant",
+      "manufacturer": "Vaillant",
+      "source_type": "professional_guidance",
+      "authority_class": "manufacturer_family",
+      "document_title": "Why is my radiator not working?",
+      "document_version": null,
+      "publication_date": null,
+      "language": "en-GB",
+      "canonical_url": "https://www.vaillant.co.uk/advice/heating-tips/home-advice/why-is-my-radiator-not-working/",
+      "accessed_at": "2026-10-04T00:00:00Z",
+      "product_scope": {
+        "jurisdictions": ["GB"],
+        "system_types": ["radiator_heating"],
+        "product_family": "Domestic water-filled radiator heating",
+        "model_variants": []
+      },
+      "content": {
+        "mime_type": null,
+        "byte_length": null,
+        "sha256": null,
+        "artifact_locator": null
+      },
+      "usage_rights": {
+        "access_basis": "public",
+        "ingestion_decision": "pending",
+        "redistribution_decision": "pending",
+        "evidence": null,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "review": {
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "next_review_at": null,
+        "notes": "Official manufacturer differential-diagnosis guidance used only for paraphrased KB claims. Appliance-specific, legal, and Bulgarian applicability review remains pending."
+      },
+      "citation": {
+        "source_tier": "manufacturer",
+        "title_bg": "Защо радиаторът не работи — Vaillant (кандидат)",
+        "title_en": "Why is my radiator not working? — Vaillant (candidate)"
+      },
+      "ingestion": {
+        "approved_for_index": false,
+        "priority": 1,
+        "chunking_profile": null
+      },
+      "superseded_by": null,
+      "withdrawal_reason": null
+    },
+    {
+      "source_id": "src_caleffi_idronics_32",
+      "status": "in_review",
+      "publisher": "Caleffi North America",
+      "manufacturer": "Caleffi",
+      "source_type": "technical_datasheet",
+      "authority_class": "manufacturer_family",
+      "document_title": "idronics 32: Troubleshooting hydronic systems",
+      "document_version": "Issue 32",
+      "publication_date": null,
+      "language": "en-US",
+      "canonical_url": "https://www.caleffi.com/sites/default/files/media/external-file/Idronics_32_NA_Troubleshooting%20hydronic%20systems.pdf",
+      "accessed_at": "2026-10-04T00:00:00Z",
+      "product_scope": {
+        "jurisdictions": ["US", "CA"],
+        "system_types": ["radiator_heating", "hydronic_floor_heating"],
+        "product_family": "Generic residential and light-commercial hydronic systems",
+        "model_variants": []
+      },
+      "content": {
+        "mime_type": null,
+        "byte_length": null,
+        "sha256": null,
+        "artifact_locator": null
+      },
+      "usage_rights": {
+        "access_basis": "public",
+        "ingestion_decision": "pending",
+        "redistribution_decision": "pending",
+        "evidence": null,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "review": {
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "next_review_at": null,
+        "notes": "Official manufacturer technical journal used only for paraphrased general hydronic reasoning. Unit conventions, North American context, Bulgarian applicability, and source-body rights require review."
+      },
+      "citation": {
+        "source_tier": "manufacturer",
+        "title_bg": "Отстраняване на проблеми в хидронни системи — Caleffi idronics 32 (кандидат)",
+        "title_en": "Troubleshooting hydronic systems — Caleffi idronics 32 (candidate)"
+      },
+      "ingestion": {
+        "approved_for_index": false,
+        "priority": 2,
         "chunking_profile": null
       },
       "superseded_by": null,

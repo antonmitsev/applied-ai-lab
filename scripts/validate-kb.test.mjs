@@ -94,8 +94,8 @@ test("current KB has no validation errors in development mode", async () => {
   assert.equal(report.errors.length, 0, JSON.stringify(report.errors, null, 2));
 });
 
-test("retrieval evaluation set meets the initial baseline", async () => {
+test("retrieval evaluation set meets the current baseline", async () => {
   const report = await validateEvaluationSet(path.join(repositoryRoot, "evals/plumbing-kb/retrieval-cases.json"), repositoryRoot);
   assert.equal(report.errors.length, 0, JSON.stringify(report.errors, null, 2));
-  assert.equal(report.cases, 20);
+  assert.equal(report.cases, 30);
 });

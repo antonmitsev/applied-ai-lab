@@ -30,7 +30,7 @@ evidence.
 | `IMP-003` AI evaluation | Reviewed dataset, runner, deterministic graders, repetitions and versioned report | Not started |
 | `IMP-004` Cost and quota | Atomic reservation/reconciliation, price catalogue, breakers, recovery and WP-03 load evidence | Not started |
 | `IMP-005` Anonymous access/privacy | Token, Origin/CSRF, trusted proxy, minimized buckets, deletion and privacy review | Not started |
-| `IMP-006` Governed sources | WP-01 registry, rights/freshness review, reproducible ingestion, activation and withdrawal | Not started |
+| `IMP-006` Governed sources | WP-01 registry, rights/freshness review, reproducible ingestion, activation and withdrawal | In progress: nine metadata-only source records, five source-backed draft KB units, registry validation, and a deterministic local receipt exist; qualified review, approval, provider ingestion, activation, and withdrawal evidence pending |
 | `IMP-007` Image boundary | Framing, actual-format validation, isolation, normalization, resource limits and cleanup | Not started |
 | `IMP-008` Retrieval containment | Staged tools, query/URL/evidence gates, safe citations and adversarial corpus | Not started |
 | `IMP-009` Admin statistics | CLI/server interoperability, replay store, key lifecycle, proxy path and response privacy | Not started |

@@ -6,7 +6,7 @@ plumbing knowledge base.
 ## Files
 
 - retrieval-cases.schema.json — machine-readable case contract;
-- retrieval-cases.json — versioned draft set with 20 cases.
+- retrieval-cases.json — versioned draft set with 30 cases.
 
 The canonical documentation language is English. Bulgarian queries are retained
 because the application is Bulgarian-first and the retrieval layer must handle
@@ -27,9 +27,9 @@ evaluation must also verify that each expected ID resolves to an indexed unit.
 
 ## Acceptance baseline
 
-The initial set must:
+The current set must:
 
-- contain at least 20 cases;
+- retain at least the 30 checkpointed cases;
 - contain both Bulgarian and English queries;
 - cover symptoms, connection types, seals, materials, incomplete information,
   misspellings, image-unavailable questions, and safety-sensitive questions;

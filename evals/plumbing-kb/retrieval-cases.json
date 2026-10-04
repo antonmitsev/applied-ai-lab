@@ -357,6 +357,178 @@
       ],
       "safety_expectation": "medium",
       "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-021",
+      "query": "Радиаторът е топъл отдолу, но горната му част остава студена.",
+      "language": "bg",
+      "query_type": "symptom",
+      "expected_ids": [
+        "diagnostic-radiator-cold-top-001"
+      ],
+      "useful_ids": [
+        "procedure-radiator-bleeding-001",
+        "diagnostic-radiator-gurgling-001"
+      ],
+      "avoid_ids": [
+        "diagnostic-radiator-cold-bottom-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-022",
+      "query": "Why is the top of one radiator cold while the bottom is warm?",
+      "language": "en",
+      "query_type": "symptom",
+      "expected_ids": [
+        "diagnostic-radiator-cold-top-001"
+      ],
+      "useful_ids": [
+        "procedure-radiator-bleeding-001"
+      ],
+      "avoid_ids": [
+        "diagnostic-radiator-cold-bottom-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-023",
+      "query": "Как безопасно да обезвъздуша студен радиатор?",
+      "language": "bg",
+      "query_type": "conversational",
+      "expected_ids": [
+        "procedure-radiator-bleeding-001"
+      ],
+      "useful_ids": [
+        "diagnostic-radiator-cold-top-001"
+      ],
+      "avoid_ids": [
+        "diagnostic-radiator-cold-bottom-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "local-diy"
+    },
+    {
+      "case_id": "KB-EVAL-024",
+      "query": "What are the safe steps for bleeding a water-filled radiator?",
+      "language": "en",
+      "query_type": "diagnostic",
+      "expected_ids": [
+        "procedure-radiator-bleeding-001"
+      ],
+      "useful_ids": [
+        "diagnostic-radiator-cold-top-001"
+      ],
+      "avoid_ids": [
+        "diagnostic-leak-tightening-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "local-diy"
+    },
+    {
+      "case_id": "KB-EVAL-025",
+      "query": "Радиаторът е горещ отгоре, но голяма част отдолу е студена.",
+      "language": "bg",
+      "query_type": "symptom",
+      "expected_ids": [
+        "diagnostic-radiator-cold-bottom-001"
+      ],
+      "useful_ids": [
+        "diagnostic-radiator-completely-cold-001"
+      ],
+      "avoid_ids": [
+        "procedure-radiator-bleeding-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-026",
+      "query": "The radiator is hot at the top but has a large cold area at the bottom.",
+      "language": "en",
+      "query_type": "symptom",
+      "expected_ids": [
+        "diagnostic-radiator-cold-bottom-001"
+      ],
+      "useful_ids": [
+        "diagnostic-radiator-completely-cold-001"
+      ],
+      "avoid_ids": [
+        "diagnostic-radiator-cold-top-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-027",
+      "query": "Радиаторът бълбука и се чува вода вътре.",
+      "language": "bg",
+      "query_type": "symptom",
+      "expected_ids": [
+        "diagnostic-radiator-gurgling-001"
+      ],
+      "useful_ids": [
+        "diagnostic-radiator-cold-top-001",
+        "procedure-radiator-bleeding-001"
+      ],
+      "avoid_ids": [
+        "diagnostic-leak-tightening-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-028",
+      "query": "Why does my radiator make a gurgling or trickling noise?",
+      "language": "en",
+      "query_type": "symptom",
+      "expected_ids": [
+        "diagnostic-radiator-gurgling-001"
+      ],
+      "useful_ids": [
+        "diagnostic-radiator-cold-top-001"
+      ],
+      "avoid_ids": [
+        "diagnostic-radiator-cold-bottom-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-029",
+      "query": "Всички радиатори топлят, но един е изцяло студен.",
+      "language": "bg",
+      "query_type": "symptom",
+      "expected_ids": [
+        "diagnostic-radiator-completely-cold-001"
+      ],
+      "useful_ids": [
+        "diagnostic-radiator-cold-top-001"
+      ],
+      "avoid_ids": [
+        "diagnostic-radiator-cold-bottom-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
+    },
+    {
+      "case_id": "KB-EVAL-030",
+      "query": "One radiator is completely cold while all the others heat normally.",
+      "language": "en",
+      "query_type": "symptom",
+      "expected_ids": [
+        "diagnostic-radiator-completely-cold-001"
+      ],
+      "useful_ids": [
+        "diagnostic-radiator-cold-top-001"
+      ],
+      "avoid_ids": [
+        "diagnostic-radiator-cold-bottom-001"
+      ],
+      "safety_expectation": "medium",
+      "response_class": "diagnostic"
     }
   ]
 }

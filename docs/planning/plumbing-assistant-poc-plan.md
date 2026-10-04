@@ -23,10 +23,10 @@ so work can resume without reconstructing context.
 
 | Field | Value |
 | --- | --- |
-| POC status | POC complete; UI, Markdown tables, and mock external-call preview are checkpointed |
+| POC status | POC complete; first source-backed radiator batch and deterministic local receipt are checkpointed |
 | Current task | `POC-110` — `blocked` |
 | Next action | Owner decision on provider/model, data processing, budget, and live-call authority |
-| Last completed task | `POC-140` |
+| Last completed task | `POC-160` |
 | Last validated commit | `db6fdfc` — see [current-state checkpoint](../handoffs/plumbing-assistant-poc-current-state.md) |
 | Repository baseline | `npm run validate` passes |
 | Runtime provider | Mock by default; real provider explicitly opt-in |
@@ -51,6 +51,8 @@ so work can resume without reconstructing context.
 | `POC-120` | Thirty-pair bilingual pilot and baseline runner | `done` | `POC-040`, `POC-100` |
 | `POC-130` | Integration, browser, failure-path, and Docker tests | `done` | `POC-020`, `POC-060`, `POC-100`, `POC-120` |
 | `POC-140` | POC report and continue/change/stop decision | `done` | `POC-110`, `POC-120`, `POC-130` |
+| `POC-150` | Complete local development corpus and reproducible receipt | `done` | `POC-050`, `POC-120` |
+| `POC-160` | First source-backed radiator KB batch | `done` | `POC-040`, `POC-050`, `POC-150` |
 
 ## Task definitions
 
@@ -246,7 +248,7 @@ Evidence:
   Bulgarian-to-English plumbing vocabulary bridge;
 - `src/kb.test.ts` covers deterministic indexing, Bulgarian retrieval, and
   empty/unknown fail-closed behavior;
-- `src/kb.retrieval.test.ts` runs all 20 current retrieval cases against the
+- `src/kb.retrieval.test.ts` runs all 30 current retrieval cases against the
   local index and verifies every expected ID that exists in the corpus is
   returned within the bounded result set.
 
@@ -543,6 +545,83 @@ Evidence:
   data-processing, budget, and live-call decision;
 - the source registry remains in review and no direct ChatGPT comparison is
   claimed.
+
+### POC-150 — Complete local development corpus and reproducible receipt
+
+Status: `done` (local development evidence only)
+
+Scope alignment: partial POC evidence for `FR-05` and `FR-18`. It does not
+close `AC-53`, `IMP-006`, or the planned `PA-IMP-070` governed provider
+ingestion workstream.
+
+Deliverables:
+
+- index every repository-owned knowledge unit eligible for development use;
+- exclude requirements, meta, deprecated, and rights-unapproved external
+  source bodies;
+- emit deterministic document SHA-256 values, chunk counts, corpus fingerprint,
+  and build ID without a network or provider call;
+- fail on duplicate indexed unit IDs and test the exact corpus boundary.
+
+Evidence:
+
+- `apps/plumbing-assistant/src/kb.ts` indexes the complete eligible corpus and
+  exposes a deterministic receipt;
+- `apps/plumbing-assistant/src/index-development.ts` prints the receipt locally;
+- `src/kb.test.ts` fixes the current boundary at 16 knowledge units and 193
+  heading-based chunks and verifies repeatable fingerprints;
+- `npm run index:development --workspace=@applied-ai-lab/plumbing-assistant`
+  emits build `idx_local_1dcdcb4aff8bd991` for the current corpus;
+- the app unit/retrieval suites and repository validation pass without provider
+  credentials.
+
+Non-goals and residual boundary:
+
+- no external document body is acquired, uploaded, or approved;
+- no OpenAI vector store, production index manifest, provider file ID, live
+  model, or paid request is created;
+- all indexed units remain `draft` development evidence until provenance and
+  qualified technical review are completed.
+
+### POC-160 — First source-backed radiator KB batch
+
+Status: `done` (development content; technical review pending)
+
+Scope alignment: partial POC evidence for `FR-05` and `FR-18`. No production
+acceptance criterion is closed and no source body is approved or ingested.
+
+Deliverables:
+
+- create four diagnostic units for cold-top, cold-bottom, gurgling, and one
+  completely cold radiator plus one bounded radiator-bleeding procedure;
+- structure each unit around symptom, likely causes, distinguishing evidence,
+  tests, interpretation, stop conditions, and escalation;
+- register six official manufacturer/technical sources as metadata-only
+  `in_review` records and retain source IDs and locators in each derived unit;
+- add ten bilingual retrieval scenarios and protect existing retrieval behavior;
+- include the five units in the deterministic local development receipt without
+  acquiring, storing, or uploading third-party source bodies.
+
+Evidence:
+
+- `docs/kb/plumbing-kb-v0.1/diagnostic-radiator-*.md` and
+  `procedure-radiator-bleeding-001.md` contain the five draft sourced units;
+- `sources/plumbing-assistant/manifest.json` contains nine total metadata-only
+  records, all `in_review` and `approved_for_index: false`;
+- `evals/plumbing-kb/retrieval-cases.json` contains 30 scenarios, including ten
+  bilingual radiator cases;
+- `src/kb.ts` parses structured source references, weights title/alias matches,
+  and rejects weak single-token matches for multiword queries;
+- `src/kb.test.ts` verifies deterministic indexing, manifest-resolved source
+  IDs, existing O-ring retrieval, and fail-closed unknown-query behavior;
+- repository validation and the app unit/retrieval suites pass.
+
+Non-goals and residual boundary:
+
+- the source pages and PDF are not copied, redistributed, or uploaded;
+- the five derived units remain `draft` and are not approved production advice;
+- Bulgarian applicability, qualified technical review, production retrieval,
+  live provider calls, and public release remain pending.
 
 ## Daily handoff rule
 

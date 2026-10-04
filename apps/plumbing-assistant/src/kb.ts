@@ -1,5 +1,12 @@
+import { createHash } from "node:crypto";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+
+const INDEX_VERSION = "poc-kb-0.3";
+const INDEXED_STATUSES = ["draft", "reviewed", "verified"] as const;
+const EXCLUDED_DOCUMENT_TYPES = ["meta", "requirements"] as const;
+
+type IndexedStatus = (typeof INDEXED_STATUSES)[number];
 
 export interface KnowledgeChunk {
   chunkId: string;
@@ -15,7 +22,37 @@ export interface KnowledgeChunk {
 export interface KnowledgeIndex {
   root: string;
   chunks: KnowledgeChunk[];
+  documents: KnowledgeDocument[];
+  fingerprint: string;
   version: string;
+}
+
+export interface KnowledgeDocument {
+  unitId: string;
+  title: string;
+  sourcePath: string;
+  documentType: string;
+  status: IndexedStatus;
+  language: "en";
+  sourceIds: string[];
+  evidenceLevel: string | null;
+  sha256: string;
+  chunkCount: number;
+}
+
+export interface DevelopmentIndexReceipt {
+  schemaVersion: "1.0.0";
+  environment: "development";
+  mode: "local_lexical";
+  indexVersion: string;
+  buildId: string;
+  fingerprint: string;
+  sourceRoot: "docs/kb";
+  includedStatuses: readonly IndexedStatus[];
+  excludedDocumentTypes: readonly string[];
+  documentCount: number;
+  chunkCount: number;
+  documents: KnowledgeDocument[];
 }
 
 export interface SearchResult extends KnowledgeChunk {
@@ -31,6 +68,15 @@ function parseList(frontmatter: string, field: string): string[] {
     .filter(Boolean);
 }
 
+function parseSourceRefs(frontmatter: string): string[] {
+  const block = /^source_refs:\n((?:(?:\s+-\s+.*|\s{4,}.*)\n?)*)/m.exec(frontmatter)?.[1];
+  if (!block) return [];
+  const structured = [...block.matchAll(/^\s+-\s+ref:\s*(?:"([^"]+)"|'([^']+)'|(.*?))\s*$/gm)]
+    .map((item) => item[1] ?? item[2] ?? item[3] ?? "")
+    .filter(Boolean);
+  return structured.length > 0 ? structured : parseList(frontmatter, "source_refs");
+}
+
 function parseScalar(frontmatter: string, field: string): string | null {
   const match = new RegExp(`^${field}:\\s*(.*)$`, "m").exec(frontmatter);
   if (!match || match[1] === "null") return null;
@@ -43,6 +89,10 @@ function slugify(value: string): string {
     .replaceAll(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")
     .slice(0, 60);
+}
+
+function sha256(value: string): string {
+  return createHash("sha256").update(value).digest("hex");
 }
 
 function splitMarkdown(content: string): { frontmatter: string; body: string } | null {
@@ -85,16 +135,25 @@ async function listMarkdownFiles(directory: string): Promise<string[]> {
 
 export async function buildKnowledgeIndex(root: string): Promise<KnowledgeIndex> {
   const chunks: KnowledgeChunk[] = [];
+  const documents: KnowledgeDocument[] = [];
+  const unitIds = new Set<string>();
   for (const file of await listMarkdownFiles(root)) {
-    const parsed = splitMarkdown(await readFile(file, "utf8"));
+    const content = await readFile(file, "utf8");
+    const parsed = splitMarkdown(content);
     if (!parsed) continue;
     const unitId = parseScalar(parsed.frontmatter, "id");
     const title = parseScalar(parsed.frontmatter, "title");
     if (!unitId || !title || parseScalar(parsed.frontmatter, "language") !== "en") continue;
-    if (["meta", "requirements"].includes(parseScalar(parsed.frontmatter, "document_type") ?? ""))
+    const documentType = parseScalar(parsed.frontmatter, "document_type");
+    const status = parseScalar(parsed.frontmatter, "status");
+    if (!documentType || EXCLUDED_DOCUMENT_TYPES.includes(documentType as "meta" | "requirements"))
       continue;
+    if (!INDEXED_STATUSES.includes(status as IndexedStatus)) continue;
+    if (unitIds.has(unitId)) throw new Error(`Duplicate indexed knowledge unit: ${unitId}`);
+    unitIds.add(unitId);
     const aliases = parseList(parsed.frontmatter, "aliases");
-    const sourceRefs = parseList(parsed.frontmatter, "source_refs");
+    const sourceRefs = parseSourceRefs(parsed.frontmatter);
+    const evidenceLevel = parseScalar(parsed.frontmatter, "evidence_level");
     const sections = splitSections(parsed.body, title);
     sections.forEach((section, index) => {
       chunks.push({
@@ -105,11 +164,47 @@ export async function buildKnowledgeIndex(root: string): Promise<KnowledgeIndex>
         aliases,
         language: "en",
         sourceId: sourceRefs[0] ?? null,
-        evidenceLevel: parseScalar(parsed.frontmatter, "evidence_level"),
+        evidenceLevel,
       });
     });
+    documents.push({
+      unitId,
+      title,
+      sourcePath: path.relative(root, file).split(path.sep).join("/"),
+      documentType,
+      status: status as IndexedStatus,
+      language: "en",
+      sourceIds: sourceRefs,
+      evidenceLevel,
+      sha256: sha256(content),
+      chunkCount: sections.length,
+    });
   }
-  return { root, chunks, version: "poc-kb-0.1" };
+  const fingerprint = sha256(
+    JSON.stringify({
+      version: INDEX_VERSION,
+      documents,
+      chunks: chunks.map(({ chunkId, unitId, text }) => ({ chunkId, unitId, text })),
+    }),
+  );
+  return { root, chunks, documents, fingerprint, version: INDEX_VERSION };
+}
+
+export function createDevelopmentIndexReceipt(index: KnowledgeIndex): DevelopmentIndexReceipt {
+  return {
+    schemaVersion: "1.0.0",
+    environment: "development",
+    mode: "local_lexical",
+    indexVersion: index.version,
+    buildId: `idx_local_${index.fingerprint.slice(0, 16)}`,
+    fingerprint: index.fingerprint,
+    sourceRoot: "docs/kb",
+    includedStatuses: INDEXED_STATUSES,
+    excludedDocumentTypes: EXCLUDED_DOCUMENT_TYPES,
+    documentCount: index.documents.length,
+    chunkCount: index.chunks.length,
+    documents: index.documents,
+  };
 }
 
 function tokenVariants(value: string): Set<string> {
@@ -148,14 +243,24 @@ export function searchKnowledge(index: KnowledgeIndex, query: string, limit = 5)
   const phrase = query.toLocaleLowerCase().trim();
   const byUnit = new Map<string, SearchResult>();
   for (const chunk of index.chunks) {
-    const contentTokens = tokenVariants(`${chunk.title} ${chunk.text} ${chunk.aliases.join(" ")}`);
+    const labelTokens = tokenVariants(`${chunk.title} ${chunk.aliases.join(" ")}`);
+    const contentTokens = tokenVariants(chunk.text);
     let score = 0;
-    for (const token of queryTokens) if (contentTokens.has(token)) score += 1;
-    if (
+    let matchedTokens = 0;
+    for (const token of queryTokens) {
+      if (labelTokens.has(token)) {
+        score += 3;
+        matchedTokens += 1;
+      } else if (contentTokens.has(token)) {
+        score += 1;
+        matchedTokens += 1;
+      }
+    }
+    const phraseMatches =
       phrase.length > 4 &&
-      `${chunk.text} ${chunk.aliases.join(" ")}`.toLocaleLowerCase().includes(phrase)
-    )
-      score += 2;
+      `${chunk.text} ${chunk.aliases.join(" ")}`.toLocaleLowerCase().includes(phrase);
+    if (phraseMatches) score += 2;
+    if (queryTokens.size >= 2 && matchedTokens < 2 && !phraseMatches) continue;
     if (score === 0) continue;
     const existing = byUnit.get(chunk.unitId);
     if (!existing || score > existing.score) byUnit.set(chunk.unitId, { ...chunk, score });

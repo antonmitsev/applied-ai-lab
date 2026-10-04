@@ -32,6 +32,21 @@ review, and missing evaluation units are reported rather than silently
 synthesized. The real provider adapter, qualified source/domain/legal review,
 and public release are not implemented yet.
 
+The complete eligible repository corpus can be inspected from the repository
+root with:
+
+```bash
+npm run index:development --workspace=@applied-ai-lab/plumbing-assistant
+```
+
+The command performs no network or provider call. It emits a deterministic
+development receipt with per-document SHA-256 values, chunk counts, and one
+corpus fingerprint. The current receipt contains all 16 eligible knowledge
+units and 193 heading-based chunks; requirements, meta documents, deprecated
+units, and external source bodies are excluded. Five radiator units are
+repository-owned paraphrases with source references; no third-party page or PDF
+body is stored in the corpus.
+
 ## Documentation
 
 - [Requirements v0.2 implementation baseline](../../docs/requirements/plumbing-assistant-v0.2.md)

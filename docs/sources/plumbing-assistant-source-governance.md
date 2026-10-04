@@ -15,14 +15,17 @@ This specification defines how a public document becomes an approved, indexed,
 citable source and how it is updated or removed. It prevents the curated
 knowledge base from becoming an unreviewed document dump.
 
-It does **not** perform WP-01. No manufacturer list, manual research, download,
-rights decision, or OpenAI upload is included in this change. The initial
-[source registry](../../sources/plumbing-assistant/manifest.json) is intentionally
-empty and records `research_status: not_started`.
+WP-01 is still incomplete. The current
+[source registry](../../sources/plumbing-assistant/manifest.json) contains nine
+metadata-only `in_review` records, including six official sources used to draft
+the first five repository-owned radiator units. No external page or PDF body is
+stored, no source is approved for ingestion, and no OpenAI upload is included.
+The registry records `research_status: in_progress`.
 
 Grounded public production answers remain blocked until WP-01 produces a
-reviewed registry with adequate coverage and the ingestion implementation passes
-the release evidence in this document.
+reviewed registry with adequate coverage, the derived units pass qualified
+technical/applicability review, and any required ingestion implementation
+passes the release evidence in this document.
 
 ## Sources of truth
 

@@ -193,8 +193,9 @@ The validator portion is complete: `scripts/validate-kb.mjs` is integrated into
 `npm run validate`, and `npm run test:kb` covers its parser and quality gates.
 The development run currently reports only unresolved references to planned
 future canonical units; production mode correctly rejects the draft case files.
-The initial retrieval evaluation set is also present at
-`evals/plumbing-kb/retrieval-cases.json` with 20 bilingual cases.
+The retrieval evaluation set is also present at
+`evals/plumbing-kb/retrieval-cases.json` with 30 bilingual cases, including ten
+cases for the first source-backed radiator batch.
 The safety response contract is present at
 `docs/contracts/kb-safety-response-contract.json`; its 10 deterministic vectors
 pass `npm run test:safety`.

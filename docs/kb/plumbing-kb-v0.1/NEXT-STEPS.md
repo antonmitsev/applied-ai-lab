@@ -32,12 +32,22 @@ Completed:
 - `scripts/validate-kb.test.mjs` with deterministic built-in tests;
 - integration into `npm run validate`;
 - stable filename/ID alignment for current case documents.
-- initial 20-case bilingual retrieval evaluation set and JSON Schema.
+- expanded 30-case bilingual retrieval evaluation set and JSON Schema.
 - machine-readable safety response contract with 10 deterministic vectors.
+- complete local development receipt for all 16 eligible knowledge units and
+  193 heading-based chunks, including per-document checksums and one stable
+  corpus fingerprint.
+- first source-backed radiator batch: four diagnostic units and one bounded
+  bleeding procedure, linked to six metadata-only official-source records.
 
 Remaining before source-backed indexing:
 
-- decide the first development and production index manifests.
+- complete source applicability and qualified technical review of the derived
+  radiator units; source-body ingestion rights are not required for the current
+  repository-owned paraphrases;
+- complete rights review before any future source-body ingestion;
+- implement the governed staging/production index manifest only for approved
+  records.
 
 The canonical units below remain `draft` until source governance, technical
 review, and applicability review are complete.
